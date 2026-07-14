@@ -2,10 +2,46 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Trash2, RefreshCw, ShoppingCart, HelpCircle } from 'lucide-react';
 import Logo from './Logo';
 
+// Helper to programmatically make JPEG white backgrounds transparent inside the canvas
+const makeImageTransparent = (src) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      try {
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i+1];
+          const b = data[i+2];
+          // Key out pixels that are very light/white (RGB > 245)
+          if (r > 245 && g > 245 && b > 245) {
+            data[i+3] = 0; // Alpha = 0 (transparent)
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+        resolve(canvas.toDataURL());
+      } catch (err) {
+        console.warn("Canvas transparency processing failed (CORS limit):", err);
+        resolve(src);
+      }
+    };
+    img.onerror = () => resolve(src);
+    img.src = src;
+  });
+};
+
 export default function StickerPlayground({ playgroundStickers, onRemoveSticker, onUpdateSticker, onClearPlayground, onAddAllToCart }) {
   const [selectedId, setSelectedId] = useState(null);
   const [activeDevice, setActiveDevice] = useState('laptop');
   const [deviceRotation, setDeviceRotation] = useState(0);
+  const [transparentCache, setTransparentCache] = useState({});
   const canvasRef = useRef(null);
   const dragInfoRef = useRef({ isDragging: false, startX: 0, startY: 0, startLeft: 0, startTop: 0 });
   const rotateRef = useRef({ isRotating: false, startX: 0, startRotation: 0 });
@@ -25,6 +61,20 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
   useEffect(() => {
     setDeviceRotation(0);
   }, [activeDevice]);
+
+  // Process and cache transparent sticker images
+  useEffect(() => {
+    playgroundStickers.forEach((sticker) => {
+      if (sticker.image && !transparentCache[sticker.image]) {
+        makeImageTransparent(sticker.image).then((transparentUrl) => {
+          setTransparentCache((prev) => ({
+            ...prev,
+            [sticker.image]: transparentUrl
+          }));
+        });
+      }
+    });
+  }, [playgroundStickers, transparentCache]);
 
   const handleStartDrag = (e, stickerId) => {
     e.stopPropagation(); // Prevent background rotation trigger
@@ -326,7 +376,7 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 className={`placed-sticker-wrapper ${selectedId === sticker.id ? 'selected-ring' : ''}`}
               >
                 <img
-                  src={sticker.image}
+                  src={transparentCache[sticker.image] || sticker.image}
                   alt={sticker.name}
                   draggable="false"
                   className="placed-sticker-img"
