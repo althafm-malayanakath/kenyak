@@ -574,106 +574,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
 }
 
-/* MacBook Mockup */
-.device-canvas-laptop {
-  position: relative;
-  width: 100%;
-  max-width: 440px;
-  aspect-ratio: 16/10;
-  background: linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%) !important;
-  border: 3px solid #0f172a !important;
-  border-radius: 20px !important;
-  box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.15) !important;
-  transition: var(--transition-smooth);
-}
-
-.mock-laptop-notch {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90px;
-  height: 5px;
-  background: #000;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  z-index: 10;
-}
-
-.mock-laptop-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.85 !important;
-  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 50%, #64748b 100%);
-  padding: 10px 12px;
-  border-radius: 50%;
-  border: 2.5px solid #1e293b;
-  box-shadow: 
-    0 4px 8px rgba(0,0,0,0.25),
-    inset 0 1px 3px rgba(255,255,255,0.8);
-  pointer-events: none;
-  user-select: none;
-  z-index: 2;
-}
-
-.mock-laptop-hinge {
-  position: absolute;
-  bottom: -4px;
-  left: 30px;
-  right: 30px;
-  height: 6px;
-  background: #0f172a;
-  border-radius: 4px;
-  border: 1px solid #1e293b;
-  z-index: -1;
-}
-
-/* Phone Mockup */
-.device-canvas-phone {
-  position: relative;
-  width: 190px;
-  aspect-ratio: 9/18;
-  background: linear-gradient(180deg, #1f2937 0%, #111827 100%) !important;
-  border: 3px solid #0f172a !important;
-  border-radius: 36px !important;
-  box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 1.5px rgba(255, 255, 255, 0.1) !important;
-  transition: var(--transition-smooth);
-}
-
-.device-canvas-phone::before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 10px;
-  background: #000;
-  border-radius: 99px;
-  z-index: 20;
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.1);
-}
-
-.device-brand-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.08;
-  color: var(--text-primary);
-  font-family: var(--font-heading);
-  font-size: 2.8rem;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  user-select: none;
-  pointer-events: none;
-}
+/* Canvas messages and placeholders */
 
 .canvas-placeholder-message {
   position: absolute;
@@ -2208,159 +2109,204 @@ textarea.input-field {
 
 .mock-laptop-notch {
   position: absolute;
-  top: -10px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 80px;
   height: 6px;
-  background: #0f172a;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-  z-index: 5;
+  background: #090d16;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 10;
+  box-shadow: inset 0 -1px 2px rgba(255,255,255,0.1);
 }
 
 .mock-laptop-hinge {
   position: absolute;
-  bottom: -10px;
-  left: 30px;
-  right: 30px;
-  height: 6px;
+  bottom: -8px;
+  left: 40px;
+  right: 40px;
+  height: 8px;
   background: #090d16;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  z-index: 5;
+  border-radius: 2px;
+  border: 1px solid #1e293b;
+  z-index: -1;
 }
 
+.mock-laptop-chamfer-border {
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.mock-laptop-screen-inset-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 60%, transparent 70%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* iPhone Pro Casing details */
 .device-canvas-phone {
   position: relative;
-  width: 210px;
+  width: 190px;
   aspect-ratio: 9/18;
-  background: linear-gradient(135deg, #3f3f46 0%, #18181b 100%) !important;
-  border: 8px solid #27272a !important;
+  background: radial-gradient(circle at 50% 30%, #2d3139 0%, #181b20 70%, #0c0d10 100%) !important;
+  border: 5px solid #1c1d22 !important;
   border-radius: 36px !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 0 15px rgba(255, 255, 255, 0.08) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+    0 35px 70px -15px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
+  transition: var(--transition-smooth);
 }
 
 .mock-phone-btn-volume-up,
 .mock-phone-btn-volume-down,
+.mock-phone-btn-action,
 .mock-phone-btn-power {
   position: absolute;
-  width: 3px;
-  background: #27272a;
+  width: 3.5px;
+  background: #1c1d22;
   border-radius: 2px;
+  z-index: -1;
 }
 
 .mock-phone-btn-volume-up {
-  left: -11px;
-  top: 80px;
+  left: -8.5px;
+  top: 68px;
   height: 24px;
+  border-left: 1px solid rgba(255,255,255,0.25);
 }
 
 .mock-phone-btn-volume-down {
-  left: -11px;
-  top: 114px;
+  left: -8.5px;
+  top: 98px;
   height: 24px;
+  border-left: 1px solid rgba(255,255,255,0.25);
+}
+
+.mock-phone-btn-action {
+  left: -8.5px;
+  top: 42px;
+  height: 14px;
+  border-left: 1px solid rgba(255,255,255,0.25);
 }
 
 .mock-phone-btn-power {
-  right: -11px;
-  top: 96px;
+  right: -8.5px;
+  top: 80px;
   height: 32px;
+  border-right: 1px solid rgba(255,255,255,0.25);
 }
 
-.mock-laptop-logo {
-  opacity: 0.8 !important;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)) !important;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 10px 12px;
-  border-radius: 50%;
-  border: 2px solid #475569;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-  pointer-events: none;
-  user-select: none;
-}
-
-.mock-phone-logo {
-  opacity: 0.85 !important;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 8px 10px;
-  border-radius: 50%;
-  border: 2px solid #3f3f46;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  pointer-events: none;
-  user-select: none;
-}
-
-/* Realistic 3D camera bump */
-.mock-phone-camera {
+/* Translucent iPhone Camera Island */
+.mock-phone-camera-bump {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  width: 58px;
-  height: 58px;
-  background: rgba(24, 24, 27, 0.85) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 14px !important;
-  padding: 6px !important;
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 4px !important;
-  pointer-events: none;
+  top: 20px;
+  left: 20px;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 20px !important;
   box-shadow: 
-    0 4px 6px rgba(0, 0, 0, 0.4),
-    inset 0 2px 4px rgba(255, 255, 255, 0.05) !important;
+    0 8px 16px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+  z-index: 2;
+  pointer-events: none;
 }
 
+/* Camera Optics Glass Lenses */
 .camera-lens {
-  background: #09090b !important;
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: radial-gradient(circle at 35% 35%, #1f293d 10%, #090d16 80%) !important;
   border-radius: 50% !important;
-  border: 2px solid #3f3f46 !important;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1/1 !important;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.9);
+  border: 1.5px solid #2e3543 !important;
+  box-shadow: 
+    0 2px 4px rgba(0,0,0,0.6),
+    inset 0 2px 4px rgba(0,0,0,0.8) !important;
 }
 
-.camera-lens::before {
-  content: '';
+.camera-lens.lens-1 {
+  top: 6px;
+  left: 6px;
+}
+
+.camera-lens.lens-2 {
+  bottom: 6px;
+  left: 6px;
+}
+
+.camera-lens.lens-3 {
+  top: 20px;
+  right: 6px;
+}
+
+.lens-reflection {
   position: absolute;
+  inset: 2px;
+  background: radial-gradient(circle at 35% 35%, rgba(6, 182, 212, 0.35) 0%, transparent 60%);
+  border-radius: 50%;
+}
+
+.lens-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 6px;
   height: 6px;
   background: #020617;
   border-radius: 50%;
-  border: 1px solid #27272a;
+  border: 0.5px solid #475569;
 }
 
-.camera-lens::after {
-  content: '';
+.camera-flash-ring {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.25) !important;
-  border-radius: 50%;
-}
-
-.camera-lens.small {
-  transform: scale(0.8);
-}
-
-.camera-flash {
+  top: 10px;
+  right: 15px;
+  width: 10px;
+  height: 10px;
   background: #fef08a !important;
   border: 1.5px solid #ca8a04 !important;
   border-radius: 50% !important;
-  width: 8px !important;
-  height: 8px !important;
-  margin: auto !important;
-  box-shadow: 0 0 4px #fef08a;
+  box-shadow: 0 0 6px #fef08a;
+}
+
+.lidar-sensor-lens {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  width: 8px;
+  height: 8px;
+  background: #020617 !important;
+  border-radius: 50% !important;
+  border: 1px solid #1e293b !important;
+}
+
+.mock-phone-antenna-top,
+.mock-phone-antenna-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: rgba(255,255,255,0.06);
+}
+
+.mock-phone-antenna-top {
+  top: 36px;
+}
+
+.mock-phone-antenna-bottom {
+  bottom: 36px;
 }
 
 .mock-sheen-line {
@@ -2467,12 +2413,12 @@ textarea.input-field {
   position: relative;
   width: 190px;
   height: 300px;
-  background: linear-gradient(135deg, #27272a 0%, #1e1b4b 60%, #09090b 100%) !important;
-  border: 4.5px solid #0f172a !important;
+  background: linear-gradient(135deg, #3f3f46 0%, #1c1917 60%, #0c0a09 100%) !important;
+  border: 4.5px solid #1c1917 !important;
   border-radius: 28px !important;
   box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.7),
-    inset 0 0 0 1px rgba(255,255,255,0.1) !important;
+    0 35px 70px -15px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1.5px rgba(255,255,255,0.12) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2480,31 +2426,42 @@ textarea.input-field {
 
 .mock-trolley-handle-bars {
   position: absolute;
-  top: -26px;
+  top: -24px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
-  height: 26px;
-  border: 3.5px solid #0f172a;
+  width: 58px;
+  height: 24px;
+  border: 3.5px solid #1c1917;
   border-bottom: none;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   z-index: -1;
   background: linear-gradient(90deg, #94a3b8 0%, #cbd5e1 30%, #475569 70%, #1e293b 100%);
 }
 
 .mock-trolley-handle-grip {
   position: absolute;
-  top: -30px;
+  top: -28px;
   left: 50%;
   transform: translateX(-50%);
-  width: 72px;
-  height: 9px;
+  width: 70px;
+  height: 10px;
   background: #000;
-  border: 1.5px solid #18181b;
+  border: 1.5px solid #1c1917;
   border-radius: 3px;
   z-index: 2;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.mock-trolley-handle-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 3.5px;
+  background: #475569;
+  border-radius: 1px;
 }
 
 .mock-trolley-wheel {
@@ -2521,16 +2478,16 @@ textarea.input-field {
   z-index: -1;
 }
 
-.mock-trolley-wheel::after {
-  content: '';
+.mock-trolley-wheel-spoke {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  background: #94a3b8;
+  width: 10px;
+  height: 10px;
+  background: repeating-conic-gradient(#94a3b8 0% 25%, #475569 25% 50%);
   border-radius: 50%;
+  border: 0.5px solid #000;
 }
 
 .mock-trolley-wheel.left {
@@ -2541,19 +2498,72 @@ textarea.input-field {
   right: 24px;
 }
 
-/* Rubber Corner Guards */
-.device-canvas-trolley::before {
-  content: '';
+.mock-trolley-zipper-line {
   position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3.5px;
+  background: #000;
+  transform: translateX(-50%);
+  z-index: 1;
+  box-shadow: 0 0 3px rgba(255,255,255,0.06);
+}
+
+.mock-trolley-side-handle {
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 44px;
+  background: #1c1917;
+  border-radius: 4px 0 0 4px;
+  border: 1.5px solid #000;
+  border-right: none;
+  z-index: 1;
+}
+
+/* Hard Corner Guards with Rivets */
+.mock-trolley-corner-guard {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: #0c0a09;
+  border: 2px solid #1c1917;
+  z-index: 3;
+}
+
+.mock-trolley-corner-guard.top-left {
   top: -2px;
   left: -2px;
+  border-top-left-radius: 24px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.mock-trolley-corner-guard.top-right {
+  top: -2px;
   right: -2px;
+  border-top-right-radius: 24px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.mock-trolley-corner-guard.bottom-left {
   bottom: -2px;
-  border: 10px solid transparent;
-  border-top-color: #0f172a;
-  border-radius: 28px;
-  pointer-events: none;
-  opacity: 0.95;
+  left: -2px;
+  border-bottom-left-radius: 24px;
+  border-right: none;
+  border-top: none;
+}
+
+.mock-trolley-corner-guard.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  border-bottom-right-radius: 24px;
+  border-left: none;
+  border-top: none;
 }
 
 .mock-trolley-ridges-container {
@@ -2565,31 +2575,16 @@ textarea.input-field {
   display: flex;
   justify-content: space-around;
   pointer-events: none;
-  opacity: 0.12;
 }
 
 .mock-trolley-ridge {
-  width: 10px;
+  width: 14px;
   height: 100%;
-  background: #ffffff;
-  border-radius: 6px;
+  background: linear-gradient(90deg, #18181b 0%, #2e2e33 40%, #09090b 60%, #27272a 100%);
+  border-radius: 4px;
   box-shadow: 
-    inset 2px 2px 4px rgba(0,0,0,0.8),
-    2px 2px 4px rgba(255,255,255,0.2);
-}
-
-.mock-trolley-logo {
-  opacity: 0.85 !important;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 8px 10px;
-  border-radius: 50%;
-  border: 2px solid #1e1b4b;
-  box-shadow: 
-    0 3px 6px rgba(0,0,0,0.2),
-    inset 0 1px 2px rgba(255,255,255,0.8);
-  pointer-events: none;
-  user-select: none;
-  z-index: 2;
+    inset 1px 1px 3px rgba(0,0,0,0.8),
+    1px 1px 2px rgba(255,255,255,0.04);
 }
 
 /* Skateboard Mockup */

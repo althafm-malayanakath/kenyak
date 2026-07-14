@@ -209,6 +209,8 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
               <>
                 <div className="mock-laptop-notch"></div>
                 <div className="mock-laptop-hinge"></div>
+                <div className="mock-laptop-chamfer-border"></div>
+                <div className="mock-laptop-screen-inset-line"></div>
               </>
             )}
             
@@ -216,13 +218,26 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
               <>
                 <div className="mock-phone-btn-volume-up"></div>
                 <div className="mock-phone-btn-volume-down"></div>
+                <div className="mock-phone-btn-action"></div>
                 <div className="mock-phone-btn-power"></div>
-                <div className="mock-phone-camera">
-                  <div className="camera-lens"></div>
-                  <div className="camera-lens"></div>
-                  <div className="camera-lens small"></div>
-                  <div className="camera-flash"></div>
+                <div className="mock-phone-camera-bump">
+                  <div className="camera-lens lens-1">
+                    <div className="lens-reflection"></div>
+                    <div className="lens-dot"></div>
+                  </div>
+                  <div className="camera-lens lens-2">
+                    <div className="lens-reflection"></div>
+                    <div className="lens-dot"></div>
+                  </div>
+                  <div className="camera-lens lens-3">
+                    <div className="lens-reflection"></div>
+                    <div className="lens-dot"></div>
+                  </div>
+                  <div className="camera-flash-ring"></div>
+                  <div className="lidar-sensor-lens"></div>
                 </div>
+                <div className="mock-phone-antenna-top"></div>
+                <div className="mock-phone-antenna-bottom"></div>
               </>
             )}
 
@@ -237,10 +252,23 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
             {activeDevice === 'trolley' && (
               <>
                 <div className="mock-trolley-handle-bars"></div>
-                <div className="mock-trolley-handle-grip"></div>
-                <div className="mock-trolley-wheel left"></div>
-                <div className="mock-trolley-wheel right"></div>
+                <div className="mock-trolley-handle-grip">
+                  <div className="mock-trolley-handle-button"></div>
+                </div>
+                <div className="mock-trolley-wheel left">
+                  <div className="mock-trolley-wheel-spoke"></div>
+                </div>
+                <div className="mock-trolley-wheel right">
+                  <div className="mock-trolley-wheel-spoke"></div>
+                </div>
+                <div className="mock-trolley-zipper-line"></div>
+                <div className="mock-trolley-side-handle"></div>
+                <div className="mock-trolley-corner-guard top-left"></div>
+                <div className="mock-trolley-corner-guard top-right"></div>
+                <div className="mock-trolley-corner-guard bottom-left"></div>
+                <div className="mock-trolley-corner-guard bottom-right"></div>
                 <div className="mock-trolley-ridges-container">
+                  <div className="mock-trolley-ridge"></div>
                   <div className="mock-trolley-ridge"></div>
                   <div className="mock-trolley-ridge"></div>
                   <div className="mock-trolley-ridge"></div>
