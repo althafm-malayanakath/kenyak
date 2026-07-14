@@ -145,7 +145,13 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
             onClick={() => setActiveDevice('laptop')}
             className={`device-toggle-btn ${activeDevice === 'laptop' ? 'active' : ''}`}
           >
-            Laptop
+            Laptop (Lid)
+          </button>
+          <button
+            onClick={() => setActiveDevice('laptop-bottom')}
+            className={`device-toggle-btn ${activeDevice === 'laptop-bottom' ? 'active' : ''}`}
+          >
+            Laptop (Bottom)
           </button>
           <button
             onClick={() => setActiveDevice('phone')}
@@ -211,6 +217,30 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 <div className="mock-laptop-hinge"></div>
                 <div className="mock-laptop-chamfer-border"></div>
                 <div className="mock-laptop-screen-inset-line"></div>
+              </>
+            )}
+            
+            {activeDevice === 'laptop-bottom' && (
+              <>
+                <div className="mock-laptop-bottom-foot top-left"></div>
+                <div className="mock-laptop-bottom-foot top-right"></div>
+                <div className="mock-laptop-bottom-foot bottom-left"></div>
+                <div className="mock-laptop-bottom-foot bottom-right"></div>
+                <div className="mock-laptop-bottom-vent left"></div>
+                <div className="mock-laptop-bottom-vent right"></div>
+                <div className="mock-laptop-bottom-screws">
+                  <div className="pentalobe-screw s1"></div>
+                  <div className="pentalobe-screw s2"></div>
+                  <div className="pentalobe-screw s3"></div>
+                  <div className="pentalobe-screw s4"></div>
+                  <div className="pentalobe-screw s5"></div>
+                  <div className="pentalobe-screw s6"></div>
+                  <div className="pentalobe-screw s7"></div>
+                  <div className="pentalobe-screw s8"></div>
+                </div>
+                <div className="mock-laptop-bottom-text">
+                  Designed by Apple in California • Assembled in China
+                </div>
               </>
             )}
             
