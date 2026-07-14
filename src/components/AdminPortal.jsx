@@ -78,75 +78,29 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
     }
   };
 
-  // Upload file (Image or Video) to Firebase Storage or local base64 fallback
+  // Upload file (Image or Video) to local Base64 to store directly in Firestore Database
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (!isFirebaseConfigured) {
-      // Offline fallback: load as base64 data URL
-      const reader = new FileReader();
-      reader.onloadstart = () => {
-        setUploading(true);
-        setUploadProgress(10);
-      };
-      reader.onprogress = (event) => {
-        if (event.lengthComputable) {
-          const progress = Math.round((event.loaded / event.total) * 100);
-          setUploadProgress(progress);
-        }
-      };
-      reader.onloadend = () => {
-        setProductForm(prev => ({ ...prev, image: reader.result }));
-        setUploading(false);
-        setUploadProgress(0);
-      };
-      reader.readAsDataURL(file);
-      return;
-    }
-
-    // Cloud upload to Firebase Storage
-    setUploading(true);
-    setUploadProgress(0);
-
-    const storageRef = ref(storage, `stickers/${Date.now()}_${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on('state_changed', 
-      (snapshot) => {
-        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+    // Load file as base64 data URL instantly (compatible with free Spark tier)
+    const reader = new FileReader();
+    reader.onloadstart = () => {
+      setUploading(true);
+      setUploadProgress(10);
+    };
+    reader.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const progress = Math.round((event.loaded / event.total) * 100);
         setUploadProgress(progress);
-      }, 
-      (error) => {
-        console.warn("Firebase Storage is locked or requires Blaze plan. Falling back to inline Base64 database storage:", error);
-        const reader = new FileReader();
-        reader.onloadstart = () => {
-          setUploadProgress(50);
-        };
-        reader.onloadend = () => {
-          setProductForm(prev => ({ ...prev, image: reader.result }));
-          setUploading(false);
-          setUploadProgress(0);
-        };
-        reader.readAsDataURL(file);
-      }, 
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setProductForm(prev => ({ ...prev, image: downloadURL }));
-          setUploading(false);
-          setUploadProgress(0);
-        }).catch((err) => {
-          console.warn("Could not get download URL, using Base64:", err);
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setProductForm(prev => ({ ...prev, image: reader.result }));
-            setUploading(false);
-            setUploadProgress(0);
-          };
-          reader.readAsDataURL(file);
-        });
       }
-    );
+    };
+    reader.onloadend = () => {
+      setProductForm(prev => ({ ...prev, image: reader.result }));
+      setUploading(false);
+      setUploadProgress(0);
+    };
+    reader.readAsDataURL(file);
   };
 
   // Create or Update Product
