@@ -2650,6 +2650,104 @@ textarea.input-field {
   transform: translateX(10px);
 }
 
+/* Helmet Mockup */
+.device-canvas-helmet {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  background: linear-gradient(135deg, #3f3f46 0%, #18181b 50%, #09090b 100%) !important;
+  border: 6px solid #18181b !important;
+  border-radius: 50% 50% 45% 45% !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    inset 0 0 25px rgba(255,255,255,0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mock-helmet-visor {
+  position: absolute;
+  top: 70px;
+  left: 20px;
+  right: 20px;
+  height: 80px;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.3) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border-radius: 16px 16px 60px 60px;
+  border: 3px solid #09090b;
+  box-shadow: 
+    0 4px 10px rgba(0,0,0,0.4),
+    inset 0 0 10px rgba(255,255,255,0.1);
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mock-helmet-visor-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(60deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+}
+
+.mock-helmet-vent {
+  position: absolute;
+  top: 30px;
+  width: 16px;
+  height: 8px;
+  background: #09090b;
+  border-radius: 50%;
+  border: 1.5px solid #27272a;
+  z-index: 1;
+}
+
+.mock-helmet-vent.left {
+  left: 55px;
+  transform: rotate(-10deg);
+}
+
+.mock-helmet-vent.right {
+  right: 55px;
+  transform: rotate(10deg);
+}
+
+.mock-helmet-strap-left,
+.mock-helmet-strap-right {
+  position: absolute;
+  bottom: -25px;
+  width: 6px;
+  height: 30px;
+  background: #000;
+  border: 1px solid #27272a;
+  z-index: -1;
+}
+
+.mock-helmet-strap-left {
+  left: 50px;
+  transform: rotate(15deg);
+}
+
+.mock-helmet-strap-right {
+  right: 50px;
+  transform: rotate(-15deg);
+}
+
+.mock-helmet-logo {
+  opacity: 0.8 !important;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 8px;
+  border-radius: 50%;
+  border: 1.5px solid #3f3f46;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  pointer-events: none;
+  user-select: none;
+  transform: translateY(-55px);
+  z-index: 3;
+}
+
+
 
 
 

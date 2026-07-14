@@ -149,6 +149,12 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
           >
             Notebook
           </button>
+          <button
+            onClick={() => setActiveDevice('helmet')}
+            className={`device-toggle-btn ${activeDevice === 'helmet' ? 'active' : ''}`}
+          >
+            Helmet
+          </button>
         </div>
       </div>
 
@@ -253,6 +259,21 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 <div className="mock-notebook-elastic-band"></div>
                 <div className="mock-notebook-logo">
                   <Logo width="34px" />
+                </div>
+              </>
+            )}
+
+            {activeDevice === 'helmet' && (
+              <>
+                <div className="mock-helmet-visor">
+                  <div className="mock-helmet-visor-sheen"></div>
+                </div>
+                <div className="mock-helmet-vent left"></div>
+                <div className="mock-helmet-vent right"></div>
+                <div className="mock-helmet-strap-left"></div>
+                <div className="mock-helmet-strap-right"></div>
+                <div className="mock-helmet-logo">
+                  <Logo width="28px" />
                 </div>
               </>
             )}
