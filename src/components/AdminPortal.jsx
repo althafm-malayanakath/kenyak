@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, Lock, Plus, Edit2, Trash2, Save, CloudLightning, Database } from 'lucide-react';
-import { db, isFirebaseConfigured } from '../firebase';
+import { X, Lock, Plus, Edit2, Trash2, Save, CloudLightning, Database, Upload } from 'lucide-react';
+import { db, storage, isFirebaseConfigured } from '../firebase';
 import { collection, doc, setDoc, addDoc, updateDoc, deleteDoc, getDocs, writeBatch } from 'firebase/firestore';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { PRODUCTS } from '../data/products';
 
 export default function AdminPortal({ isOpen, onClose, localProducts, setLocalProducts, siteSettings, setSiteSettings }) {
@@ -9,6 +10,8 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [activeTab, setActiveTab] = useState('products'); // 'products', 'content', 'firebase'
   const [errorMsg, setErrorMsg] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Form states
   const [editingProduct, setEditingProduct] = useState(null); // null means adding or viewing list
@@ -75,6 +78,60 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
     }
   };
 
+  // Upload file (Image or Video) to Firebase Storage or local base64 fallback
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!isFirebaseConfigured) {
+      // Offline fallback: load as base64 data URL
+      const reader = new FileReader();
+      reader.onloadstart = () => {
+        setUploading(true);
+        setUploadProgress(10);
+      };
+      reader.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const progress = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress(progress);
+        }
+      };
+      reader.onloadend = () => {
+        setProductForm(prev => ({ ...prev, image: reader.result }));
+        setUploading(false);
+        setUploadProgress(0);
+      };
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    // Cloud upload to Firebase Storage
+    setUploading(true);
+    setUploadProgress(0);
+
+    const storageRef = ref(storage, `stickers/${Date.now()}_${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on('state_changed', 
+      (snapshot) => {
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        setUploadProgress(progress);
+      }, 
+      (error) => {
+        console.error("Storage upload error:", error);
+        alert("File upload failed: " + error.message);
+        setUploading(false);
+      }, 
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setProductForm(prev => ({ ...prev, image: downloadURL }));
+          setUploading(false);
+          setUploadProgress(0);
+        });
+      }
+    );
+  };
+
   // Create or Update Product
   const handleSaveProduct = async (e) => {
     e.preventDefault();
@@ -93,7 +150,9 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
       reviewCount: Number(productForm.reviewCount),
       badge: productForm.badge,
       badgeColor: productForm.badgeColor,
-      image: productForm.image.startsWith('/stickers/') ? productForm.image : `/stickers/${productForm.image}`,
+      image: (productForm.image.startsWith('http') || productForm.image.startsWith('data:') || productForm.image.startsWith('/stickers/'))
+        ? productForm.image 
+        : `/stickers/${productForm.image}`,
       description: productForm.description,
       features: features
     };
@@ -407,7 +466,7 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
                         </div>
                       </div>
 
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
                         <div>
                           <label className="control-label">Selling Price (₹)</label>
                           <input 
@@ -429,18 +488,54 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
                             onChange={(e) => setProductForm(prev => ({ ...prev, compareAtPrice: e.target.value }))} 
                           />
                         </div>
-                        <div>
-                          <label className="control-label">Image Filename</label>
+                      </div>
+
+                      <div style={{ marginBottom: '16px', background: 'rgba(0,0,0,0.02)', padding: '12px', border: '1px dashed #000', borderRadius: '8px' }}>
+                        <label className="control-label">Image or Video Asset Source</label>
+                        <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
                           <select
                             className="navbar-search-input"
-                            style={{ paddingLeft: '12px' }}
-                            value={productForm.image}
+                            style={{ paddingLeft: '12px', flex: 1, minWidth: '150px' }}
+                            value={productForm.image.startsWith('/stickers/') ? productForm.image.replace('/stickers/', '') : ''}
                             onChange={(e) => setProductForm(prev => ({ ...prev, image: e.target.value }))}
                           >
+                            <option value="">-- Choose Existing Sticker --</option>
                             {stickerImages.map(img => (
                               <option key={img} value={img}>{img}</option>
                             ))}
                           </select>
+
+                          <input
+                            type="text"
+                            placeholder="Or enter custom file URL path"
+                            className="navbar-search-input"
+                            style={{ paddingLeft: '12px', flex: 2 }}
+                            value={productForm.image}
+                            onChange={(e) => setProductForm(prev => ({ ...prev, image: e.target.value }))}
+                          />
+                        </div>
+                        
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <label className="btn-neon-purple" style={{ fontSize: '0.7rem', padding: '6px 12px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+                            <Upload size={12} />
+                            Upload Image/Video File
+                            <input 
+                              type="file" 
+                              onChange={handleImageUpload} 
+                              accept="image/*,video/*" 
+                              style={{ display: 'none' }} 
+                            />
+                          </label>
+                          {uploading && (
+                            <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--neon-purple)' }}>
+                              Uploading... {uploadProgress}%
+                            </span>
+                          )}
+                          {!uploading && productForm.image && (
+                            <span style={{ fontSize: '0.7rem', color: '#16a34a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '400px' }}>
+                              Linked Path: {productForm.image.startsWith('data:') ? 'Local Base64 Data URL' : productForm.image}
+                            </span>
+                          )}
                         </div>
                       </div>
 

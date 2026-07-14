@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // Paste your Firebase Web App configuration object here from the Firebase console:
 const firebaseConfig = {
@@ -15,15 +16,17 @@ const isFirebaseConfigured = firebaseConfig && firebaseConfig.apiKey && firebase
 
 let app = null;
 let db = null;
+let storage = null;
 
 if (isFirebaseConfigured) {
   try {
     app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
     db = getFirestore(app);
+    storage = getStorage(app);
   } catch (error) {
     console.error("Firebase initialization failed:", error);
   }
 }
 
-export { db, isFirebaseConfigured };
+export { db, storage, isFirebaseConfigured };
 export default db;
