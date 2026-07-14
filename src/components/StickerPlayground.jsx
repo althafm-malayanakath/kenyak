@@ -108,22 +108,46 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
       <div className="playground-header">
         <div className="playground-info">
           <h2>💻 Sticker Playground</h2>
-          <p>Drag, rotate, scale stickers. Preview before adding them to your laptop shell!</p>
+          <p>Drag, rotate, scale stickers. Preview before adding them to your custom gear!</p>
         </div>
 
         {/* Device select buttons */}
-        <div className="device-toggles">
+        <div className="device-toggles" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
           <button
             onClick={() => setActiveDevice('laptop')}
             className={`device-toggle-btn ${activeDevice === 'laptop' ? 'active' : ''}`}
           >
-            Laptop Mockup
+            Laptop
           </button>
           <button
             onClick={() => setActiveDevice('phone')}
             className={`device-toggle-btn ${activeDevice === 'phone' ? 'active' : ''}`}
           >
-            Phone Mockup
+            Phone
+          </button>
+          <button
+            onClick={() => setActiveDevice('bottle')}
+            className={`device-toggle-btn ${activeDevice === 'bottle' ? 'active' : ''}`}
+          >
+            Water Bottle
+          </button>
+          <button
+            onClick={() => setActiveDevice('trolley')}
+            className={`device-toggle-btn ${activeDevice === 'trolley' ? 'active' : ''}`}
+          >
+            Trolley Bag
+          </button>
+          <button
+            onClick={() => setActiveDevice('skateboard')}
+            className={`device-toggle-btn ${activeDevice === 'skateboard' ? 'active' : ''}`}
+          >
+            Skateboard
+          </button>
+          <button
+            onClick={() => setActiveDevice('notebook')}
+            className={`device-toggle-btn ${activeDevice === 'notebook' ? 'active' : ''}`}
+          >
+            Notebook
           </button>
         </div>
       </div>
@@ -144,11 +168,12 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
             onTouchEnd={handleEndDrag}
             onMouseDown={handleCanvasStart}
             onTouchStart={handleCanvasStart}
-            className={activeDevice === 'laptop' ? 'device-canvas-laptop' : 'device-canvas-phone'}
+            className={`device-canvas-${activeDevice}`}
           >
             {/* Device Detail Markings */}
             <div className="mock-sheen-line"></div>
-            {activeDevice === 'laptop' ? (
+            
+            {activeDevice === 'laptop' && (
               <>
                 <div className="mock-laptop-notch"></div>
                 <div className="mock-laptop-logo">
@@ -156,7 +181,9 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 </div>
                 <div className="mock-laptop-hinge"></div>
               </>
-            ) : (
+            )}
+            
+            {activeDevice === 'phone' && (
               <>
                 <div className="mock-phone-btn-volume-up"></div>
                 <div className="mock-phone-btn-volume-down"></div>
@@ -173,12 +200,69 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
               </>
             )}
 
+            {activeDevice === 'bottle' && (
+              <>
+                <div className="mock-bottle-cap"></div>
+                <div className="mock-bottle-neck"></div>
+                <div className="mock-bottle-strap"></div>
+                <div className="mock-bottle-logo">
+                  <Logo width="28px" />
+                </div>
+              </>
+            )}
+
+            {activeDevice === 'trolley' && (
+              <>
+                <div className="mock-trolley-handle-bars"></div>
+                <div className="mock-trolley-handle-grip"></div>
+                <div className="mock-trolley-wheel left"></div>
+                <div className="mock-trolley-wheel right"></div>
+                <div className="mock-trolley-ridges-container">
+                  <div className="mock-trolley-ridge"></div>
+                  <div className="mock-trolley-ridge"></div>
+                  <div className="mock-trolley-ridge"></div>
+                  <div className="mock-trolley-ridge"></div>
+                </div>
+                <div className="mock-trolley-logo">
+                  <Logo width="30px" />
+                </div>
+              </>
+            )}
+
+            {activeDevice === 'skateboard' && (
+              <>
+                <div className="mock-skateboard-bolts top-left"></div>
+                <div className="mock-skateboard-bolts top-right"></div>
+                <div className="mock-skateboard-bolts bottom-left"></div>
+                <div className="mock-skateboard-bolts bottom-right"></div>
+                <div className="mock-skateboard-center-stripe"></div>
+                <div className="mock-skateboard-logo">
+                  <Logo width="30px" />
+                </div>
+              </>
+            )}
+
+            {activeDevice === 'notebook' && (
+              <>
+                <div className="mock-notebook-spine"></div>
+                <div className="mock-notebook-spine-rings">
+                  {Array(10).fill(0).map((_, i) => (
+                    <div key={i} className="notebook-ring"></div>
+                  ))}
+                </div>
+                <div className="mock-notebook-elastic-band"></div>
+                <div className="mock-notebook-logo">
+                  <Logo width="34px" />
+                </div>
+              </>
+            )}
+
             {/* Placed Stickers Layer */}
             {playgroundStickers.length === 0 && (
               <div className="canvas-placeholder-message">
                 <HelpCircle size={36} style={{ color: 'var(--text-muted)' }} />
                 <p>Your canvas is empty</p>
-                <span>Click "⚡ Try on Laptop" on any sticker in the catalog below to place it here.</span>
+                <span>Click "⚡ Try on Mockup" on any sticker in the catalog below to place it here.</span>
               </div>
             )}
 

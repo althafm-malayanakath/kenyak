@@ -56,7 +56,7 @@ export default function ProductCard({ product, onAddToCart, onPlaygroundAdd }) {
           onClick={() => onPlaygroundAdd(product)}
           className="try-on-btn"
         >
-          ⚡ Try on Laptop
+          ⚡ Try on Mockup
         </button>
       </div>
 
