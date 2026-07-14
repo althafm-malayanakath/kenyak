@@ -4,9 +4,11 @@ import Logo from './Logo';
 
 export default function StickerPlayground({ playgroundStickers, onRemoveSticker, onUpdateSticker, onClearPlayground, onAddAllToCart }) {
   const [selectedId, setSelectedId] = useState(null);
-  const [activeDevice, setActiveDevice] = useState('laptop'); // 'laptop' or 'phone'
+  const [activeDevice, setActiveDevice] = useState('laptop');
+  const [deviceRotation, setDeviceRotation] = useState(0);
   const canvasRef = useRef(null);
   const dragInfoRef = useRef({ isDragging: false, startX: 0, startY: 0, startLeft: 0, startTop: 0 });
+  const rotateRef = useRef({ isRotating: false, startX: 0, startRotation: 0 });
 
   // Handle outside click to deselect
   useEffect(() => {
@@ -19,8 +21,13 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
+  // Reset rotation when device changes
+  useEffect(() => {
+    setDeviceRotation(0);
+  }, [activeDevice]);
+
   const handleStartDrag = (e, stickerId) => {
-    e.stopPropagation(); // Prevent document click handler from immediately deselecting
+    e.stopPropagation(); // Prevent background rotation trigger
     setSelectedId(stickerId);
     
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
@@ -39,41 +46,62 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
   };
 
   const handleDrag = (e) => {
-    if (!dragInfoRef.current.isDragging || selectedId === null) return;
-
     const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
     const clientY = e.touches && e.touches.length > 0 ? e.touches[0].clientY : e.clientY;
 
     if (clientX === undefined || clientY === undefined) return;
 
-    const deltaX = clientX - dragInfoRef.current.startX;
-    const deltaY = clientY - dragInfoRef.current.startY;
+    if (dragInfoRef.current.isDragging && selectedId !== null) {
+      const deltaX = clientX - dragInfoRef.current.startX;
+      const deltaY = clientY - dragInfoRef.current.startY;
 
-    const canvasWidth = canvasRef.current.clientWidth;
-    const canvasHeight = canvasRef.current.clientHeight;
+      const canvasWidth = canvasRef.current.clientWidth;
+      const canvasHeight = canvasRef.current.clientHeight;
 
-    // Convert pixel delta to percentage delta
-    const pctX = (deltaX / canvasWidth) * 100;
-    const pctY = (deltaY / canvasHeight) * 100;
+      // Adjust deltas based on mockup rotation so dragging stays intuitive!
+      const rad = (-deviceRotation * Math.PI) / 180;
+      const cos = Math.cos(rad);
+      const sin = Math.sin(rad);
+      const localDeltaX = deltaX * cos - deltaY * sin;
+      const localDeltaY = deltaX * sin + deltaY * cos;
 
-    let newX = dragInfoRef.current.startLeft + pctX;
-    let newY = dragInfoRef.current.startTop + pctY;
+      // Convert pixel delta to percentage delta
+      const pctX = (localDeltaX / canvasWidth) * 100;
+      const pctY = (localDeltaY / canvasHeight) * 100;
 
-    // Bound limits to keep sticker visible inside mock screen
-    newX = Math.max(5, Math.min(newX, 85));
-    newY = Math.max(5, Math.min(newY, 85));
+      let newX = dragInfoRef.current.startLeft + pctX;
+      let newY = dragInfoRef.current.startTop + pctY;
 
-    onUpdateSticker(selectedId, { x: newX, y: newY });
+      // Bound limits
+      newX = Math.max(5, Math.min(newX, 90));
+      newY = Math.max(5, Math.min(newY, 90));
+
+      onUpdateSticker(selectedId, { x: newX, y: newY });
+    } else if (rotateRef.current.isRotating) {
+      const deltaX = clientX - rotateRef.current.startX;
+      // 0.75 degrees of rotation per drag pixel
+      let newRotation = (rotateRef.current.startRotation + deltaX * 0.75) % 360;
+      if (newRotation < 0) newRotation += 360;
+      setDeviceRotation(newRotation);
+    }
   };
 
   const handleEndDrag = () => {
     dragInfoRef.current.isDragging = false;
+    rotateRef.current.isRotating = false;
   };
 
   const handleCanvasStart = (e) => {
-    // If they click the background canvas itself, deselect
-    if (e.target === e.currentTarget || e.target.classList.contains('device-brand-logo')) {
+    // If they click the background/markup of the canvas (not on a sticker wrapper)
+    if (!e.target.closest('.placed-sticker-wrapper')) {
       setSelectedId(null);
+      
+      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+      rotateRef.current = {
+        isRotating: true,
+        startX: clientX,
+        startRotation: deviceRotation
+      };
     }
   };
 
@@ -175,6 +203,10 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
             onMouseDown={handleCanvasStart}
             onTouchStart={handleCanvasStart}
             className={`device-canvas-${activeDevice}`}
+            style={{
+              transform: `rotate(${deviceRotation}deg)`,
+              transition: dragInfoRef.current.isDragging || rotateRef.current.isRotating ? 'none' : 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+            }}
           >
             {/* Device Detail Markings */}
             <div className="mock-sheen-line"></div>
@@ -318,6 +350,37 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
         <div className="playground-controls">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <h3 className="control-card-title">Playground Control Center</h3>
+
+            {/* Mockup 360° Rotation Control */}
+            <div className="control-card" style={{ borderColor: 'var(--neon-yellow)' }}>
+              <div className="control-group" style={{ marginBottom: 0 }}>
+                <span className="control-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  🔄 Gear Rotation <span>{Math.round(deviceRotation)}°</span>
+                </span>
+                <input
+                  type="range"
+                  min="0"
+                  max="360"
+                  value={Math.round(deviceRotation)}
+                  onChange={(e) => setDeviceRotation(Number(e.target.value))}
+                  style={{
+                    width: '100%',
+                    accentColor: 'var(--neon-yellow)',
+                    background: 'var(--bg-dark)',
+                    height: '6px',
+                    borderRadius: '3px',
+                    cursor: 'pointer',
+                    marginTop: '8px',
+                    marginBottom: '8px'
+                  }}
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
+                  <span>0°</span>
+                  <span style={{ cursor: 'pointer', color: 'var(--neon-yellow)', fontWeight: 'bold' }} onClick={() => setDeviceRotation(0)}>Reset</span>
+                  <span>360°</span>
+                </div>
+              </div>
+            </div>
 
             {selectedSticker ? (
               <div className="control-card" style={{ borderColor: 'var(--neon-purple)' }}>
