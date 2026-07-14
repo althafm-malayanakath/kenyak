@@ -4,12 +4,13 @@ import { getStorage } from 'firebase/storage';
 
 // Paste your Firebase Web App configuration object here from the Firebase console:
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyArZa_6szYJ8B53ZRtZlegvMmWEEsUo9D4",
+  authDomain: "kenyak.firebaseapp.com",
+  projectId: "kenyak",
+  storageBucket: "kenyak.firebasestorage.app",
+  messagingSenderId: "1053148453135",
+  appId: "1:1053148453135:web:2abe3db663d5779a70c67a",
+  measurementId: "G-BVW84K7J9C"
 };
 
 const isFirebaseConfigured = firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY";
