@@ -118,15 +118,32 @@ export default function AdminPortal({ isOpen, onClose, localProducts, setLocalPr
         setUploadProgress(progress);
       }, 
       (error) => {
-        console.error("Storage upload error:", error);
-        alert("File upload failed: " + error.message);
-        setUploading(false);
+        console.warn("Firebase Storage is locked or requires Blaze plan. Falling back to inline Base64 database storage:", error);
+        const reader = new FileReader();
+        reader.onloadstart = () => {
+          setUploadProgress(50);
+        };
+        reader.onloadend = () => {
+          setProductForm(prev => ({ ...prev, image: reader.result }));
+          setUploading(false);
+          setUploadProgress(0);
+        };
+        reader.readAsDataURL(file);
       }, 
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setProductForm(prev => ({ ...prev, image: downloadURL }));
           setUploading(false);
           setUploadProgress(0);
+        }).catch((err) => {
+          console.warn("Could not get download URL, using Base64:", err);
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setProductForm(prev => ({ ...prev, image: reader.result }));
+            setUploading(false);
+            setUploadProgress(0);
+          };
+          reader.readAsDataURL(file);
         });
       }
     );
