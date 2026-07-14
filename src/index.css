@@ -561,40 +561,88 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .canvas-wrapper {
-  background: var(--bg-dark);
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 32px;
+  border-radius: 16px;
+  padding: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 380px;
+  min-height: 520px;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
 }
 
 /* MacBook Mockup */
 .device-canvas-laptop {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 440px;
   aspect-ratio: 16/10;
-  background: #181c26;
-  border: 12px solid #2d3748;
-  border-radius: 20px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 100%) !important;
+  border: 3px solid #0f172a !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    0 30px 60px -15px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.15) !important;
   transition: var(--transition-smooth);
+}
+
+.mock-laptop-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 5px;
+  background: #000;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 10;
+}
+
+.mock-laptop-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.85 !important;
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 50%, #64748b 100%);
+  padding: 10px 12px;
+  border-radius: 50%;
+  border: 2.5px solid #1e293b;
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.25),
+    inset 0 1px 3px rgba(255,255,255,0.8);
+  pointer-events: none;
+  user-select: none;
+  z-index: 2;
+}
+
+.mock-laptop-hinge {
+  position: absolute;
+  bottom: -4px;
+  left: 30px;
+  right: 30px;
+  height: 6px;
+  background: #0f172a;
+  border-radius: 4px;
+  border: 1px solid #1e293b;
+  z-index: -1;
 }
 
 /* Phone Mockup */
 .device-canvas-phone {
   position: relative;
-  width: 210px;
+  width: 190px;
   aspect-ratio: 9/18;
-  background: #11141b;
-  border: 8px solid #2d323a;
-  border-radius: 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%) !important;
+  border: 3px solid #0f172a !important;
+  border-radius: 36px !important;
+  box-shadow: 
+    0 30px 60px -15px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.1) !important;
   transition: var(--transition-smooth);
 }
 
@@ -604,11 +652,12 @@ h1, h2, h3, h4, h5, h6 {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 70px;
-  height: 12px;
+  width: 60px;
+  height: 10px;
   background: #000;
   border-radius: 99px;
   z-index: 20;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.1);
 }
 
 .device-brand-logo {
@@ -2325,29 +2374,17 @@ textarea.input-field {
   border-radius: inherit;
 }
 
-/* Admin Portal Spacing & Layout */
-.control-label {
-  display: block;
-  font-family: var(--font-heading);
-  font-weight: 900;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  margin-bottom: 6px;
-  letter-spacing: 0.05em;
-  color: var(--text-primary);
-}
-
 /* Water Bottle Mockup */
 .device-canvas-bottle {
   position: relative;
-  width: 150px;
-  height: 330px;
-  background: linear-gradient(90deg, #1e293b 0%, #475569 25%, #64748b 50%, #334155 75%, #0f172a 100%) !important;
-  border: 4px solid #0f172a !important;
-  border-radius: 40px !important;
+  width: 120px;
+  height: 320px;
+  background: linear-gradient(90deg, #1e293b 0%, #475569 15%, #cbd5e1 30%, #f8fafc 40%, #94a3b8 65%, #334155 85%, #0f172a 100%) !important;
+  border: 3.5px solid #0f172a !important;
+  border-radius: 36px !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.4),
-    inset 0 0 15px rgba(255,255,255,0.1) !important;
+    0 25px 50px -12px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.2) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2355,16 +2392,17 @@ textarea.input-field {
 
 .mock-bottle-cap {
   position: absolute;
-  top: -18px;
+  top: -15px;
   left: 50%;
   transform: translateX(-50%);
-  width: 54px;
-  height: 18px;
-  background: #0f172a;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border: 2px solid #334155;
+  width: 48px;
+  height: 15px;
+  background: linear-gradient(180deg, #3f3f46 0%, #18181b 100%);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border: 2px solid #0f172a;
   z-index: 5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 .mock-bottle-neck {
@@ -2372,50 +2410,69 @@ textarea.input-field {
   top: 0px;
   left: 50%;
   transform: translateX(-50%);
-  width: 74px;
-  height: 12px;
-  background: #1e293b;
+  width: 62px;
+  height: 10px;
+  background: #3f3f46;
   border-bottom: 2px solid #0f172a;
-  border-radius: 2px;
+  border-radius: 1px;
   z-index: 4;
 }
 
 .mock-bottle-strap {
   position: absolute;
-  top: -10px;
-  left: 10px;
-  width: 12px;
-  height: 60px;
-  background: #3f3f46;
-  border: 1.5px solid #18181b;
-  border-radius: 6px;
-  transform: rotate(-15deg);
+  top: -8px;
+  left: 6px;
+  width: 10px;
+  height: 54px;
+  background: #27272a;
+  border: 1px solid #0f172a;
+  border-radius: 5px;
+  transform: rotate(-18deg);
   z-index: 3;
+  box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
 }
 
 .mock-bottle-logo {
-  opacity: 0.7 !important;
+  opacity: 0.8 !important;
   background: rgba(255, 255, 255, 0.95);
   padding: 6px 8px;
   border-radius: 50%;
-  border: 1.5px solid #475569;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1.5px solid #64748b;
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.25),
+    inset 0 1px 2px rgba(255,255,255,0.8);
   pointer-events: none;
   user-select: none;
   transform: translateY(20px);
 }
 
+/* Silicon Ribbed Sleeve at bottom of bottle */
+.device-canvas-bottle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: repeating-linear-gradient(0deg, #09090b, #09090b 4px, #18181b 4px, #18181b 6px);
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  border-top: 2px solid #27272a;
+  opacity: 0.9;
+  z-index: 1;
+}
+
 /* Trolley Bag Mockup */
 .device-canvas-trolley {
   position: relative;
-  width: 210px;
-  height: 310px;
-  background: linear-gradient(135deg, #3f3f46 0%, #1e1b4b 50%, #111827 100%) !important;
-  border: 6px solid #18181b !important;
-  border-radius: 24px !important;
+  width: 190px;
+  height: 300px;
+  background: linear-gradient(135deg, #27272a 0%, #1e1b4b 60%, #09090b 100%) !important;
+  border: 4.5px solid #0f172a !important;
+  border-radius: 28px !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 0 20px rgba(255,255,255,0.1) !important;
+    0 30px 60px -15px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1px rgba(255,255,255,0.1) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2423,173 +2480,246 @@ textarea.input-field {
 
 .mock-trolley-handle-bars {
   position: absolute;
-  top: -30px;
+  top: -26px;
   left: 50%;
   transform: translateX(-50%);
-  width: 70px;
-  height: 30px;
-  border: 4px solid #18181b;
+  width: 60px;
+  height: 26px;
+  border: 3.5px solid #0f172a;
   border-bottom: none;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   z-index: -1;
+  background: linear-gradient(90deg, #94a3b8 0%, #cbd5e1 30%, #475569 70%, #1e293b 100%);
 }
 
 .mock-trolley-handle-grip {
   position: absolute;
-  top: -33px;
+  top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 10px;
-  background: #090d16;
-  border: 2px solid #18181b;
-  border-radius: 4px;
+  width: 72px;
+  height: 9px;
+  background: #000;
+  border: 1.5px solid #18181b;
+  border-radius: 3px;
   z-index: 2;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 .mock-trolley-wheel {
   position: absolute;
-  bottom: -14px;
-  width: 20px;
-  height: 20px;
+  bottom: -12px;
+  width: 18px;
+  height: 18px;
   background: #09090b;
-  border: 3px solid #3f3f46;
+  border: 2.5px solid #3f3f46;
   border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.1);
   z-index: -1;
 }
 
+.mock-trolley-wheel::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: #94a3b8;
+  border-radius: 50%;
+}
+
 .mock-trolley-wheel.left {
-  left: 30px;
+  left: 24px;
 }
 
 .mock-trolley-wheel.right {
-  right: 30px;
+  right: 24px;
+}
+
+/* Rubber Corner Guards */
+.device-canvas-trolley::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 10px solid transparent;
+  border-top-color: #0f172a;
+  border-radius: 28px;
+  pointer-events: none;
+  opacity: 0.95;
 }
 
 .mock-trolley-ridges-container {
   position: absolute;
-  top: 30px;
-  bottom: 30px;
-  left: 20px;
-  right: 20px;
+  top: 24px;
+  bottom: 24px;
+  left: 16px;
+  right: 16px;
   display: flex;
   justify-content: space-around;
   pointer-events: none;
-  opacity: 0.15;
+  opacity: 0.12;
 }
 
 .mock-trolley-ridge {
-  width: 8px;
+  width: 10px;
   height: 100%;
   background: #ffffff;
-  border-radius: 4px;
-  box-shadow: inset 2px 0 4px rgba(0,0,0,0.5);
+  border-radius: 6px;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0,0,0,0.8),
+    2px 2px 4px rgba(255,255,255,0.2);
 }
 
 .mock-trolley-logo {
-  opacity: 0.8 !important;
+  opacity: 0.85 !important;
   background: rgba(255, 255, 255, 0.95);
   padding: 8px 10px;
   border-radius: 50%;
-  border: 2px solid #3f3f46;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 2px solid #1e1b4b;
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.2),
+    inset 0 1px 2px rgba(255,255,255,0.8);
   pointer-events: none;
   user-select: none;
+  z-index: 2;
 }
 
 /* Skateboard Mockup */
 .device-canvas-skateboard {
   position: relative;
-  width: 120px;
-  height: 380px;
-  background: linear-gradient(180deg, #18181b 0%, #27272a 50%, #09090b 100%) !important;
-  border: 5px solid #09090b !important;
-  border-radius: 60px !important;
+  width: 100px;
+  height: 360px;
+  /* Grip tape micro-texture */
+  background: 
+    radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1.5px) 0 0/3px 3px,
+    linear-gradient(180deg, #18181b 0%, #2e2e33 50%, #0c0c0e 100%) !important;
+  border: 3px solid #09090b !important;
+  border-radius: 50px !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 0 10px rgba(255,255,255,0.05) !important;
+    0 30px 60px -15px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1.5px rgba(255,255,255,0.08) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
+/* Wood Veneer Plys visible on side edges */
+.device-canvas-skateboard::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  box-shadow: 
+    0 0 0 1px #e11d48, /* Red Ply */
+    0 0 0 2px #ca8a04, /* Yellow Ply */
+    0 0 0 3px #16a34a; /* Green Ply */
+  pointer-events: none;
+  opacity: 0.95;
+}
+
 .mock-skateboard-bolts {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 6px;
 }
 
+/* Bolt design */
 .mock-skateboard-bolts::before,
 .mock-skateboard-bolts::after {
   content: '';
-  width: 4px;
-  height: 4px;
-  background: #94a3b8;
+  width: 5px;
+  height: 5px;
+  background: radial-gradient(circle at 35% 35%, #e2e8f0 20%, #64748b 80%);
   border-radius: 50%;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.5);
+  border: 0.5px solid #09090b;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
 .mock-skateboard-bolts.top-left {
-  top: 45px;
-  left: 45px;
+  top: 40px;
+  left: 36px;
 }
 
 .mock-skateboard-bolts.top-right {
-  top: 45px;
-  right: 45px;
+  top: 40px;
+  right: 36px;
 }
 
 .mock-skateboard-bolts.bottom-left {
-  bottom: 45px;
-  left: 45px;
+  bottom: 40px;
+  left: 36px;
 }
 
 .mock-skateboard-bolts.bottom-right {
-  bottom: 45px;
-  right: 45px;
+  bottom: 40px;
+  right: 36px;
 }
 
 .mock-skateboard-center-stripe {
   position: absolute;
-  top: 80px;
-  bottom: 80px;
+  top: 70px;
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
-  background: rgba(255, 74, 74, 0.2);
+  width: 1px;
+  background: rgba(239, 68, 68, 0.25);
   pointer-events: none;
 }
 
 .mock-skateboard-logo {
-  opacity: 0.8 !important;
+  opacity: 0.85 !important;
   background: rgba(255, 255, 255, 0.95);
   padding: 8px 10px;
   border-radius: 50%;
-  border: 2px solid #27272a;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  border: 1.5px solid #18181b;
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.25),
+    inset 0 1px 2px rgba(255,255,255,0.8);
   pointer-events: none;
   user-select: none;
+  z-index: 2;
 }
 
 /* Notebook Mockup */
 .device-canvas-notebook {
   position: relative;
-  width: 240px;
-  height: 310px;
-  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
-  border: 2px solid #000000 !important;
+  width: 220px;
+  height: 290px;
+  background: linear-gradient(135deg, #1f2937 0%, #0f172a 100%) !important;
+  border: 3.5px solid #000 !important;
   border-radius: 12px !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.4),
-    inset 0 0 20px rgba(255,255,255,0.05) !important;
+    0 30px 60px -15px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1px rgba(255,255,255,0.05) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+}
+
+/* Page Edges showing at right */
+.device-canvas-notebook::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  right: -5px;
+  width: 5px;
+  background: repeating-linear-gradient(90deg, #fef3c7, #fef3c7 1px, #d97706 1px, #d97706 2px);
+  border-radius: 0 4px 4px 0;
+  border: 1px solid #78350f;
+  z-index: -1;
 }
 
 .mock-notebook-spine {
@@ -2597,19 +2727,20 @@ textarea.input-field {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 14px;
-  background: #0f172a;
-  border-right: 1.5px solid #000;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  width: 16px;
+  background: #111827;
+  /* Stitch line */
+  border-right: 2px dashed rgba(255,255,255,0.15);
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
   z-index: 3;
 }
 
 .mock-notebook-spine-rings {
   position: absolute;
-  left: -4px;
-  top: 20px;
-  bottom: 20px;
+  left: -5px;
+  top: 15px;
+  bottom: 15px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2618,24 +2749,26 @@ textarea.input-field {
 }
 
 .notebook-ring {
-  width: 12px;
+  width: 14px;
   height: 6px;
-  background: linear-gradient(180deg, #94a3b8 0%, #cbd5e1 50%, #475569 100%);
+  background: linear-gradient(180deg, #cbd5e1 0%, #f1f5f9 40%, #475569 100%);
   border-radius: 4px;
-  border: 1px solid #1e293b;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  border: 1px solid #334155;
+  box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
 }
 
 .mock-notebook-elastic-band {
   position: absolute;
-  right: 32px;
-  top: 0;
-  bottom: 0;
+  right: 24px;
+  top: -3.5px;
+  bottom: -3.5px;
   width: 10px;
-  background: #000000;
-  opacity: 0.8;
-  box-shadow: 0 0 4px rgba(0,0,0,0.4);
+  background: #000;
+  box-shadow: 
+    0 0 5px rgba(0,0,0,0.6),
+    inset 1px 0 0 rgba(255,255,255,0.1);
   z-index: 3;
+  border-radius: 1px;
 }
 
 .mock-notebook-logo {
@@ -2644,40 +2777,65 @@ textarea.input-field {
   padding: 8px 10px;
   border-radius: 50%;
   border: 2px solid #0f172a;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.2),
+    inset 0 1px 2px rgba(255,255,255,0.8);
   pointer-events: none;
   user-select: none;
   transform: translateX(10px);
+  z-index: 2;
 }
 
 /* Helmet Mockup */
 .device-canvas-helmet {
   position: relative;
-  width: 240px;
-  height: 240px;
-  background: linear-gradient(135deg, #3f3f46 0%, #18181b 50%, #09090b 100%) !important;
-  border: 6px solid #18181b !important;
-  border-radius: 50% 50% 45% 45% !important;
+  width: 230px;
+  height: 230px;
+  /* Carbon fiber texture */
+  background: 
+    linear-gradient(45deg, #18181b 25%, transparent 25%), 
+    linear-gradient(-45deg, #18181b 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #18181b 75%), 
+    linear-gradient(-45deg, transparent 75%, #18181b 75%),
+    #27272a !important;
+  background-size: 8px 8px !important;
+  border: 5px solid #09090b !important;
+  border-radius: 50% 50% 42% 42% !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.5),
-    inset 0 0 25px rgba(255,255,255,0.08) !important;
+    0 30px 60px -15px rgba(0, 0, 0, 0.7),
+    inset 0 0 30px rgba(255,255,255,0.08) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
-.mock-helmet-visor {
+/* Thick base rubber trim */
+.device-canvas-helmet::after {
+  content: '';
   position: absolute;
-  top: 70px;
+  bottom: -3px;
   left: 20px;
   right: 20px;
-  height: 80px;
-  background: linear-gradient(180deg, rgba(59, 130, 246, 0.3) 0%, rgba(15, 23, 42, 0.95) 100%);
-  border-radius: 16px 16px 60px 60px;
-  border: 3px solid #09090b;
+  height: 6px;
+  background: #09090b;
+  border-radius: 3px;
+  border: 1px solid #27272a;
+  z-index: 1;
+}
+
+.mock-helmet-visor {
+  position: absolute;
+  top: 65px;
+  left: 18px;
+  right: 18px;
+  height: 76px;
+  /* Chrome/Iridescent Mirror Lens effect */
+  background: linear-gradient(135deg, #a21caf 0%, #eab308 40%, #06b6d4 75%, #0f172a 100%);
+  border-radius: 14px 14px 50px 50px;
+  border: 3.5px solid #09090b;
   box-shadow: 
-    0 4px 10px rgba(0,0,0,0.4),
-    inset 0 0 10px rgba(255,255,255,0.1);
+    0 6px 12px rgba(0,0,0,0.5),
+    inset 0 0 12px rgba(255,255,255,0.2);
   overflow: hidden;
   z-index: 2;
   pointer-events: none;
@@ -2685,67 +2843,70 @@ textarea.input-field {
 
 .mock-helmet-visor-sheen {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(60deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
+  top: -20px;
+  left: -20px;
+  width: 150%;
+  height: 150%;
+  background: linear-gradient(60deg, transparent 40%, rgba(255,255,255,0.2) 48%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.2) 52%, transparent 60%);
+  animation: shine 6s infinite linear;
 }
 
 .mock-helmet-vent {
   position: absolute;
-  top: 30px;
-  width: 16px;
-  height: 8px;
-  background: #09090b;
+  top: 24px;
+  width: 14px;
+  height: 14px;
+  background: #000;
   border-radius: 50%;
-  border: 1.5px solid #27272a;
+  border: 2px solid #3f3f46;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.8);
   z-index: 1;
 }
 
 .mock-helmet-vent.left {
-  left: 55px;
-  transform: rotate(-10deg);
+  left: 50px;
 }
 
 .mock-helmet-vent.right {
-  right: 55px;
-  transform: rotate(10deg);
+  right: 50px;
 }
 
 .mock-helmet-strap-left,
 .mock-helmet-strap-right {
   position: absolute;
-  bottom: -25px;
+  bottom: -22px;
   width: 6px;
-  height: 30px;
+  height: 28px;
   background: #000;
-  border: 1px solid #27272a;
+  border: 1px solid #18181b;
   z-index: -1;
 }
 
 .mock-helmet-strap-left {
-  left: 50px;
-  transform: rotate(15deg);
+  left: 45px;
+  transform: rotate(12deg);
 }
 
 .mock-helmet-strap-right {
-  right: 50px;
-  transform: rotate(-15deg);
+  right: 45px;
+  transform: rotate(-12deg);
 }
 
 .mock-helmet-logo {
-  opacity: 0.8 !important;
+  opacity: 0.85 !important;
   background: rgba(255, 255, 255, 0.95);
   padding: 6px 8px;
   border-radius: 50%;
-  border: 1.5px solid #3f3f46;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  border: 1.5px solid #27272a;
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.25),
+    inset 0 1px 2px rgba(255,255,255,0.8);
   pointer-events: none;
   user-select: none;
-  transform: translateY(-55px);
+  transform: translateY(-50px);
   z-index: 3;
 }
+
 
 
 
