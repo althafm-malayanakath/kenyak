@@ -6,6 +6,9 @@ import CartDrawer from './components/CartDrawer';
 import StickerPlayground from './components/StickerPlayground';
 import CheckoutModal from './components/CheckoutModal';
 import Logo from './components/Logo';
+import AdminPortal from './components/AdminPortal';
+import { db, isFirebaseConfigured } from './firebase';
+import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { PRODUCTS } from './data/products';
 import { Mail, Instagram, Twitter, Phone } from 'lucide-react';
 
@@ -26,11 +29,94 @@ export default function App() {
   // Modal/Drawer controls
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+
+  // Dynamic Site Settings State
+  const [siteSettings, setSiteSettings] = useState({
+    heroTitle: "STICK. WEAR. \nEXPRESS YOURSELF",
+    heroSubtitle: "Customize your laptop, water bottle, helmet, or smartphone with waterproof, scratch-resistant vinyl decals. Starting at just ₹29! Over 10 Lakh happy customers.",
+    marqueeText: ["⚡ WATERPROOF VINYL STICKERS", "🔥 5000+ PREMIUM DESIGNS", "🚛 FREE SHIPPING OVER ₹199", "💥 BUY 4 GET 1 FREE"],
+    contactEmail: "wecare@kenyak.xyz",
+    contactPhone: "+91 75062 32907",
+    contactAddress: "R.T. Road, Behind Rajshree Cinema, Dahisar East, Mumbai, MH - 400068.",
+    freeShippingThreshold: 199,
+    mysteryStickerPrice: 19,
+    mysteryDecalPrice: 25
+  });
+
+  // Dynamic Products List State
+  const [products, setProducts] = useState(PRODUCTS);
 
   // Sync cart with localStorage
   useEffect(() => {
     localStorage.setItem('kenyak_cart', JSON.stringify(cart));
   }, [cart]);
+
+  // Keyboard shortcut listener (Ctrl+Shift+A) to open Admin Portal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        setIsAdminOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Sync Products & Settings from Firestore or LocalStorage fallback
+  useEffect(() => {
+    if (isFirebaseConfigured) {
+      // 1. Live Sync Products collection
+      const unsubscribeProducts = onSnapshot(collection(db, 'products'), (snapshot) => {
+        const items = [];
+        snapshot.forEach((doc) => {
+          items.push({ ...doc.data() });
+        });
+        if (items.length > 0) {
+          items.sort((a, b) => a.id - b.id);
+          setProducts(items);
+        } else {
+          setProducts(PRODUCTS);
+        }
+      }, (error) => {
+        console.error("Firestore products connection error:", error);
+      });
+
+      // 2. Live Sync Settings config
+      const docRef = doc(db, 'settings', 'config');
+      const unsubscribeSettings = onSnapshot(docRef, (snapshot) => {
+        if (snapshot.exists()) {
+          setSiteSettings(snapshot.data());
+        }
+      });
+
+      return () => {
+        unsubscribeProducts();
+        unsubscribeSettings();
+      };
+    } else {
+      // LocalStorage Fallback sync
+      const savedProducts = localStorage.getItem('kenyak_products');
+      if (savedProducts) {
+        setProducts(JSON.parse(savedProducts));
+      } else {
+        setProducts(PRODUCTS);
+      }
+
+      const savedSettings = localStorage.getItem('kenyak_settings');
+      if (savedSettings) {
+        setSiteSettings(JSON.parse(savedSettings));
+      }
+    }
+  }, []);
+
+  // Save changes locally when firebase is not configured
+  useEffect(() => {
+    if (!isFirebaseConfigured) {
+      localStorage.setItem('kenyak_products', JSON.stringify(products));
+    }
+  }, [products]);
 
   // Categories list
   const categories = [
@@ -111,7 +197,7 @@ export default function App() {
   const handleAddAllPlaygroundToCart = () => {
     playgroundStickers.forEach((sticker) => {
       // Find matching base product
-      const baseProduct = PRODUCTS.find((p) => p.id === sticker.productId);
+      const baseProduct = products.find((p) => p.id === sticker.productId);
       if (baseProduct) {
         handleAddToCart(baseProduct);
       }
@@ -120,7 +206,7 @@ export default function App() {
   };
 
   // Filtered product listing
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -148,6 +234,10 @@ export default function App() {
       <Hero
         onShopNow={() => scrollToSection('shop-section')}
         onPlaygroundClick={() => scrollToSection('playground-section')}
+        title={siteSettings.heroTitle}
+        subtitle={siteSettings.heroSubtitle}
+        marqueeText={siteSettings.marqueeText}
+        mysteryStickerPrice={siteSettings.mysteryStickerPrice}
       />
 
       {/* Interactive Playground Section */}
@@ -223,6 +313,9 @@ export default function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveFromCart={handleRemoveFromCart}
         onAddToCart={handleAddToCart}
+        freeShippingThreshold={siteSettings.freeShippingThreshold}
+        mysteryStickerPrice={siteSettings.mysteryStickerPrice}
+        mysteryDecalPrice={siteSettings.mysteryDecalPrice}
         onCheckout={() => {
           setIsCartOpen(false);
           setIsCheckoutOpen(true);
@@ -235,6 +328,19 @@ export default function App() {
         onClose={() => setIsCheckoutOpen(false)}
         cart={cart}
         onClearCart={handleClearCart}
+        contactEmail={siteSettings.contactEmail}
+        contactPhone={siteSettings.contactPhone}
+        contactAddress={siteSettings.contactAddress}
+      />
+
+      {/* Admin Portal Dashboard Panel */}
+      <AdminPortal
+        isOpen={isAdminOpen}
+        onClose={() => setIsAdminOpen(false)}
+        localProducts={products}
+        setLocalProducts={setProducts}
+        siteSettings={siteSettings}
+        setSiteSettings={setSiteSettings}
       />
 
       {/* Streetwear Footer */}
@@ -273,11 +379,10 @@ export default function App() {
           <div className="footer-column">
             <h4 className="footer-col-title">Contact & Support</h4>
             <ul className="footer-links-list">
-              <li className="footer-contact-item"><Mail size={14} style={{ color: 'var(--neon-yellow)' }} /> wecare@kenyak.xyz</li>
-              <li className="footer-contact-item"><Phone size={14} style={{ color: 'var(--neon-purple)' }} /> +91 75062 32907</li>
+              <li className="footer-contact-item"><Mail size={14} style={{ color: 'var(--neon-yellow)' }} /> {siteSettings.contactEmail}</li>
+              <li className="footer-contact-item"><Phone size={14} style={{ color: 'var(--neon-purple)' }} /> {siteSettings.contactPhone}</li>
               <li className="footer-contact-item">
-                R.T. Road, Behind Rajshree Cinema,<br />
-                Dahisar East, Mumbai, MH - 400068.
+                {siteSettings.contactAddress}
               </li>
             </ul>
           </div>

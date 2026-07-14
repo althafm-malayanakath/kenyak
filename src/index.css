@@ -2325,6 +2325,19 @@ textarea.input-field {
   border-radius: inherit;
 }
 
+/* Admin Portal Spacing & Layout */
+.control-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+
 
 
 

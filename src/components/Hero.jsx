@@ -1,13 +1,14 @@
 import React from 'react';
 import { ArrowRight, Laptop } from 'lucide-react';
 
-export default function Hero({ onShopNow, onPlaygroundClick }) {
-  const marqueeItems = Array(6).fill([
+export default function Hero({ onShopNow, onPlaygroundClick, title, subtitle, marqueeText, mysteryStickerPrice }) {
+  const defaultMarquee = [
     "⚡ WATERPROOF VINYL STICKERS",
     "🔥 5000+ PREMIUM DESIGNS",
     "🚛 FREE SHIPPING OVER ₹199",
     "💥 BUY 4 GET 1 FREE"
-  ]).flat();
+  ];
+  const marqueeItems = Array(6).fill(marqueeText || defaultMarquee).flat();
 
   return (
     <section className="hero-section">
@@ -32,13 +33,12 @@ export default function Hero({ onShopNow, onPlaygroundClick }) {
           🔥 INDIA'S ULTIMATE SELF-EXPRESSION DESTINATION
         </div>
 
-        <h1 className="hero-title">
-          STICK. WEAR. <br />
-          <span>EXPRESS YOURSELF</span>
+        <h1 className="hero-title" style={{ whiteSpace: 'pre-line' }}>
+          {title || <>STICK. WEAR. <br /><span>EXPRESS YOURSELF</span></>}
         </h1>
 
         <p className="hero-subtitle">
-          Customize your laptop, water bottle, helmet, or smartphone with waterproof, scratch-resistant vinyl decals. Starting at just <span style={{ color: 'var(--neon-yellow)', fontWeight: 900 }}>₹29</span>! Over 10 Lakh happy customers.
+          {subtitle || `Customize your laptop, water bottle, helmet, or smartphone with waterproof, scratch-resistant vinyl decals. Starting at just ₹29! Over 10 Lakh happy customers.`}
         </p>
 
         <div className="hero-buttons">

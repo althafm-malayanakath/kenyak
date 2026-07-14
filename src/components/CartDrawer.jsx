@@ -2,11 +2,22 @@ import React from 'react';
 import { X, Trash2, Plus, Minus, Lock, ShoppingBag, Sparkles } from 'lucide-react';
 import { MYSTERY_PRODUCTS } from '../data/products';
 
-export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, onRemoveFromCart, onAddToCart, onCheckout }) {
+export default function CartDrawer({ 
+  isOpen, 
+  onClose, 
+  cart, 
+  onUpdateQuantity, 
+  onRemoveFromCart, 
+  onAddToCart, 
+  onCheckout,
+  freeShippingThreshold = 199,
+  mysteryStickerPrice = 19,
+  mysteryDecalPrice = 25
+}) {
   if (!isOpen) return null;
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const FREE_SHIPPING_THRESHOLD = 199;
+  const FREE_SHIPPING_THRESHOLD = freeShippingThreshold;
   const progressPercent = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const remainingForFreeShipping = Math.max(FREE_SHIPPING_THRESHOLD - subtotal, 0);
 
@@ -136,25 +147,29 @@ export default function CartDrawer({ isOpen, onClose, cart, onUpdateQuantity, on
             <div className="upsell-section">
               <h3>⚡ Quick Add Mystery Upgrades</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {MYSTERY_PRODUCTS.map((mystery) => (
-                  <div key={mystery.id} className="upsell-card">
-                    <div className="upsell-left">
-                      <div className="upsell-placeholder">?</div>
-                      <div className="upsell-info">
-                        <h4>{mystery.name}</h4>
-                        <p className="upsell-price">
-                          ₹{mystery.price} <span>₹{mystery.compareAtPrice}</span>
-                        </p>
+                {MYSTERY_PRODUCTS.map((mystery) => {
+                  const dynamicPrice = mystery.id === 101 ? mysteryStickerPrice : mysteryDecalPrice;
+                  const dynamicMystery = { ...mystery, price: dynamicPrice, compareAtPrice: dynamicPrice * 2 };
+                  return (
+                    <div key={mystery.id} className="upsell-card">
+                      <div className="upsell-left">
+                        <div className="upsell-placeholder">?</div>
+                        <div className="upsell-info">
+                          <h4>{mystery.name}</h4>
+                          <p className="upsell-price">
+                            ₹{dynamicPrice} <span>₹{dynamicPrice * 2}</span>
+                          </p>
+                        </div>
                       </div>
+                      <button
+                        onClick={() => onAddToCart(dynamicMystery)}
+                        className="upsell-add-btn"
+                      >
+                        + ADD
+                      </button>
                     </div>
-                    <button
-                      onClick={() => onAddToCart(mystery)}
-                      className="upsell-add-btn"
-                    >
-                      + ADD
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}
