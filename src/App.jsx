@@ -30,6 +30,23 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [lastFooterClick, setLastFooterClick] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
+
+  const handleFooterClick = () => {
+    const now = Date.now();
+    if (now - lastFooterClick < 800) {
+      const nextCount = clickCount + 1;
+      setClickCount(nextCount);
+      if (nextCount >= 4) { // 5 quick taps
+        setIsAdminOpen(true);
+        setClickCount(0);
+      }
+    } else {
+      setClickCount(1);
+    }
+    setLastFooterClick(now);
+  };
 
   // Dynamic Site Settings State
   const [siteSettings, setSiteSettings] = useState({
@@ -407,7 +424,12 @@ export default function App() {
         </div>
 
         <div className="container footer-bottom">
-          <span>&copy; {new Date().getFullYear()} KENYAK. Designed & manufactured in Mumbai, India.</span>
+          <span 
+            onClick={handleFooterClick} 
+            style={{ cursor: 'pointer', userSelect: 'none' }}
+          >
+            &copy; {new Date().getFullYear()} KENYAK. Designed & manufactured in Mumbai, India.
+          </span>
           <div className="footer-bottom-links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Use</a>
