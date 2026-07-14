@@ -177,12 +177,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
           >
             Notebook
           </button>
-          <button
-            onClick={() => setActiveDevice('helmet')}
-            className={`device-toggle-btn ${activeDevice === 'helmet' ? 'active' : ''}`}
-          >
-            Helmet
-          </button>
         </div>
       </div>
 
@@ -214,9 +208,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
             {activeDevice === 'laptop' && (
               <>
                 <div className="mock-laptop-notch"></div>
-                <div className="mock-laptop-logo">
-                  <Logo width="44px" />
-                </div>
                 <div className="mock-laptop-hinge"></div>
               </>
             )}
@@ -232,9 +223,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                   <div className="camera-lens small"></div>
                   <div className="camera-flash"></div>
                 </div>
-                <div className="mock-phone-logo">
-                  <Logo width="30px" />
-                </div>
               </>
             )}
 
@@ -243,9 +231,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 <div className="mock-bottle-cap"></div>
                 <div className="mock-bottle-neck"></div>
                 <div className="mock-bottle-strap"></div>
-                <div className="mock-bottle-logo">
-                  <Logo width="28px" />
-                </div>
               </>
             )}
 
@@ -261,9 +246,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                   <div className="mock-trolley-ridge"></div>
                   <div className="mock-trolley-ridge"></div>
                 </div>
-                <div className="mock-trolley-logo">
-                  <Logo width="30px" />
-                </div>
               </>
             )}
 
@@ -274,9 +256,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 <div className="mock-skateboard-bolts bottom-left"></div>
                 <div className="mock-skateboard-bolts bottom-right"></div>
                 <div className="mock-skateboard-center-stripe"></div>
-                <div className="mock-skateboard-logo">
-                  <Logo width="30px" />
-                </div>
               </>
             )}
 
@@ -289,24 +268,6 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                   ))}
                 </div>
                 <div className="mock-notebook-elastic-band"></div>
-                <div className="mock-notebook-logo">
-                  <Logo width="34px" />
-                </div>
-              </>
-            )}
-
-            {activeDevice === 'helmet' && (
-              <>
-                <div className="mock-helmet-visor">
-                  <div className="mock-helmet-visor-sheen"></div>
-                </div>
-                <div className="mock-helmet-vent left"></div>
-                <div className="mock-helmet-vent right"></div>
-                <div className="mock-helmet-strap-left"></div>
-                <div className="mock-helmet-strap-right"></div>
-                <div className="mock-helmet-logo">
-                  <Logo width="28px" />
-                </div>
               </>
             )}
 
