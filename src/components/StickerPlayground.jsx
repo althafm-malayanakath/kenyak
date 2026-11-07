@@ -40,11 +40,46 @@ const makeImageTransparent = (src) => {
 export default function StickerPlayground({ playgroundStickers, onRemoveSticker, onUpdateSticker, onClearPlayground, onAddAllToCart }) {
   const [selectedId, setSelectedId] = useState(null);
   const [activeDevice, setActiveDevice] = useState('laptop');
+  const [deviceFinish, setDeviceFinish] = useState('dark');
   const [deviceRotation, setDeviceRotation] = useState(0);
   const [transparentCache, setTransparentCache] = useState({});
   const canvasRef = useRef(null);
   const dragInfoRef = useRef({ isDragging: false, startX: 0, startY: 0, startLeft: 0, startTop: 0 });
   const rotateRef = useRef({ isRotating: false, startX: 0, startRotation: 0 });
+
+  // Finish options customized per physical device
+  const finishOptions = {
+    laptop: [
+      { id: 'dark', label: 'Space Black', color: '#16171a' },
+      { id: 'silver', label: 'Starlight Silver', color: '#d4d6dc' },
+      { id: 'accent', label: 'Midnight Blue', color: '#1b2333' }
+    ],
+    phone: [
+      { id: 'dark', label: 'Black Titanium', color: '#1c1d20' },
+      { id: 'silver', label: 'Natural Titanium', color: '#888580' },
+      { id: 'accent', label: 'Desert Titanium', color: '#a0897b' }
+    ],
+    trolley: [
+      { id: 'dark', label: 'Stealth Black', color: '#18191c' },
+      { id: 'silver', label: 'Silver Aluminum', color: '#cbd0d8' },
+      { id: 'accent', label: 'Hyper Red', color: '#881337' }
+    ],
+    bottle: [
+      { id: 'dark', label: 'Matte Obsidian', color: '#141518' },
+      { id: 'silver', label: 'Brushed Steel', color: '#cbd0d8' },
+      { id: 'accent', label: 'Alpine White', color: '#f1f5f9' }
+    ],
+    skateboard: [
+      { id: 'dark', label: 'Carbon Grip', color: '#18181b' },
+      { id: 'silver', label: 'Raw Timber', color: '#573d2a' },
+      { id: 'accent', label: 'Neon Ink', color: '#312e81' }
+    ],
+    notebook: [
+      { id: 'dark', label: 'Onyx Leather', color: '#141518' },
+      { id: 'silver', label: 'Cognac Leather', color: '#6d3c22' },
+      { id: 'accent', label: 'Navy Classic', color: '#1e293b' }
+    ]
+  };
 
   // Handle outside click to deselect
   useEffect(() => {
@@ -189,44 +224,89 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
           <p>Drag, rotate, scale stickers. Preview before adding them to your custom gear!</p>
         </div>
 
-        {/* Device select buttons */}
-        <div className="device-toggles" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          <button
-            onClick={() => setActiveDevice('laptop')}
-            className={`device-toggle-btn ${activeDevice === 'laptop' ? 'active' : ''}`}
-          >
-            Laptop
-          </button>
-          <button
-            onClick={() => setActiveDevice('phone')}
-            className={`device-toggle-btn ${activeDevice === 'phone' ? 'active' : ''}`}
-          >
-            Phone
-          </button>
-          <button
-            onClick={() => setActiveDevice('bottle')}
-            className={`device-toggle-btn ${activeDevice === 'bottle' ? 'active' : ''}`}
-          >
-            Water Bottle
-          </button>
-          <button
-            onClick={() => setActiveDevice('trolley')}
-            className={`device-toggle-btn ${activeDevice === 'trolley' ? 'active' : ''}`}
-          >
-            Trolley Bag
-          </button>
-          <button
-            onClick={() => setActiveDevice('skateboard')}
-            className={`device-toggle-btn ${activeDevice === 'skateboard' ? 'active' : ''}`}
-          >
-            Skateboard
-          </button>
-          <button
-            onClick={() => setActiveDevice('notebook')}
-            className={`device-toggle-btn ${activeDevice === 'notebook' ? 'active' : ''}`}
-          >
-            Notebook
-          </button>
+        {/* Device and Finish Toggles */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className="device-toggles" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            <button
+              onClick={() => setActiveDevice('laptop')}
+              className={`device-toggle-btn ${activeDevice === 'laptop' ? 'active' : ''}`}
+            >
+              💻 MacBook Pro
+            </button>
+            <button
+              onClick={() => setActiveDevice('phone')}
+              className={`device-toggle-btn ${activeDevice === 'phone' ? 'active' : ''}`}
+            >
+              📱 iPhone Pro
+            </button>
+            <button
+              onClick={() => setActiveDevice('bottle')}
+              className={`device-toggle-btn ${activeDevice === 'bottle' ? 'active' : ''}`}
+            >
+              🍶 Flask Bottle
+            </button>
+            <button
+              onClick={() => setActiveDevice('trolley')}
+              className={`device-toggle-btn ${activeDevice === 'trolley' ? 'active' : ''}`}
+            >
+              🧳 Rimowa Trolley
+            </button>
+            <button
+              onClick={() => setActiveDevice('skateboard')}
+              className={`device-toggle-btn ${activeDevice === 'skateboard' ? 'active' : ''}`}
+            >
+              🛹 Skateboard
+            </button>
+            <button
+              onClick={() => setActiveDevice('notebook')}
+              className={`device-toggle-btn ${activeDevice === 'notebook' ? 'active' : ''}`}
+            >
+              📓 Journal Book
+            </button>
+          </div>
+
+          {/* Color & Material Finish Bar */}
+          <div className="finish-toggles-row" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '0.7rem', fontWeight: '800', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Surface Finish:
+            </span>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              {(finishOptions[activeDevice] || finishOptions.laptop).map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => setDeviceFinish(opt.id)}
+                  className={`finish-option-pill ${deviceFinish === opt.id ? 'active' : ''}`}
+                  title={opt.label}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '4px 10px',
+                    borderRadius: '20px',
+                    fontSize: '0.7rem',
+                    fontWeight: '700',
+                    background: deviceFinish === opt.id ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.4)',
+                    border: deviceFinish === opt.id ? '1px solid var(--neon-yellow)' : '1px solid rgba(255,255,255,0.1)',
+                    color: deviceFinish === opt.id ? '#fff' : 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      background: opt.color,
+                      border: '1px solid rgba(255,255,255,0.4)',
+                      display: 'inline-block'
+                    }}
+                  />
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -235,6 +315,8 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
         
         {/* Left canvas display */}
         <div className="canvas-wrapper">
+          {/* Studio Table Contact Shadow */}
+          <div className="studio-table-shadow"></div>
           
           {/* Main Drag Canvas Area */}
           <div
@@ -246,119 +328,194 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
             onTouchEnd={handleEndDrag}
             onMouseDown={handleCanvasStart}
             onTouchStart={handleCanvasStart}
-            className={`device-canvas-${activeDevice}`}
+            className={`device-canvas-${activeDevice} finish-${deviceFinish}`}
             style={{
               transform: `rotate(${deviceRotation}deg)`,
               transition: dragInfoRef.current.isDragging || rotateRef.current.isRotating ? 'none' : 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
           >
-            {/* Device Detail Markings */}
-            <div className="mock-sheen-line"></div>
-            
+            {/* 1. PHOTOREALISTIC LAPTOP (MacBook Pro Lid) */}
             {activeDevice === 'laptop' && (
               <>
-                <div className="mock-laptop-notch"></div>
-                <div className="mock-laptop-hinge"></div>
-                <div className="mock-laptop-chamfer-border"></div>
-                <div className="mock-laptop-screen-inset-line"></div>
+                <div className="mock-laptop-cnc-chamfer"></div>
+                <div className="mock-laptop-apple-emblem">
+                  <div className="emblem-shine"></div>
+                </div>
+                <div className="mock-laptop-scallop-notch">
+                  <div className="notch-specular-edge"></div>
+                </div>
+                <div className="mock-laptop-pro-hinge">
+                  <div className="hinge-seam left"></div>
+                  <div className="hinge-seam right"></div>
+                </div>
+                <div className="mock-laptop-anisotropic-lighting"></div>
               </>
             )}
 
-            
+            {/* 2. PHOTOREALISTIC IPHONE (iPhone 16 Pro Max) */}
             {activeDevice === 'phone' && (
               <>
+                <div className="mock-phone-titanium-bezel"></div>
+                {/* Physical Titanium Antenna Separator Inserts */}
+                <div className="mock-phone-antenna top-left"></div>
+                <div className="mock-phone-antenna top-right"></div>
+                <div className="mock-phone-antenna bottom-left"></div>
+                <div className="mock-phone-antenna bottom-right"></div>
+                {/* Tactile Side Buttons */}
+                <div className="mock-phone-btn-action"></div>
                 <div className="mock-phone-btn-volume-up"></div>
                 <div className="mock-phone-btn-volume-down"></div>
-                <div className="mock-phone-btn-action"></div>
                 <div className="mock-phone-btn-power"></div>
-                <div className="mock-phone-camera-bump">
-                  <div className="camera-lens lens-1">
-                    <div className="lens-reflection"></div>
-                    <div className="lens-dot"></div>
+                <div className="mock-phone-btn-camera-control"></div>
+                {/* Centered Liquid Chrome Apple Logo */}
+                <div className="mock-phone-apple-logo"></div>
+                {/* Sculpted 3D Camera Island */}
+                <div className="mock-phone-camera-plateau">
+                  <div className="camera-lens-cluster lens-top">
+                    <div className="titanium-outer-ring"></div>
+                    <div className="sapphire-glass-layer"></div>
+                    <div className="lens-ar-coating-cyan"></div>
+                    <div className="aperture-core"></div>
                   </div>
-                  <div className="camera-lens lens-2">
-                    <div className="lens-reflection"></div>
-                    <div className="lens-dot"></div>
+                  <div className="camera-lens-cluster lens-bottom">
+                    <div className="titanium-outer-ring"></div>
+                    <div className="sapphire-glass-layer"></div>
+                    <div className="lens-ar-coating-magenta"></div>
+                    <div className="aperture-core"></div>
                   </div>
-                  <div className="camera-lens lens-3">
-                    <div className="lens-reflection"></div>
-                    <div className="lens-dot"></div>
+                  <div className="camera-lens-cluster lens-right">
+                    <div className="titanium-outer-ring"></div>
+                    <div className="sapphire-glass-layer"></div>
+                    <div className="lens-ar-coating-cyan"></div>
+                    <div className="aperture-core"></div>
                   </div>
-                  <div className="camera-flash-ring"></div>
-                  <div className="lidar-sensor-lens"></div>
+                  {/* Quad-LED True Tone Dual Flash */}
+                  <div className="mock-phone-flash-ring">
+                    <div className="flash-phosphor"></div>
+                  </div>
+                  {/* Dark Ceramic LiDAR Scanner */}
+                  <div className="mock-phone-lidar-disc"></div>
+                  {/* Mic Pinhole */}
+                  <div className="mock-phone-mic-dot"></div>
                 </div>
-                <div className="mock-phone-antenna-top"></div>
-                <div className="mock-phone-antenna-bottom"></div>
+                <div className="mock-phone-frosted-sheen"></div>
               </>
             )}
 
+            {/* 3. PHOTOREALISTIC BOTTLE (Hydro Flask / Chilly's) */}
             {activeDevice === 'bottle' && (
               <>
-                <div className="mock-bottle-cap"></div>
-                <div className="mock-bottle-neck"></div>
-                <div className="mock-bottle-strap"></div>
+                <div className="mock-bottle-carry-loop"></div>
+                <div className="mock-bottle-insulated-cap">
+                  <div className="cap-knurled-grip"></div>
+                </div>
+                <div className="mock-bottle-steel-collar"></div>
+                <div className="mock-bottle-cylindrical-specular"></div>
+                <div className="mock-bottle-silicone-boot">
+                  <div className="boot-reinforce-ribs"></div>
+                </div>
               </>
             )}
 
+            {/* 4. PHOTOREALISTIC TROLLEY (Rimowa Luxury Luggage) */}
             {activeDevice === 'trolley' && (
               <>
-                <div className="mock-trolley-handle-bars"></div>
-                <div className="mock-trolley-handle-grip">
-                  <div className="mock-trolley-handle-button"></div>
+                {/* Telescoping Twin Aluminum Tubes & Release Grip */}
+                <div className="mock-trolley-tele-tubes">
+                  <div className="tube-pole left"></div>
+                  <div className="tube-pole right"></div>
                 </div>
-                <div className="mock-trolley-wheel left">
-                  <div className="mock-trolley-wheel-spoke"></div>
+                <div className="mock-trolley-top-handle">
+                  <div className="handle-thumb-btn"></div>
                 </div>
-                <div className="mock-trolley-wheel right">
-                  <div className="mock-trolley-wheel-spoke"></div>
+                {/* 4 Riveted Stamped Corner Armor Plates */}
+                <div className="mock-trolley-armor top-left">
+                  <span className="armor-rivet r1"></span>
+                  <span className="armor-rivet r2"></span>
+                  <span className="armor-rivet r3"></span>
                 </div>
-                <div className="mock-trolley-zipper-line"></div>
+                <div className="mock-trolley-armor top-right">
+                  <span className="armor-rivet r1"></span>
+                  <span className="armor-rivet r2"></span>
+                  <span className="armor-rivet r3"></span>
+                </div>
+                <div className="mock-trolley-armor bottom-left">
+                  <span className="armor-rivet r1"></span>
+                  <span className="armor-rivet r2"></span>
+                  <span className="armor-rivet r3"></span>
+                </div>
+                <div className="mock-trolley-armor bottom-right">
+                  <span className="armor-rivet r1"></span>
+                  <span className="armor-rivet r2"></span>
+                  <span className="armor-rivet r3"></span>
+                </div>
+                {/* 3D Extruded Deep Vertical Grooves */}
+                <div className="mock-trolley-deep-grooves">
+                  <div className="luggage-groove-rib"></div>
+                  <div className="luggage-groove-rib"></div>
+                  <div className="luggage-groove-rib"></div>
+                  <div className="luggage-groove-rib"></div>
+                  <div className="luggage-groove-rib"></div>
+                </div>
+                {/* Center Seal Seam & TSA Locks */}
+                <div className="mock-trolley-center-seal"></div>
+                <div className="mock-trolley-tsa-latch top">
+                  <div className="tsa-keyway"></div>
+                </div>
+                <div className="mock-trolley-tsa-latch bottom">
+                  <div className="tsa-keyway"></div>
+                </div>
+                {/* Side Cushioned Rubber Luggage Handle */}
                 <div className="mock-trolley-side-handle"></div>
-                <div className="mock-trolley-corner-guard top-left"></div>
-                <div className="mock-trolley-corner-guard top-right"></div>
-                <div className="mock-trolley-corner-guard bottom-left"></div>
-                <div className="mock-trolley-corner-guard bottom-right"></div>
-                <div className="mock-trolley-ridges-container">
-                  <div className="mock-trolley-ridge"></div>
-                  <div className="mock-trolley-ridge"></div>
-                  <div className="mock-trolley-ridge"></div>
-                  <div className="mock-trolley-ridge"></div>
-                  <div className="mock-trolley-ridge"></div>
+                {/* Heavy Duty 360° Ball Bearing Wheels */}
+                <div className="mock-trolley-pro-wheel left">
+                  <div className="wheel-rubber-tire"></div>
+                  <div className="wheel-ball-bearing"></div>
+                </div>
+                <div className="mock-trolley-pro-wheel right">
+                  <div className="wheel-rubber-tire"></div>
+                  <div className="wheel-ball-bearing"></div>
                 </div>
               </>
             )}
 
+            {/* 5. PHOTOREALISTIC SKATEBOARD (Pro 7-Ply Maple) */}
             {activeDevice === 'skateboard' && (
               <>
-                <div className="mock-skateboard-bolts top-left"></div>
-                <div className="mock-skateboard-bolts top-right"></div>
-                <div className="mock-skateboard-bolts bottom-left"></div>
-                <div className="mock-skateboard-bolts bottom-right"></div>
-                <div className="mock-skateboard-center-stripe"></div>
+                <div className="mock-skate-maple-laminate-ply"></div>
+                <div className="mock-skate-diecut-center-line"></div>
+                <div className="mock-skate-hardware-mount top">
+                  <span className="allen-bolt"></span><span className="allen-bolt"></span>
+                  <span className="allen-bolt"></span><span className="allen-bolt"></span>
+                </div>
+                <div className="mock-skate-hardware-mount bottom">
+                  <span className="allen-bolt"></span><span className="allen-bolt"></span>
+                  <span className="allen-bolt"></span><span className="allen-bolt"></span>
+                </div>
+                <div className="mock-skate-kick-lighting top"></div>
+                <div className="mock-skate-kick-lighting bottom"></div>
               </>
             )}
 
+            {/* 6. PHOTOREALISTIC NOTEBOOK (Moleskine Journal) */}
             {activeDevice === 'notebook' && (
               <>
-                <div className="mock-notebook-spine"></div>
-                <div className="mock-notebook-spine-rings">
-                  {Array(10).fill(0).map((_, i) => (
-                    <div key={i} className="notebook-ring"></div>
-                  ))}
+                <div className="mock-notebook-debossed-border"></div>
+                <div className="mock-notebook-stitched-spine">
+                  <span className="spine-rib r1"></span>
+                  <span className="spine-rib r2"></span>
+                  <span className="spine-rib r3"></span>
+                  <span className="spine-rib r4"></span>
                 </div>
-                <div className="mock-notebook-elastic-band"></div>
+                <div className="mock-notebook-paper-strata"></div>
+                <div className="mock-notebook-woven-elastic">
+                  <div className="elastic-texture-weave"></div>
+                </div>
+                <div className="mock-notebook-satin-ribbon"></div>
               </>
             )}
 
             {/* Placed Stickers Layer */}
-            {playgroundStickers.length === 0 && (
-              <div className="canvas-placeholder-message">
-                <HelpCircle size={36} style={{ color: 'var(--text-muted)' }} />
-                <p>Your canvas is empty</p>
-                <span>Click "⚡ Try on Mockup" on any sticker in the catalog below to place it here.</span>
-              </div>
-            )}
-
             {playgroundStickers.map((sticker) => (
               <div
                 key={sticker.id}
@@ -383,7 +540,19 @@ export default function StickerPlayground({ playgroundStickers, onRemoveSticker,
                 />
               </div>
             ))}
+
+            {/* Studio Lighting & Specular Reflection Overlay (Breathes physical light across stickers & surface) */}
+            <div className="studio-specular-overlay"></div>
           </div>
+
+          {/* Floating Non-Intrusive Prompt (Keeps Device Clean & Gorgeous) */}
+          {playgroundStickers.length === 0 && (
+            <div className="floating-canvas-hint">
+              <span className="hint-pill">
+                💡 Click <strong>"⚡ Try on Mockup"</strong> on any sticker below to place it here. Drag gear to rotate!
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Right controls side panel */}

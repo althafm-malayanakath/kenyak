@@ -561,50 +561,87 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .canvas-wrapper {
-  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 48px;
+  background: 
+    radial-gradient(ellipse at 50% 25%, #1c2436 0%, #0c101a 60%, #05070c 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 20px;
+  padding: 40px 24px 60px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 520px;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+  box-shadow: 
+    inset 0 0 80px rgba(0, 0, 0, 0.9),
+    0 20px 40px -10px rgba(0, 0, 0, 0.6) !important;
 }
 
-/* Canvas messages and placeholders */
+/* Studio Floor Table Contact Shadow beneath device */
+.studio-table-shadow {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75%;
+  max-width: 480px;
+  height: 28px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 75%);
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: 1;
+}
 
-.canvas-placeholder-message {
+/* Floating Non-Intrusive Prompt Pill */
+.floating-canvas-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.hint-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: rgba(10, 15, 26, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  animation: pulse-soft 3s infinite ease-in-out;
+}
+
+.hint-pill strong {
+  color: var(--neon-yellow);
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Studio Specular Lighting & Texture Overlay (Unifies Stickers with Physical Surface) */
+.studio-specular-overlay {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 24px;
-  color: var(--text-muted);
   pointer-events: none;
-  user-select: none;
+  border-radius: inherit;
+  z-index: 45;
+  mix-blend-mode: overlay;
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 25%, transparent 50%, rgba(0, 0, 0, 0.2) 100%),
+    radial-gradient(circle at 65% 15%, rgba(255, 255, 255, 0.14) 0%, transparent 55%);
 }
 
-.canvas-placeholder-message p {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  margin-top: 8px;
-}
-
-.canvas-placeholder-message span {
-  font-size: 0.7rem;
-  margin-top: 4px;
-}
-
-/* Stickers Placed */
+/* Stickers Placed with Physical 100-Micron Vinyl Depth */
 .placed-sticker-wrapper {
   position: absolute;
   user-select: none;
@@ -612,24 +649,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .placed-sticker-img {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   object-fit: contain;
-  filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.55));
+  /* Dual physical contact and ambient cast shadow */
+  filter: 
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35)) !important;
   pointer-events: none;
+  transition: transform 0.1s ease;
 }
 
 @media (min-width: 768px) {
   .placed-sticker-img {
-    width: 80px;
-    height: 80px;
+    width: 86px;
+    height: 86px;
   }
 }
 
 .selected-ring {
-  outline: 2px dashed var(--neon-yellow);
+  outline: 2px solid var(--neon-yellow);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
   outline-offset: 4px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 /* Playground Controls Panel */
@@ -2082,427 +2124,695 @@ textarea.input-field {
   }
 }
 
-/* Touch drag scroll prevention for Sticker Playground canvas */
+/* ==========================================================================
+   STUDIO PHOTO-MOCKUP ENGINE (HYPER-REALISTIC HARDWARE RENDERING)
+   ========================================================================== */
+
+/* Touch Drag Scrolling Prevention */
 .canvas-wrapper,
 .device-canvas-laptop,
 .device-canvas-phone,
+.device-canvas-bottle,
+.device-canvas-trolley,
+.device-canvas-skateboard,
+.device-canvas-notebook,
 .placed-sticker-wrapper {
   touch-action: none !important;
 }
 
-/* Mockup Device Realistic Markings */
+/* --------------------------------------------------------------------------
+   1. MACBOOK PRO UNIBODY ALUMINUM LID (PHOTOREALISTIC)
+   -------------------------------------------------------------------------- */
 .device-canvas-laptop {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 490px;
   aspect-ratio: 16/10;
-  background: 
-    linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 45%, rgba(0,0,0,0.2) 80%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.008) 0px, rgba(255,255,255,0.008) 1.5px, transparent 1.5px, transparent 3px),
-    linear-gradient(135deg, #575c66 0%, #3e424a 25%, #2a2d33 50%, #1c1e22 75%, #0f1012 100%) !important;
-  border: 4.5px solid #18181b !important;
-  border-radius: 20px !important;
-  box-shadow: 
-    0 35px 70px -15px rgba(0, 0, 0, 0.85),
-    inset 0 2px 4px rgba(255,255,255,0.25),
-    inset 0 -2px 4px rgba(0,0,0,0.25) !important;
+  border-radius: 18px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  user-select: none;
 }
 
-.mock-laptop-notch {
+/* Space Black / Matte Black Finish (Default) */
+.device-canvas-laptop.finish-dark {
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, transparent 35%, rgba(0, 0, 0, 0.35) 75%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.006) 0px, rgba(255, 255, 255, 0.006) 1px, transparent 1px, transparent 2.5px),
+    linear-gradient(135deg, #32343a 0%, #222428 25%, #18191c 55%, #0f1012 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 
+    0 40px 80px -15px rgba(0, 0, 0, 0.95),
+    0 15px 30px -10px rgba(0, 0, 0, 0.8),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Starlight Silver Finish */
+.device-canvas-laptop.finish-silver {
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, transparent 40%, rgba(0, 0, 0, 0.12) 80%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 2.5px),
+    linear-gradient(135deg, #f1f3f7 0%, #d8dce4 35%, #bfc4cf 70%, #9ca2ad 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 
+    0 40px 80px -15px rgba(0, 0, 0, 0.75),
+    0 15px 30px -10px rgba(0, 0, 0, 0.5),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Midnight Blue Finish */
+.device-canvas-laptop.finish-accent {
+  background: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 35%, rgba(0, 0, 0, 0.4) 75%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.008) 0px, rgba(255, 255, 255, 0.008) 1px, transparent 1px, transparent 2.5px),
+    linear-gradient(135deg, #232d42 0%, #151d2e 30%, #0d121d 65%, #07090f 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 
+    0 40px 80px -15px rgba(0, 0, 0, 0.95),
+    0 15px 30px -10px rgba(0, 0, 0, 0.8),
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* CNC Precision Chamfer Edge */
+.mock-laptop-cnc-chamfer {
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+/* Centered Apple Mirror Emblem */
+.mock-laptop-apple-emblem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: 
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0.5) 100%),
+    linear-gradient(135deg, #2b2d33 0%, #101114 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.device-canvas-laptop.finish-silver .mock-laptop-apple-emblem {
+  background: 
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(150, 150, 160, 0.5) 100%),
+    linear-gradient(135deg, #ffffff 0%, #cbd0d8 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.95);
+}
+
+.emblem-shine {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+}
+
+/* Scalloped Display Opening Notch */
+.mock-laptop-scallop-notch {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
-  height: 6px;
-  background: #090d16;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  width: 72px;
+  height: 5px;
+  background: #090a0d;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.85),
+    0 1px 0 rgba(255, 255, 255, 0.18);
   z-index: 10;
-  box-shadow: inset 0 -1px 2px rgba(255,255,255,0.1);
-}
-
-.mock-laptop-hinge {
-  position: absolute;
-  bottom: -8px;
-  left: 40px;
-  right: 40px;
-  height: 8px;
-  background: #090d16;
-  border-radius: 2px;
-  border: 1px solid #1e293b;
-  z-index: -1;
-}
-
-.mock-laptop-chamfer-border {
-  position: absolute;
-  inset: 2px;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
   pointer-events: none;
 }
 
-.mock-laptop-screen-inset-line {
+.notch-specular-edge {
+  position: absolute;
+  bottom: 0;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Anodized Cylindrical Hinge */
+.mock-laptop-pro-hinge {
+  position: absolute;
+  bottom: -9px;
+  left: 45px;
+  right: 45px;
+  height: 9px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #1f2025 0%, #3e4149 35%, #101114 100%);
+  border: 1px solid #090a0d;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  z-index: -1;
+}
+
+.device-canvas-laptop.finish-silver .mock-laptop-pro-hinge {
+  background: linear-gradient(180deg, #b0b5be 0%, #e2e5eb 35%, #7e838d 100%);
+  border: 1px solid #717680;
+}
+
+.mock-laptop-pro-hinge .hinge-seam {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.02) 40%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 60%, transparent 70%);
+  bottom: 0;
+  width: 2px;
+  background: #000;
+}
+
+.mock-laptop-pro-hinge .hinge-seam.left { left: 16px; }
+.mock-laptop-pro-hinge .hinge-seam.right { right: 16px; }
+
+/* Anisotropic Diagonal Softbox Sheen */
+.mock-laptop-anisotropic-lighting {
+  position: absolute;
+  inset: 0;
   border-radius: inherit;
+  background: linear-gradient(125deg, transparent 35%, rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.07) 50%, rgba(255, 255, 255, 0.02) 55%, transparent 65%);
   pointer-events: none;
 }
 
-/* iPhone Pro Casing details */
+/* --------------------------------------------------------------------------
+   2. IPHONE 16 PRO MAX TITANIUM (PHOTOREALISTIC)
+   -------------------------------------------------------------------------- */
 .device-canvas-phone {
   position: relative;
-  width: 190px;
-  aspect-ratio: 9/18;
-  background: radial-gradient(circle at 50% 30%, #2d3139 0%, #181b20 70%, #0c0d10 100%) !important;
-  border: 5px solid #1c1d22 !important;
-  border-radius: 36px !important;
+  width: 195px;
+  aspect-ratio: 9/19.2;
+  border-radius: 42px !important;
+  border: 5px solid #232221 !important;
   box-shadow: 
-    0 35px 70px -15px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.15) !important;
-  transition: var(--transition-smooth);
+    0 40px 80px -15px rgba(0, 0, 0, 0.9),
+    0 15px 30px -10px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  user-select: none;
 }
 
+/* Black Titanium */
+.device-canvas-phone.finish-dark {
+  background: radial-gradient(circle at 45% 25%, #2a2928 0%, #171615 65%, #0d0c0c 100%) !important;
+  border-color: #272624 !important;
+}
+
+/* Natural Titanium */
+.device-canvas-phone.finish-silver {
+  background: radial-gradient(circle at 45% 25%, #8f8c85 0%, #6e6b65 65%, #4b4843 100%) !important;
+  border-color: #7b7871 !important;
+}
+
+/* Desert Titanium */
+.device-canvas-phone.finish-accent {
+  background: radial-gradient(circle at 45% 25%, #b59f8e 0%, #8f796a 65%, #5e4c40 100%) !important;
+  border-color: #8c7667 !important;
+}
+
+.mock-phone-titanium-bezel {
+  position: absolute;
+  inset: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 38px;
+  pointer-events: none;
+}
+
+/* Antenna Line Inserts */
+.mock-phone-antenna {
+  position: absolute;
+  width: 2px;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.25);
+  z-index: 10;
+}
+.mock-phone-antenna.top-left { top: 48px; left: -5px; }
+.mock-phone-antenna.bottom-left { bottom: 48px; left: -5px; }
+.mock-phone-antenna.top-right { top: 48px; right: -5px; }
+.mock-phone-antenna.bottom-right { bottom: 48px; right: -5px; }
+
+/* Physical Tactile Buttons */
+.mock-phone-btn-action,
 .mock-phone-btn-volume-up,
 .mock-phone-btn-volume-down,
-.mock-phone-btn-action,
-.mock-phone-btn-power {
+.mock-phone-btn-power,
+.mock-phone-btn-camera-control {
   position: absolute;
-  width: 3.5px;
-  background: #1c1d22;
+  background: #232221;
   border-radius: 2px;
   z-index: -1;
 }
 
-.mock-phone-btn-volume-up {
-  left: -8.5px;
-  top: 68px;
-  height: 24px;
-  border-left: 1px solid rgba(255,255,255,0.25);
-}
-
-.mock-phone-btn-volume-down {
-  left: -8.5px;
-  top: 98px;
-  height: 24px;
-  border-left: 1px solid rgba(255,255,255,0.25);
+.device-canvas-phone.finish-silver .mock-phone-btn-action,
+.device-canvas-phone.finish-silver .mock-phone-btn-volume-up,
+.device-canvas-phone.finish-silver .mock-phone-btn-volume-down,
+.device-canvas-phone.finish-silver .mock-phone-btn-power,
+.device-canvas-phone.finish-silver .mock-phone-btn-camera-control {
+  background: #737069;
 }
 
 .mock-phone-btn-action {
-  left: -8.5px;
-  top: 42px;
-  height: 14px;
-  border-left: 1px solid rgba(255,255,255,0.25);
+  left: -8px;
+  top: 44px;
+  width: 3.5px;
+  height: 16px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.mock-phone-btn-volume-up {
+  left: -8px;
+  top: 72px;
+  width: 3.5px;
+  height: 28px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.mock-phone-btn-volume-down {
+  left: -8px;
+  top: 108px;
+  width: 3.5px;
+  height: 28px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .mock-phone-btn-power {
-  right: -8.5px;
-  top: 80px;
-  height: 32px;
-  border-right: 1px solid rgba(255,255,255,0.25);
+  right: -8px;
+  top: 86px;
+  width: 3.5px;
+  height: 40px;
+  border-right: 1px solid rgba(255, 255, 255, 0.35);
 }
 
-/* Translucent iPhone Camera Island */
-.mock-phone-camera-bump {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 72px;
-  height: 72px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%) !important;
-  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 20px !important;
-  box-shadow: 
-    0 8px 16px rgba(0, 0, 0, 0.4),
-    inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
-  z-index: 2;
-  pointer-events: none;
+.mock-phone-btn-camera-control {
+  right: -7px;
+  bottom: 84px;
+  width: 2.5px;
+  height: 30px;
+  border-radius: 3px;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Camera Optics Glass Lenses */
-.camera-lens {
-  position: absolute;
-  width: 26px;
-  height: 26px;
-  background: radial-gradient(circle at 35% 35%, #1f293d 10%, #090d16 80%) !important;
-  border-radius: 50% !important;
-  border: 1.5px solid #2e3543 !important;
-  box-shadow: 
-    0 2px 4px rgba(0,0,0,0.6),
-    inset 0 2px 4px rgba(0,0,0,0.8) !important;
-}
-
-.camera-lens.lens-1 {
-  top: 6px;
-  left: 6px;
-}
-
-.camera-lens.lens-2 {
-  bottom: 6px;
-  left: 6px;
-}
-
-.camera-lens.lens-3 {
-  top: 20px;
-  right: 6px;
-}
-
-.lens-reflection {
-  position: absolute;
-  inset: 2px;
-  background: radial-gradient(circle at 35% 35%, rgba(6, 182, 212, 0.35) 0%, transparent 60%);
-  border-radius: 50%;
-}
-
-.lens-dot {
+/* Liquid Mirror Centered Apple Logo */
+.mock-phone-apple-logo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  background: #020617;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 0.5px solid #475569;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 60%, rgba(0, 0, 0, 0.4) 100%), #1f1e1d;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+  pointer-events: none;
 }
 
-.camera-flash-ring {
+.device-canvas-phone.finish-silver .mock-phone-apple-logo {
+  background: radial-gradient(circle at 35% 30%, #ffffff 0%, #cbd0d8 60%, #8a8882 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), inset 0 1px 2px #fff;
+}
+
+/* Sculpted 3D Camera Plateau */
+.mock-phone-camera-plateau {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), #1c1b1a;
+  border-radius: 24px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 12px 24px -4px rgba(0, 0, 0, 0.7),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.device-canvas-phone.finish-silver .mock-phone-camera-plateau {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%), #7b7871;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 10px 20px -4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* Sapphire Crystal Triple Lenses */
+.camera-lens-cluster {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #18191f 20%, #050608 85%);
+  border: 2px solid #373634;
+  box-shadow: 
+    0 3px 6px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-lens-cluster.lens-top { top: 7px; left: 7px; }
+.camera-lens-cluster.lens-bottom { bottom: 7px; left: 7px; }
+.camera-lens-cluster.lens-right { top: 25px; right: 7px; }
+
+.lens-ar-coating-cyan {
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(6, 182, 212, 0.45) 0%, transparent 60%);
+}
+
+.lens-ar-coating-magenta {
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(217, 70, 239, 0.45) 0%, transparent 60%);
+}
+
+.aperture-core {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #000;
+  border: 0.5px solid #475569;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.9);
+}
+
+/* Flash & LiDAR */
+.mock-phone-flash-ring {
   position: absolute;
   top: 10px;
-  right: 15px;
-  width: 10px;
-  height: 10px;
-  background: #fef08a !important;
-  border: 1.5px solid #ca8a04 !important;
-  border-radius: 50% !important;
-  box-shadow: 0 0 6px #fef08a;
+  right: 14px;
+  width: 11px;
+  height: 11px;
+  background: #fef08a;
+  border: 1px solid #ca8a04;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(254, 240, 138, 0.8);
 }
 
-.lidar-sensor-lens {
+.mock-phone-lidar-disc {
   position: absolute;
-  bottom: 10px;
-  right: 15px;
-  width: 8px;
-  height: 8px;
-  background: #020617 !important;
-  border-radius: 50% !important;
-  border: 1px solid #1e293b !important;
+  bottom: 12px;
+  right: 14px;
+  width: 9px;
+  height: 9px;
+  background: #070709;
+  border: 1px solid #27272a;
+  border-radius: 50%;
 }
 
-.mock-phone-antenna-top,
-.mock-phone-antenna-bottom {
+.mock-phone-mic-dot {
   position: absolute;
-  left: 0;
-  right: 0;
-  height: 1.5px;
-  background: rgba(255,255,255,0.06);
+  top: 50%;
+  right: 9px;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 2px;
+  background: #000;
+  border-radius: 50%;
 }
 
-.mock-phone-antenna-top {
-  top: 36px;
-}
-
-.mock-phone-antenna-bottom {
-  bottom: 36px;
-}
-
-.mock-sheen-line {
+.mock-phone-frosted-sheen {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.02) 55%, transparent 60%) !important;
-  pointer-events: none;
+  inset: 0;
   border-radius: inherit;
+  background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.04) 50%, transparent 60%);
+  pointer-events: none;
 }
 
-/* Water Bottle Mockup */
+/* --------------------------------------------------------------------------
+   3. HYDRO FLASK INSULATED WATER BOTTLE (PHOTOREALISTIC)
+   -------------------------------------------------------------------------- */
 .device-canvas-bottle {
   position: relative;
-  width: 120px;
-  height: 320px;
-  background: linear-gradient(90deg, #1e293b 0%, #475569 15%, #cbd5e1 30%, #f8fafc 40%, #94a3b8 65%, #334155 85%, #0f172a 100%) !important;
-  border: 3.5px solid #0f172a !important;
-  border-radius: 36px !important;
+  width: 125px;
+  height: 330px;
+  border-radius: 34px !important;
+  border: 3px solid #141518 !important;
   box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.6),
-    inset 0 0 0 1px rgba(255,255,255,0.2) !important;
+    0 35px 70px -15px rgba(0, 0, 0, 0.85),
+    0 15px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
-.mock-bottle-cap {
+/* Matte Obsidian Finish */
+.device-canvas-bottle.finish-dark {
+  background: linear-gradient(90deg, #101114 0%, #292b32 15%, #5a5f6e 32%, #1e2025 55%, #121316 85%, #0a0b0d 100%) !important;
+}
+
+/* Brushed Stainless Steel Finish */
+.device-canvas-bottle.finish-silver {
+  background: linear-gradient(90deg, #64748b 0%, #94a3b8 15%, #ffffff 32%, #cbd5e1 55%, #64748b 85%, #334155 100%) !important;
+  border-color: #475569 !important;
+}
+
+/* Alpine White Finish */
+.device-canvas-bottle.finish-accent {
+  background: linear-gradient(90deg, #cbd5e1 0%, #e2e8f0 15%, #ffffff 35%, #f1f5f9 60%, #cbd5e1 85%, #94a3b8 100%) !important;
+  border-color: #94a3b8 !important;
+}
+
+.mock-bottle-insulated-cap {
   position: absolute;
-  top: -15px;
+  top: -18px;
   left: 50%;
   transform: translateX(-50%);
-  width: 48px;
-  height: 15px;
+  width: 52px;
+  height: 18px;
   background: linear-gradient(180deg, #3f3f46 0%, #18181b 100%);
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  border: 2px solid #0f172a;
+  border: 2px solid #090a0d;
   z-index: 5;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
 }
 
-.mock-bottle-neck {
+.cap-knurled-grip {
   position: absolute;
-  top: 0px;
+  top: 3px;
+  left: 4px;
+  right: 4px;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, #27272a 0px, #27272a 2px, #09090b 2px, #09090b 4px);
+  border-radius: 2px;
+}
+
+.mock-bottle-carry-loop {
+  position: absolute;
+  top: -12px;
+  left: 8px;
+  width: 12px;
+  height: 52px;
+  background: #27272a;
+  border: 1.5px solid #090a0d;
+  border-radius: 6px;
+  transform: rotate(-20deg);
+  z-index: 4;
+  box-shadow: -2px 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.mock-bottle-steel-collar {
+  position: absolute;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 62px;
-  height: 10px;
-  background: #3f3f46;
-  border-bottom: 2px solid #0f172a;
-  border-radius: 1px;
+  width: 66px;
+  height: 9px;
+  background: linear-gradient(90deg, #475569 0%, #ffffff 35%, #94a3b8 70%, #334155 100%);
+  border-bottom: 1.5px solid #090a0d;
   z-index: 4;
 }
 
-.mock-bottle-strap {
+.mock-bottle-cylindrical-specular {
   position: absolute;
-  top: -8px;
-  left: 6px;
-  width: 10px;
-  height: 54px;
-  background: #27272a;
-  border: 1px solid #0f172a;
-  border-radius: 5px;
-  transform: rotate(-18deg);
-  z-index: 3;
-  box-shadow: -1px 2px 4px rgba(0,0,0,0.3);
-}
-
-.mock-bottle-logo {
-  opacity: 0.8 !important;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 6px 8px;
-  border-radius: 50%;
-  border: 1.5px solid #64748b;
-  box-shadow: 
-    0 3px 6px rgba(0,0,0,0.25),
-    inset 0 1px 2px rgba(255,255,255,0.8);
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, 0.15) 32%, transparent 40%);
   pointer-events: none;
-  user-select: none;
-  transform: translateY(20px);
 }
 
-/* Silicon Ribbed Sleeve at bottom of bottle */
-.device-canvas-bottle::after {
-  content: '';
+.mock-bottle-silicone-boot {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 60px;
+  height: 64px;
   background: repeating-linear-gradient(0deg, #09090b, #09090b 4px, #18181b 4px, #18181b 6px);
-  border-bottom-left-radius: 32px;
-  border-bottom-right-radius: 32px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
   border-top: 2px solid #27272a;
-  opacity: 0.9;
+  opacity: 0.95;
   z-index: 1;
 }
 
-/* Trolley Bag Mockup */
+/* --------------------------------------------------------------------------
+   4. RIMOWA LUXURY TROLLEY SUITCASE (PHOTOREALISTIC)
+   -------------------------------------------------------------------------- */
 .device-canvas-trolley {
   position: relative;
-  width: 190px;
-  height: 300px;
-  background: linear-gradient(135deg, #3f3f46 0%, #1c1917 60%, #0c0a09 100%) !important;
-  border: 4.5px solid #1c1917 !important;
+  width: 195px;
+  height: 310px;
   border-radius: 28px !important;
+  border: 4px solid #141517 !important;
   box-shadow: 
-    0 35px 70px -15px rgba(0, 0, 0, 0.75),
-    inset 0 0 0 1.5px rgba(255,255,255,0.12) !important;
+    0 40px 80px -15px rgba(0, 0, 0, 0.9),
+    0 15px 30px -10px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.16) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
-.mock-trolley-handle-bars {
+/* Stealth Black */
+.device-canvas-trolley.finish-dark {
+  background: linear-gradient(135deg, #37393f 0%, #1f2024 45%, #0f1012 100%) !important;
+}
+
+/* Silver Aluminum */
+.device-canvas-trolley.finish-silver {
+  background: linear-gradient(135deg, #e4e7eb 0%, #cbd1d8 45%, #9aa0aa 100%) !important;
+  border-color: #64748b !important;
+}
+
+/* Hyper Red */
+.device-canvas-trolley.finish-accent {
+  background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 50%, #450a0a 100%) !important;
+  border-color: #450a0a !important;
+}
+
+/* Telescoping Twin Aluminum Tubes */
+.mock-trolley-tele-tubes {
   position: absolute;
-  top: -24px;
+  top: -26px;
   left: 50%;
   transform: translateX(-50%);
-  width: 58px;
-  height: 24px;
-  border: 3.5px solid #1c1917;
+  width: 62px;
+  height: 26px;
+  display: flex;
+  justify-content: space-between;
+  z-index: -1;
+}
+
+.mock-trolley-tele-tubes .tube-pole {
+  width: 7px;
+  height: 100%;
+  background: linear-gradient(90deg, #94a3b8 0%, #ffffff 40%, #475569 100%);
+  border: 1px solid #1e293b;
   border-bottom: none;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  z-index: -1;
-  background: linear-gradient(90deg, #94a3b8 0%, #cbd5e1 30%, #475569 70%, #1e293b 100%);
 }
 
-.mock-trolley-handle-grip {
+.mock-trolley-top-handle {
   position: absolute;
-  top: -28px;
+  top: -30px;
   left: 50%;
   transform: translateX(-50%);
-  width: 70px;
-  height: 10px;
-  background: #000;
-  border: 1.5px solid #1c1917;
-  border-radius: 3px;
+  width: 76px;
+  height: 12px;
+  background: #090a0d;
+  border: 1.5px solid #27272a;
+  border-radius: 4px;
   z-index: 2;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
 }
 
-.mock-trolley-handle-button {
+.handle-thumb-btn {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 16px;
+  height: 4px;
+  background: #64748b;
+  border-radius: 2px;
+}
+
+/* Stamped Corner Armor with Hex Rivets */
+.mock-trolley-armor {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: #090a0d;
+  border: 1.5px solid #27272a;
+  z-index: 3;
+}
+
+.device-canvas-trolley.finish-silver .mock-trolley-armor {
+  background: #cbd0d8;
+  border-color: #64748b;
+}
+
+.mock-trolley-armor.top-left { top: -2px; left: -2px; border-top-left-radius: 24px; border-right: none; border-bottom: none; }
+.mock-trolley-armor.top-right { top: -2px; right: -2px; border-top-right-radius: 24px; border-left: none; border-bottom: none; }
+.mock-trolley-armor.bottom-left { bottom: -2px; left: -2px; border-bottom-left-radius: 24px; border-right: none; border-top: none; }
+.mock-trolley-armor.bottom-right { bottom: -2px; right: -2px; border-bottom-right-radius: 24px; border-left: none; border-top: none; }
+
+.armor-rivet {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #64748b 80%);
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.armor-rivet.r1 { top: 6px; left: 8px; }
+.armor-rivet.r2 { top: 14px; left: 14px; }
+.armor-rivet.r3 { top: 8px; left: 20px; }
+
+/* 3D Extruded Deep Grooves */
+.mock-trolley-deep-grooves {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+
+.luggage-groove-rib {
   width: 14px;
-  height: 3.5px;
-  background: #475569;
-  border-radius: 1px;
-}
-
-.mock-trolley-wheel {
-  position: absolute;
-  bottom: -12px;
-  width: 18px;
-  height: 18px;
-  background: #09090b;
-  border: 2.5px solid #3f3f46;
-  border-radius: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, #101114 0%, #3a3c44 35%, #090a0c 65%, #2a2c32 100%);
+  border-radius: 4px;
   box-shadow: 
-    0 4px 8px rgba(0,0,0,0.4),
-    inset 0 0 0 1px rgba(255,255,255,0.1);
-  z-index: -1;
+    inset 1px 1px 3px rgba(0, 0, 0, 0.85),
+    1px 1px 2px rgba(255, 255, 255, 0.08);
 }
 
-.mock-trolley-wheel-spoke {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  background: repeating-conic-gradient(#94a3b8 0% 25%, #475569 25% 50%);
-  border-radius: 50%;
-  border: 0.5px solid #000;
+.device-canvas-trolley.finish-silver .luggage-groove-rib {
+  background: linear-gradient(90deg, #717680 0%, #ffffff 35%, #60646c 65%, #a6abb4 100%);
 }
 
-.mock-trolley-wheel.left {
-  left: 24px;
-}
-
-.mock-trolley-wheel.right {
-  right: 24px;
-}
-
-.mock-trolley-zipper-line {
+.mock-trolley-center-seal {
   position: absolute;
   left: 50%;
   top: 0;
@@ -2511,112 +2821,120 @@ textarea.input-field {
   background: #000;
   transform: translateX(-50%);
   z-index: 1;
-  box-shadow: 0 0 3px rgba(255,255,255,0.06);
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.mock-trolley-tsa-latch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 22px;
+  background: linear-gradient(180deg, #475569 0%, #1e293b 100%);
+  border: 1px solid #000;
+  border-radius: 2px;
+  z-index: 4;
+}
+
+.mock-trolley-tsa-latch.top { top: 70px; }
+.mock-trolley-tsa-latch.bottom { bottom: 70px; }
+
+.tsa-keyway {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 6px;
+  background: #000;
+  border-radius: 1px;
 }
 
 .mock-trolley-side-handle {
   position: absolute;
-  left: -8px;
+  left: -9px;
   top: 50%;
   transform: translateY(-50%);
-  width: 8px;
-  height: 44px;
-  background: #1c1917;
+  width: 9px;
+  height: 48px;
+  background: #141517;
   border-radius: 4px 0 0 4px;
   border: 1.5px solid #000;
   border-right: none;
   z-index: 1;
 }
 
-/* Hard Corner Guards with Rivets */
-.mock-trolley-corner-guard {
+.mock-trolley-pro-wheel {
   position: absolute;
-  width: 28px;
-  height: 28px;
-  background: #0c0a09;
-  border: 2px solid #1c1917;
-  z-index: 3;
+  bottom: -14px;
+  width: 22px;
+  height: 22px;
+  z-index: -1;
 }
+.mock-trolley-pro-wheel.left { left: 24px; }
+.mock-trolley-pro-wheel.right { right: 24px; }
 
-.mock-trolley-corner-guard.top-left {
-  top: -2px;
-  left: -2px;
-  border-top-left-radius: 24px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.mock-trolley-corner-guard.top-right {
-  top: -2px;
-  right: -2px;
-  border-top-right-radius: 24px;
-  border-left: none;
-  border-bottom: none;
-}
-
-.mock-trolley-corner-guard.bottom-left {
-  bottom: -2px;
-  left: -2px;
-  border-bottom-left-radius: 24px;
-  border-right: none;
-  border-top: none;
-}
-
-.mock-trolley-corner-guard.bottom-right {
-  bottom: -2px;
-  right: -2px;
-  border-bottom-right-radius: 24px;
-  border-left: none;
-  border-top: none;
-}
-
-.mock-trolley-ridges-container {
+.wheel-rubber-tire {
   position: absolute;
-  top: 24px;
-  bottom: 24px;
-  left: 16px;
-  right: 16px;
-  display: flex;
-  justify-content: space-around;
-  pointer-events: none;
+  inset: 0;
+  background: #09090b;
+  border: 2.5px solid #3f3f46;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-.mock-trolley-ridge {
-  width: 14px;
-  height: 100%;
-  background: linear-gradient(90deg, #18181b 0%, #2e2e33 40%, #09090b 60%, #27272a 100%);
-  border-radius: 4px;
-  box-shadow: 
-    inset 1px 1px 3px rgba(0,0,0,0.8),
-    1px 1px 2px rgba(255,255,255,0.04);
+.wheel-ball-bearing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #64748b 80%);
+  border-radius: 50%;
+  border: 0.5px solid #000;
 }
 
-/* Skateboard Mockup */
+/* --------------------------------------------------------------------------
+   5. 7-PLY CANADIAN MAPLE SKATEBOARD DECK (PHOTOREALISTIC)
+   -------------------------------------------------------------------------- */
 .device-canvas-skateboard {
   position: relative;
-  width: 100px;
-  height: 360px;
-  /* Grip tape micro-texture */
-  background: 
-    radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1.5px) 0 0/3px 3px,
-    linear-gradient(180deg, #18181b 0%, #2e2e33 50%, #0c0c0e 100%) !important;
+  width: 105px;
+  height: 370px;
+  border-radius: 52px !important;
   border: 3px solid #09090b !important;
-  border-radius: 50px !important;
+  background: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1.5px) 0 0/3px 3px,
+    linear-gradient(180deg, #18191c 0%, #2b2c32 50%, #0d0e10 100%) !important;
   box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.8),
-    inset 0 0 0 1.5px rgba(255,255,255,0.08) !important;
+    0 35px 70px -15px rgba(0, 0, 0, 0.85),
+    0 15px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.1) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
-/* Wood Veneer Plys visible on side edges */
-.device-canvas-skateboard::after {
-  content: '';
+.device-canvas-skateboard.finish-silver {
+  background: 
+    radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1.5px) 0 0/3px 3px,
+    linear-gradient(180deg, #784a28 0%, #573319 50%, #381f0d 100%) !important;
+}
+
+.device-canvas-skateboard.finish-accent {
+  background: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1.5px) 0 0/3px 3px,
+    linear-gradient(180deg, #3730a3 0%, #1e1b4b 50%, #0f172a 100%) !important;
+}
+
+/* 7-Ply Colored Hard Rock Maple Veneer Outer Rim */
+.mock-skate-maple-laminate-ply {
   position: absolute;
-  inset: -1px;
-  border: 2px solid transparent;
-  border-radius: 50px;
+  inset: -2px;
+  border-radius: 54px;
   box-shadow: 
     0 0 0 1px #e11d48, /* Red Ply */
     0 0 0 2px #ca8a04, /* Yellow Ply */
@@ -2625,149 +2943,134 @@ textarea.input-field {
   opacity: 0.95;
 }
 
-.mock-skateboard-bolts {
+.mock-skate-diecut-center-line {
   position: absolute;
-  width: 16px;
-  height: 16px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 6px;
-}
-
-/* Bolt design */
-.mock-skateboard-bolts::before,
-.mock-skateboard-bolts::after {
-  content: '';
-  width: 5px;
-  height: 5px;
-  background: radial-gradient(circle at 35% 35%, #e2e8f0 20%, #64748b 80%);
-  border-radius: 50%;
-  border: 0.5px solid #09090b;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-}
-
-.mock-skateboard-bolts.top-left {
-  top: 40px;
-  left: 36px;
-}
-
-.mock-skateboard-bolts.top-right {
-  top: 40px;
-  right: 36px;
-}
-
-.mock-skateboard-bolts.bottom-left {
-  bottom: 40px;
-  left: 36px;
-}
-
-.mock-skateboard-bolts.bottom-right {
-  bottom: 40px;
-  right: 36px;
-}
-
-.mock-skateboard-center-stripe {
-  position: absolute;
-  top: 70px;
-  bottom: 70px;
+  top: 75px;
+  bottom: 75px;
   left: 50%;
   transform: translateX(-50%);
   width: 1px;
-  background: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.35);
   pointer-events: none;
 }
 
-.mock-skateboard-logo {
-  opacity: 0.85 !important;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 8px 10px;
+.mock-skate-hardware-mount {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mock-skate-hardware-mount.top { top: 44px; }
+.mock-skate-hardware-mount.bottom { bottom: 44px; }
+
+.allen-bolt {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  border: 1.5px solid #18181b;
-  box-shadow: 
-    0 3px 6px rgba(0,0,0,0.25),
-    inset 0 1px 2px rgba(255,255,255,0.8);
-  pointer-events: none;
-  user-select: none;
-  z-index: 2;
+  background: radial-gradient(circle at 35% 35%, #e2e8f0 20%, #475569 80%);
+  border: 0.5px solid #000;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-/* Notebook Mockup */
+/* --------------------------------------------------------------------------
+   6. MOLESKINE HARDCOVER JOURNAL (PHOTOREALISTIC)
+   -------------------------------------------------------------------------- */
 .device-canvas-notebook {
   position: relative;
   width: 220px;
-  height: 290px;
-  background: linear-gradient(135deg, #1f2937 0%, #0f172a 100%) !important;
-  border: 3.5px solid #000 !important;
-  border-radius: 12px !important;
+  height: 295px;
+  border-radius: 14px !important;
+  border: 3px solid #090a0d !important;
   box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.7),
-    inset 0 0 0 1px rgba(255,255,255,0.05) !important;
+    0 35px 70px -15px rgba(0, 0, 0, 0.85),
+    0 15px 30px -10px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
-/* Page Edges showing at right */
-.device-canvas-notebook::after {
-  content: '';
+/* Onyx Leather */
+.device-canvas-notebook.finish-dark {
+  background: linear-gradient(135deg, #27272a 0%, #18181b 50%, #09090b 100%) !important;
+}
+
+/* Cognac Leather */
+.device-canvas-notebook.finish-silver {
+  background: linear-gradient(135deg, #78350f 0%, #542207 50%, #290e03 100%) !important;
+  border-color: #290e03 !important;
+}
+
+/* Navy Blue Classic */
+.device-canvas-notebook.finish-accent {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%) !important;
+}
+
+.mock-notebook-debossed-border {
   position: absolute;
-  top: 6px;
-  bottom: 6px;
-  right: -5px;
-  width: 5px;
+  inset: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.mock-notebook-paper-strata {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  right: -6px;
+  width: 6px;
   background: repeating-linear-gradient(90deg, #fef3c7, #fef3c7 1px, #d97706 1px, #d97706 2px);
   border-radius: 0 4px 4px 0;
   border: 1px solid #78350f;
   z-index: -1;
 }
 
-.mock-notebook-spine {
+.mock-notebook-stitched-spine {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 16px;
+  width: 18px;
   background: #111827;
-  /* Stitch line */
-  border-right: 2px dashed rgba(255,255,255,0.15);
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+  border-right: 2px dashed rgba(255, 255, 255, 0.15);
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
   z-index: 3;
 }
 
-.mock-notebook-spine-rings {
+.mock-notebook-woven-elastic {
   position: absolute;
-  left: -5px;
-  top: 15px;
-  bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.notebook-ring {
-  width: 14px;
-  height: 6px;
-  background: linear-gradient(180deg, #cbd5e1 0%, #f1f5f9 40%, #475569 100%);
-  border-radius: 4px;
-  border: 1px solid #334155;
-  box-shadow: 1px 2px 3px rgba(0,0,0,0.4);
-}
-
-.mock-notebook-elastic-band {
-  position: absolute;
-  right: 24px;
-  top: -3.5px;
-  bottom: -3.5px;
-  width: 10px;
+  right: 26px;
+  top: -4px;
+  bottom: -4px;
+  width: 11px;
   background: #000;
   box-shadow: 
-    0 0 5px rgba(0,0,0,0.6),
-    inset 1px 0 0 rgba(255,255,255,0.1);
+    0 0 6px rgba(0, 0, 0, 0.7),
+    inset 1px 0 0 rgba(255, 255, 255, 0.15);
   z-index: 3;
   border-radius: 1px;
+}
+
+.mock-notebook-satin-ribbon {
+  position: absolute;
+  bottom: -18px;
+  left: 45%;
+  width: 8px;
+  height: 22px;
+  background: #dc2626;
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: -1;
 }
 
 
