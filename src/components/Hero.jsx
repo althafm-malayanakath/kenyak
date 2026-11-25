@@ -66,13 +66,15 @@ export default function Hero({ onShopNow, onPlaygroundClick, marqueeText }) {
             Shop Stickers <ArrowRight size={16} />
           </button>
           
-          <button 
-            onClick={onPlaygroundClick}
-            className="btn-neon-purple"
-            style={{ minWidth: '220px' }}
-          >
-            Sticker Playground <Laptop size={16} />
-          </button>
+          {onPlaygroundClick && (
+            <button 
+              onClick={onPlaygroundClick}
+              className="btn-neon-purple"
+              style={{ minWidth: '220px' }}
+            >
+              Sticker Playground <Laptop size={16} />
+            </button>
+          )}
         </div>
       </div>
     </section>

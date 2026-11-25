@@ -250,14 +250,14 @@ export default function App() {
       {/* Hero Display */}
       <Hero
         onShopNow={() => scrollToSection('shop-section')}
-        onPlaygroundClick={() => scrollToSection('playground-section')}
         title={siteSettings.heroTitle}
         subtitle={siteSettings.heroSubtitle}
         marqueeText={siteSettings.marqueeText}
         mysteryStickerPrice={siteSettings.mysteryStickerPrice}
       />
 
-      {/* Interactive Playground Section */}
+      {/* Interactive Playground Section (Temporarily hidden - will implement later) */}
+      {/* 
       <section id="playground-section" className="playground-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
           <StickerPlayground
@@ -269,6 +269,7 @@ export default function App() {
           />
         </div>
       </section>
+      */}
 
       {/* Catalog Filters & Product Grid */}
       <section id="shop-section" className="catalog-section" style={{ scrollMarginTop: '80px', flex: '1' }}>
@@ -313,7 +314,6 @@ export default function App() {
                   key={product.id}
                   product={product}
                   onAddToCart={handleAddToCart}
-                  onPlaygroundAdd={handlePlaygroundAdd}
                 />
               ))}
             </div>
@@ -386,7 +386,6 @@ export default function App() {
             <h4 className="footer-col-title">Quick Navigation</h4>
             <ul className="footer-links-list">
               <li><button onClick={() => scrollToSection('shop-section')}>Shop All Stickers</button></li>
-              <li><button onClick={() => scrollToSection('playground-section')}>Interactive Playground</button></li>
               <li><a href="#">Support & Returns</a></li>
               <li><a href="#">Order Tracking</a></li>
             </ul>

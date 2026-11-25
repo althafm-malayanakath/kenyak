@@ -51,13 +51,15 @@ export default function ProductCard({ product, onAddToCart, onPlaygroundAdd }) {
           )}
         </div>
 
-        {/* Playground Quick Add Link */}
-        <button
-          onClick={() => onPlaygroundAdd(product)}
-          className="try-on-btn"
-        >
-          ⚡ Try on Mockup
-        </button>
+        {/* Playground Quick Add Link (Hidden when playground is disabled) */}
+        {onPlaygroundAdd && (
+          <button
+            onClick={() => onPlaygroundAdd(product)}
+            className="try-on-btn"
+          >
+            ⚡ Try on Mockup
+          </button>
+        )}
       </div>
 
       {/* Product Details Panel */}
