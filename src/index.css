@@ -919,12 +919,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   STORY RING ORBS (INSTAGRAM / SNKRS ROUNDED CATEGORY CAROUSEL)
+   ROUNDED CATEGORY ORBS (REFINED & PROFESSIONAL HARDWARE FINISH)
    ========================================================================== */
 
 .categories-story-section {
-  padding: 50px 0 40px 0;
-  background: radial-gradient(circle at 50% 10%, rgba(217, 70, 239, 0.07) 0%, transparent 65%), var(--bg-dark);
+  padding: 44px 0 36px 0;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 60%), var(--bg-dark);
   position: relative;
   border-bottom: 1px solid var(--border-color);
   overflow: hidden;
@@ -934,9 +934,9 @@ h1, h2, h3, h4, h5, h6 {
 .story-orbs-container {
   display: flex;
   align-items: flex-start;
-  gap: 18px;
+  gap: 16px;
   overflow-x: auto;
-  padding: 16px 8px 24px 8px;
+  padding: 12px 8px 20px 8px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -948,8 +948,8 @@ h1, h2, h3, h4, h5, h6 {
 @media (min-width: 992px) {
   .story-orbs-container {
     justify-content: center;
-    gap: 32px;
-    padding: 20px 0 28px 0;
+    gap: 30px;
+    padding: 16px 0 24px 0;
   }
 }
 
@@ -964,23 +964,23 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
-  width: 96px;
+  width: 94px;
   text-decoration: none;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (min-width: 768px) {
   .story-orb-card {
-    width: 114px;
+    width: 110px;
     gap: 14px;
   }
 }
 
 .story-orb-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
 }
 
-/* The Animated Outer Glowing Story Ring */
+/* The Professional Outer Bezel Ring */
 .story-ring-outer {
   position: relative;
   width: 82px;
@@ -989,123 +989,78 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.14) 100%);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (min-width: 768px) {
   .story-ring-outer {
-    width: 98px;
-    height: 98px;
+    width: 96px;
+    height: 96px;
   }
 }
 
-/* Ambient Neon Glow behind the Ring */
-.story-ring-glow {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  background: var(--ring-gradient);
-  filter: blur(10px);
-  opacity: 0.3;
-  transition: opacity 0.3s ease, filter 0.3s ease;
-  z-index: 0;
+.story-orb-card:hover .story-ring-outer {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.35) 100%);
+  box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.7), 0 0 14px rgba(255, 255, 255, 0.15);
 }
 
-.story-orb-card:hover .story-ring-glow,
-.story-orb-card.active .story-ring-glow {
-  opacity: 0.85;
-  filter: blur(14px);
+.story-orb-card.active .story-ring-outer {
+  background: var(--orb-accent, var(--neon-yellow));
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.4), 0 6px 16px rgba(0, 0, 0, 0.6);
 }
 
-/* Rotating or Gradient Border Ring */
+/* Spacer Border Ring */
 .story-ring-border {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  padding: 3px;
-  background: var(--ring-gradient);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
-  z-index: 1;
-  transition: all 0.3s ease;
+  padding: 2.5px;
+  background: #0b0e14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.story-orb-card.active .story-ring-border {
-  box-shadow: 0 0 20px var(--orb-accent, var(--neon-yellow));
-  animation: story-spin 6s linear infinite;
-}
-
-@keyframes story-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Inner Circular Portal */
+/* Inner Circular Slate Portal */
 .story-orb-inner {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 30%, #1c2333 0%, #0c101a 75%, #05070c 100%);
-  border: 2px solid #000;
+  background: radial-gradient(circle at 45% 35%, #182030 0%, #0e121c 65%, #07090e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;
 }
 
-.story-orb-card.active .story-orb-inner {
-  animation: story-counter-spin 6s linear infinite;
-}
-
-@keyframes story-counter-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(-360deg); }
-}
-
-/* Floating 3D Sticker inside Orb */
+/* Floating Clean Sticker Inside */
 .story-sticker-img {
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.55));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
   pointer-events: none;
 }
 
 @media (min-width: 768px) {
   .story-sticker-img {
-    width: 66px;
-    height: 66px;
+    width: 64px;
+    height: 64px;
   }
 }
 
 .story-orb-card:hover .story-sticker-img {
-  transform: scale(1.18) rotate(6deg);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 10px var(--orb-accent, var(--neon-yellow)));
-}
-
-/* Floating Mini Emoji Badge on Orb */
-.story-orb-emoji-badge {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--bg-dark);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-  z-index: 2;
-  transition: transform 0.25s ease;
-}
-
-.story-orb-card:hover .story-orb-emoji-badge {
-  transform: scale(1.2);
+  transform: scale(1.12) translateY(-2px);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.75));
 }
 
 /* Label & Count Pill below orb */
@@ -1120,11 +1075,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .story-orb-title {
   font-family: var(--font-heading);
-  font-size: 0.76rem;
-  font-weight: 900;
+  font-size: 0.75rem;
+  font-weight: 800;
   color: var(--text-primary);
   text-transform: uppercase;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1138,11 +1093,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .story-orb-count-pill {
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   font-weight: 700;
   color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   padding: 1px 7px;
   border-radius: 999px;
   white-space: nowrap;
@@ -1150,8 +1105,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .story-orb-card.active .story-orb-count-pill {
-  background: rgba(251, 254, 33, 0.12);
-  border-color: rgba(251, 254, 33, 0.3);
+  background: rgba(250, 204, 21, 0.12);
+  border-color: rgba(250, 204, 21, 0.25);
   color: var(--neon-yellow);
 }
 

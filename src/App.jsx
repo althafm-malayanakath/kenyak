@@ -145,60 +145,42 @@ export default function App() {
     { id: 'bumper', label: 'Reflective Bumper' }
   ];
 
-  // Curated category Story Orbs (Instagram / SNKRS Style)
+  // Curated category Story Orbs (Clean & Professional Aesthetic)
   const categoryCards = [
     {
       id: 'all',
-      title: 'All Drops',
-      tag: 'ALL DROPS',
-      icon: '🔥',
+      title: 'All Designs',
       accentColor: 'var(--neon-yellow)',
-      gradient: 'conic-gradient(from 180deg at 50% 50%, #facc15 0deg, #fb923c 120deg, #e11d48 240deg, #facc15 360deg)',
       previewImage: '/stickers/WhatsApp Image 2026-07-13 at 3.25.11 PM (1).jpeg'
     },
     {
       id: 'tech',
       title: 'Tech & Dev',
-      tag: '10X DEV',
-      icon: '💻',
-      accentColor: 'var(--neon-cyan)',
-      gradient: 'conic-gradient(from 180deg at 50% 50%, #06b6d4 0deg, #3b82f6 120deg, #6366f1 240deg, #06b6d4 360deg)',
+      accentColor: '#38bdf8',
       previewImage: products.find(p => p.category === 'tech')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.27.41 PM.jpeg'
     },
     {
       id: 'anime',
       title: 'Anime & Waifu',
-      tag: 'OTAKU',
-      icon: '⚔️',
-      accentColor: 'var(--neon-purple)',
-      gradient: 'conic-gradient(from 180deg at 50% 50%, #d946ef 0deg, #ec4899 120deg, #8b5cf6 240deg, #d946ef 360deg)',
+      accentColor: '#c084fc',
       previewImage: products.find(p => p.category === 'anime')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.25.11 PM.jpeg'
     },
     {
       id: 'meme',
       title: 'Pop Memes',
-      tag: 'BRAINROT',
-      icon: '🐸',
-      accentColor: '#f59e0b',
-      gradient: 'conic-gradient(from 180deg at 50% 50%, #f59e0b 0deg, #10b981 120deg, #eab308 240deg, #f59e0b 360deg)',
+      accentColor: '#facc15',
       previewImage: products.find(p => p.category === 'meme')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.28.24 PM.jpeg'
     },
     {
       id: 'skins',
       title: 'Laptop Skins',
-      tag: 'FULL WRAP',
-      icon: '⚡',
-      accentColor: '#10b981',
-      gradient: 'conic-gradient(from 180deg at 50% 50%, #10b981 0deg, #06b6d4 120deg, #14b8a6 240deg, #10b981 360deg)',
+      accentColor: '#34d399',
       previewImage: products.find(p => p.category === 'skins')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.28.32 PM.jpeg'
     },
     {
       id: 'bumper',
       title: 'Reflective Decals',
-      tag: 'HIGH-VIS',
-      icon: '🚗',
-      accentColor: '#f43f5e',
-      gradient: 'conic-gradient(from 180deg at 50% 50%, #f43f5e 0deg, #fb923c 120deg, #ef4444 240deg, #f43f5e 360deg)',
+      accentColor: '#fb7185',
       previewImage: products.find(p => p.category === 'bumper')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.28.44 PM.jpeg'
     }
   ];
@@ -382,14 +364,12 @@ export default function App() {
                   onClick={() => handleCategoryCardClick(cat.id)}
                   className={`story-orb-card ${isActive ? 'active' : ''}`}
                   style={{ 
-                    '--ring-gradient': cat.gradient, 
                     '--orb-accent': cat.accentColor 
                   }}
                   title={`View ${cat.title} collection`}
                 >
-                  {/* Outer Glowing Story Ring */}
+                  {/* Outer Refined Ring Bezel */}
                   <div className="story-ring-outer">
-                    <div className="story-ring-glow"></div>
                     <div className="story-ring-border">
                       <div className="story-orb-inner">
                         <img 
@@ -398,7 +378,6 @@ export default function App() {
                           className="story-sticker-img" 
                           loading="lazy"
                         />
-                        <span className="story-orb-emoji-badge">{cat.icon}</span>
                       </div>
                     </div>
                   </div>
