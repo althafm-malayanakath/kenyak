@@ -145,52 +145,61 @@ export default function App() {
     { id: 'bumper', label: 'Reflective Bumper' }
   ];
 
-  // Curated category cards for "Explore by Vibe"
+  // Curated category Story Orbs (Instagram / SNKRS Style)
   const categoryCards = [
+    {
+      id: 'all',
+      title: 'All Drops',
+      tag: 'ALL DROPS',
+      icon: '🔥',
+      accentColor: 'var(--neon-yellow)',
+      gradient: 'conic-gradient(from 180deg at 50% 50%, #facc15 0deg, #fb923c 120deg, #e11d48 240deg, #facc15 360deg)',
+      previewImage: '/stickers/WhatsApp Image 2026-07-13 at 3.25.11 PM (1).jpeg'
+    },
     {
       id: 'tech',
       title: 'Tech & Dev',
-      subtitle: 'Terminal junkies, git ninjas & 10x engineers',
-      tag: 'DEV CULTURE',
+      tag: '10X DEV',
       icon: '💻',
       accentColor: 'var(--neon-cyan)',
-      bgGradient: 'linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(14, 165, 233, 0.03) 100%)'
+      gradient: 'conic-gradient(from 180deg at 50% 50%, #06b6d4 0deg, #3b82f6 120deg, #6366f1 240deg, #06b6d4 360deg)',
+      previewImage: products.find(p => p.category === 'tech')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.27.41 PM.jpeg'
     },
     {
       id: 'anime',
       title: 'Anime & Waifu',
-      subtitle: 'Cyberpunk, shonen & kawaii aesthetics',
-      tag: 'OTAKU DROP',
+      tag: 'OTAKU',
       icon: '⚔️',
       accentColor: 'var(--neon-purple)',
-      bgGradient: 'linear-gradient(135deg, rgba(217, 70, 239, 0.12) 0%, rgba(168, 85, 247, 0.03) 100%)'
+      gradient: 'conic-gradient(from 180deg at 50% 50%, #d946ef 0deg, #ec4899 120deg, #8b5cf6 240deg, #d946ef 360deg)',
+      previewImage: products.find(p => p.category === 'anime')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.25.11 PM.jpeg'
     },
     {
       id: 'meme',
       title: 'Pop Memes',
-      subtitle: 'Viral internet humor & satire culture',
-      tag: 'BRAINROT ELITE',
+      tag: 'BRAINROT',
       icon: '🐸',
-      accentColor: 'var(--neon-yellow)',
-      bgGradient: 'linear-gradient(135deg, rgba(250, 204, 21, 0.12) 0%, rgba(245, 158, 11, 0.03) 100%)'
+      accentColor: '#f59e0b',
+      gradient: 'conic-gradient(from 180deg at 50% 50%, #f59e0b 0deg, #10b981 120deg, #eab308 240deg, #f59e0b 360deg)',
+      previewImage: products.find(p => p.category === 'meme')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.28.24 PM.jpeg'
     },
     {
       id: 'skins',
       title: 'Laptop Skins',
-      subtitle: 'Full-lid protection with textured vinyl wraps',
-      tag: 'FULL WRAPS',
+      tag: 'FULL WRAP',
       icon: '⚡',
       accentColor: '#10b981',
-      bgGradient: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.03) 100%)'
+      gradient: 'conic-gradient(from 180deg at 50% 50%, #10b981 0deg, #06b6d4 120deg, #14b8a6 240deg, #10b981 360deg)',
+      previewImage: products.find(p => p.category === 'skins')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.28.32 PM.jpeg'
     },
     {
       id: 'bumper',
       title: 'Reflective Decals',
-      subtitle: 'All-weather reflective stickers for cars & bikes',
-      tag: 'WEATHERPROOF',
+      tag: 'HIGH-VIS',
       icon: '🚗',
       accentColor: '#f43f5e',
-      bgGradient: 'linear-gradient(135deg, rgba(244, 63, 94, 0.12) 0%, rgba(225, 29, 72, 0.03) 100%)'
+      gradient: 'conic-gradient(from 180deg at 50% 50%, #f43f5e 0deg, #fb923c 120deg, #ef4444 240deg, #f43f5e 360deg)',
+      previewImage: products.find(p => p.category === 'bumper')?.image || '/stickers/WhatsApp Image 2026-07-13 at 3.28.44 PM.jpeg'
     }
   ];
 
@@ -346,53 +355,60 @@ export default function App() {
         </div>
       </section>
 
-      {/* 2. EXPLORE BY VIBE (CURATED CATEGORY CARDS) */}
-      <section id="categories-section" className="categories-showcase-section" style={{ scrollMarginTop: '80px' }}>
+      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS) */}
+      <section id="categories-section" className="categories-story-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
-          <div className="section-header-row">
+          <div className="section-header-row" style={{ marginBottom: '24px' }}>
             <div className="section-title-wrapper">
               <span className="section-badge-purple">
-                <Sparkles size={14} /> CURATED PACKS
+                <Sparkles size={14} /> CURATED DROPS
               </span>
-              <h2>Explore by Vibe</h2>
-              <p>Pick your aesthetic — click any pack to jump straight into matching designs.</p>
+              <h2>Explore Categories</h2>
+              <p>Tap a story bubble to reveal exclusive curated drops for your setup.</p>
             </div>
           </div>
 
-          <div className="category-cards-grid">
+          {/* Story Ring Horizontal Scroller */}
+          <div className="story-orbs-container">
             {categoryCards.map((cat) => {
-              const count = products.filter(p => p.category === cat.id).length;
+              const count = cat.id === 'all' 
+                ? products.length 
+                : products.filter(p => p.category === cat.id).length;
+              const isActive = selectedCategory === cat.id;
+
               return (
-                <div
+                <button
                   key={cat.id}
                   onClick={() => handleCategoryCardClick(cat.id)}
-                  className="vibe-category-card"
-                  style={{
-                    background: cat.bgGradient,
-                    borderColor: 'var(--border-color)',
-                    '--card-accent': cat.accentColor
+                  className={`story-orb-card ${isActive ? 'active' : ''}`}
+                  style={{ 
+                    '--ring-gradient': cat.gradient, 
+                    '--orb-accent': cat.accentColor 
                   }}
+                  title={`View ${cat.title} collection`}
                 >
-                  <div className="vibe-card-top">
-                    <span className="vibe-card-tag" style={{ color: cat.accentColor, borderColor: cat.accentColor }}>
-                      {cat.tag}
-                    </span>
-                    <span className="vibe-card-count">
-                      {count} Decals
-                    </span>
+                  {/* Outer Glowing Story Ring */}
+                  <div className="story-ring-outer">
+                    <div className="story-ring-glow"></div>
+                    <div className="story-ring-border">
+                      <div className="story-orb-inner">
+                        <img 
+                          src={cat.previewImage} 
+                          alt={cat.title} 
+                          className="story-sticker-img" 
+                          loading="lazy"
+                        />
+                        <span className="story-orb-emoji-badge">{cat.icon}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="vibe-card-body">
-                    <div className="vibe-card-icon">{cat.icon}</div>
-                    <h3 className="vibe-card-title">{cat.title}</h3>
-                    <p className="vibe-card-sub">{cat.subtitle}</p>
+                  {/* Category Details Underneath */}
+                  <div className="story-orb-meta">
+                    <span className="story-orb-title">{cat.title}</span>
+                    <span className="story-orb-count-pill">{count} Decals</span>
                   </div>
-
-                  <div className="vibe-card-footer">
-                    <span>Explore Pack</span>
-                    <ChevronRight size={16} />
-                  </div>
-                </div>
+                </button>
               );
             })}
           </div>
