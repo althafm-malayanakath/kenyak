@@ -10,7 +10,7 @@ import AdminPortal from './components/AdminPortal';
 import { db, isFirebaseConfigured } from './firebase';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { PRODUCTS } from './data/products';
-import { Mail, Instagram, Twitter, Phone } from 'lucide-react';
+import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronRight } from 'lucide-react';
 
 export default function App() {
   // Cart state persisted in localStorage
@@ -145,6 +145,65 @@ export default function App() {
     { id: 'bumper', label: 'Reflective Bumper' }
   ];
 
+  // Curated category cards for "Explore by Vibe"
+  const categoryCards = [
+    {
+      id: 'tech',
+      title: 'Tech & Dev',
+      subtitle: 'Terminal junkies, git ninjas & 10x engineers',
+      tag: 'DEV CULTURE',
+      icon: '💻',
+      accentColor: 'var(--neon-cyan)',
+      bgGradient: 'linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(14, 165, 233, 0.03) 100%)'
+    },
+    {
+      id: 'anime',
+      title: 'Anime & Waifu',
+      subtitle: 'Cyberpunk, shonen & kawaii aesthetics',
+      tag: 'OTAKU DROP',
+      icon: '⚔️',
+      accentColor: 'var(--neon-purple)',
+      bgGradient: 'linear-gradient(135deg, rgba(217, 70, 239, 0.12) 0%, rgba(168, 85, 247, 0.03) 100%)'
+    },
+    {
+      id: 'meme',
+      title: 'Pop Memes',
+      subtitle: 'Viral internet humor & satire culture',
+      tag: 'BRAINROT ELITE',
+      icon: '🐸',
+      accentColor: 'var(--neon-yellow)',
+      bgGradient: 'linear-gradient(135deg, rgba(250, 204, 21, 0.12) 0%, rgba(245, 158, 11, 0.03) 100%)'
+    },
+    {
+      id: 'skins',
+      title: 'Laptop Skins',
+      subtitle: 'Full-lid protection with textured vinyl wraps',
+      tag: 'FULL WRAPS',
+      icon: '⚡',
+      accentColor: '#10b981',
+      bgGradient: 'linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.03) 100%)'
+    },
+    {
+      id: 'bumper',
+      title: 'Reflective Decals',
+      subtitle: 'All-weather reflective stickers for cars & bikes',
+      tag: 'WEATHERPROOF',
+      icon: '🚗',
+      accentColor: '#f43f5e',
+      bgGradient: 'linear-gradient(135deg, rgba(244, 63, 94, 0.12) 0%, rgba(225, 29, 72, 0.03) 100%)'
+    }
+  ];
+
+  // Top sellers selection (isBestSeller first, fallback to highest rated)
+  const topSellers = products.filter(p => p.isBestSeller).length >= 4
+    ? products.filter(p => p.isBestSeller).slice(0, 8)
+    : [...products].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 8);
+
+  const handleCategoryCardClick = (catId) => {
+    setSelectedCategory(catId);
+    scrollToSection('shop-section');
+  };
+
   // Cart operations
   const handleAddToCart = (product) => {
     setCart((prevCart) => {
@@ -256,20 +315,89 @@ export default function App() {
         mysteryStickerPrice={siteSettings.mysteryStickerPrice}
       />
 
-      {/* Interactive Playground Section (Temporarily hidden - will implement later) */}
-      {/* 
-      <section id="playground-section" className="playground-section" style={{ scrollMarginTop: '80px' }}>
+      {/* 1. TOP SELLERS / THE HALL OF FAME */}
+      <section id="top-sellers-section" className="bestsellers-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
-          <StickerPlayground
-            playgroundStickers={playgroundStickers}
-            onRemoveSticker={handleRemoveSticker}
-            onUpdateSticker={handleUpdateSticker}
-            onClearPlayground={handleClearPlayground}
-            onAddAllToCart={handleAddAllPlaygroundToCart}
-          />
+          <div className="section-header-row">
+            <div className="section-title-wrapper">
+              <span className="section-badge-hot">
+                <Flame size={14} /> CROWD FAVORITES
+              </span>
+              <h2>The Hall of Fame</h2>
+              <p>Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.</p>
+            </div>
+            <button 
+              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
+              className="section-view-all-btn"
+            >
+              Browse All ({products.length}) <ArrowRight size={14} />
+            </button>
+          </div>
+
+          <div className="products-grid bestsellers-grid">
+            {topSellers.map((product) => (
+              <ProductCard
+                key={`bestseller-${product.id}`}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
         </div>
       </section>
-      */}
+
+      {/* 2. EXPLORE BY VIBE (CURATED CATEGORY CARDS) */}
+      <section id="categories-section" className="categories-showcase-section" style={{ scrollMarginTop: '80px' }}>
+        <div className="container">
+          <div className="section-header-row">
+            <div className="section-title-wrapper">
+              <span className="section-badge-purple">
+                <Sparkles size={14} /> CURATED PACKS
+              </span>
+              <h2>Explore by Vibe</h2>
+              <p>Pick your aesthetic — click any pack to jump straight into matching designs.</p>
+            </div>
+          </div>
+
+          <div className="category-cards-grid">
+            {categoryCards.map((cat) => {
+              const count = products.filter(p => p.category === cat.id).length;
+              return (
+                <div
+                  key={cat.id}
+                  onClick={() => handleCategoryCardClick(cat.id)}
+                  className="vibe-category-card"
+                  style={{
+                    background: cat.bgGradient,
+                    borderColor: 'var(--border-color)',
+                    '--card-accent': cat.accentColor
+                  }}
+                >
+                  <div className="vibe-card-top">
+                    <span className="vibe-card-tag" style={{ color: cat.accentColor, borderColor: cat.accentColor }}>
+                      {cat.tag}
+                    </span>
+                    <span className="vibe-card-count">
+                      {count} Decals
+                    </span>
+                  </div>
+
+                  <div className="vibe-card-body">
+                    <div className="vibe-card-icon">{cat.icon}</div>
+                    <h3 className="vibe-card-title">{cat.title}</h3>
+                    <p className="vibe-card-sub">{cat.subtitle}</p>
+                  </div>
+
+                  <div className="vibe-card-footer">
+                    <span>Explore Pack</span>
+                    <ChevronRight size={16} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       {/* Catalog Filters & Product Grid */}
       <section id="shop-section" className="catalog-section" style={{ scrollMarginTop: '80px', flex: '1' }}>
@@ -385,6 +513,8 @@ export default function App() {
           <div className="footer-column">
             <h4 className="footer-col-title">Quick Navigation</h4>
             <ul className="footer-links-list">
+              <li><button onClick={() => scrollToSection('top-sellers-section')}>Top Sellers</button></li>
+              <li><button onClick={() => scrollToSection('categories-section')}>Explore by Vibe</button></li>
               <li><button onClick={() => scrollToSection('shop-section')}>Shop All Stickers</button></li>
               <li><a href="#">Support & Returns</a></li>
               <li><a href="#">Order Tracking</a></li>
