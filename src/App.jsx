@@ -10,7 +10,7 @@ import AdminPortal from './components/AdminPortal';
 import { db, isFirebaseConfigured } from './firebase';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { PRODUCTS } from './data/products';
-import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronRight } from 'lucide-react';
+import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronRight, Crown, Zap } from 'lucide-react';
 
 export default function App() {
   // Cart state persisted in localStorage
@@ -185,10 +185,26 @@ export default function App() {
     }
   ];
 
-  // Top sellers selection (isBestSeller first, fallback to highest rated)
-  const topSellers = products.filter(p => p.isBestSeller).length >= 4
-    ? products.filter(p => p.isBestSeller).slice(0, 8)
-    : [...products].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 8);
+  // 1. Hot Items selection (high-hype badges: HOT ITEM, TRENDING, NEW DROP, HOLOGRAPHIC, LIMITED, or top discounts)
+  const hotBadges = ['HOT ITEM', 'TRENDING', 'NEW DROP', 'HOLOGRAPHIC', 'LIMITED', 'LIMITED DROP'];
+  const hotProducts = products
+    .filter(p => hotBadges.includes(p.badge) || (p.badge && p.badge.toLowerCase().includes('hot')) || (p.badge && p.badge.toLowerCase().includes('trend')))
+    .slice(0, 8);
+
+  if (hotProducts.length < 4) {
+    const additional = [...products]
+      .filter(p => !hotProducts.some(hp => hp.id === p.id))
+      .sort((a, b) => ((b.compareAtPrice - b.price) / (b.compareAtPrice || 1)) - ((a.compareAtPrice - a.price) / (a.compareAtPrice || 1)))
+      .slice(0, 8 - hotProducts.length);
+    hotProducts.push(...additional);
+  }
+
+  // 2. Best Sellers selection (isBestSeller items, ensuring distinct picks from hotProducts for maximum variety)
+  const hotIds = new Set(hotProducts.map(p => p.id));
+  const distinctBestSellers = products.filter(p => p.isBestSeller && !hotIds.has(p.id));
+  const topSellers = distinctBestSellers.length >= 4
+    ? distinctBestSellers.slice(0, 8)
+    : products.filter(p => p.isBestSeller).slice(0, 8);
 
   const handleCategoryCardClick = (catId) => {
     setSelectedCategory(catId);
@@ -306,29 +322,29 @@ export default function App() {
         mysteryStickerPrice={siteSettings.mysteryStickerPrice}
       />
 
-      {/* 1. TOP SELLERS / THE HALL OF FAME */}
-      <section id="top-sellers-section" className="bestsellers-section" style={{ scrollMarginTop: '80px' }}>
+      {/* 1. HOT ITEMS / TRENDING DROPS */}
+      <section id="hot-items-section" className="hot-items-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
           <div className="section-header-row">
             <div className="section-title-wrapper">
               <span className="section-badge-hot">
-                <Flame size={14} /> CROWD FAVORITES
+                <Flame size={14} /> TRENDING RIGHT NOW
               </span>
-              <h2>The Hall of Fame</h2>
-              <p>Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.</p>
+              <h2>Hot Drops & Viral Picks</h2>
+              <p>High-voltage drops, viral holographic designs & fastest-selling vinyl stickers generating heat.</p>
             </div>
             <button 
               onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
-              className="section-view-all-btn"
+              className="section-view-all-btn section-view-all-btn-hot"
             >
               Browse All ({products.length}) <ArrowRight size={14} />
             </button>
           </div>
 
-          <div className="products-grid bestsellers-grid">
-            {topSellers.map((product) => (
+          <div className="products-grid hot-items-grid">
+            {hotProducts.map((product) => (
               <ProductCard
-                key={`bestseller-${product.id}`}
+                key={`hot-${product.id}`}
                 product={product}
                 onAddToCart={handleAddToCart}
               />
@@ -337,22 +353,24 @@ export default function App() {
         </div>
       </section>
 
-      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS) */}
+      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS - AUTO SCROLLING) */}
       <section id="categories-section" className="categories-story-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
-          <div className="section-header-row" style={{ marginBottom: '24px' }}>
+          <div className="section-header-row" style={{ marginBottom: '20px' }}>
             <div className="section-title-wrapper">
               <span className="section-badge-purple">
                 <Sparkles size={14} /> CURATED DROPS
               </span>
-              <h2>Explore Categories</h2>
-              <p>Tap a story bubble to reveal exclusive curated drops for your setup.</p>
+              <h2>Explore Collections</h2>
+              <p>Tap a universe to explore handpicked decals engineered for your laptops, bottles & rigs.</p>
             </div>
           </div>
+        </div>
 
-          {/* Story Ring Horizontal Scroller */}
-          <div className="story-orbs-container">
-            {categoryCards.map((cat) => {
+        {/* Story Ring Marquee Auto-Scroller with Edge Gradients */}
+        <div className="story-orbs-marquee-wrapper">
+          <div className="story-orbs-marquee-track">
+            {[...categoryCards, ...categoryCards, ...categoryCards].map((cat, idx) => {
               const count = cat.id === 'all' 
                 ? products.length 
                 : products.filter(p => p.category === cat.id).length;
@@ -360,7 +378,7 @@ export default function App() {
 
               return (
                 <button
-                  key={cat.id}
+                  key={`${cat.id}-${idx}`}
                   onClick={() => handleCategoryCardClick(cat.id)}
                   className={`story-orb-card ${isActive ? 'active' : ''}`}
                   style={{ 
@@ -390,6 +408,37 @@ export default function App() {
                 </button>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. BEST SELLERS / THE HALL OF FAME */}
+      <section id="top-sellers-section" className="bestsellers-section" style={{ scrollMarginTop: '80px' }}>
+        <div className="container">
+          <div className="section-header-row">
+            <div className="section-title-wrapper">
+              <span className="section-badge-gold">
+                <Crown size={14} /> ALL-TIME CHAMPIONS
+              </span>
+              <h2>The Hall of Fame</h2>
+              <p>Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.</p>
+            </div>
+            <button 
+              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
+              className="section-view-all-btn"
+            >
+              Browse All ({products.length}) <ArrowRight size={14} />
+            </button>
+          </div>
+
+          <div className="products-grid bestsellers-grid">
+            {topSellers.map((product) => (
+              <ProductCard
+                key={`bestseller-${product.id}`}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -508,8 +557,9 @@ export default function App() {
           <div className="footer-column">
             <h4 className="footer-col-title">Quick Navigation</h4>
             <ul className="footer-links-list">
-              <li><button onClick={() => scrollToSection('top-sellers-section')}>Top Sellers</button></li>
-              <li><button onClick={() => scrollToSection('categories-section')}>Explore by Vibe</button></li>
+              <li><button onClick={() => scrollToSection('hot-items-section')}>🔥 Hot Drops</button></li>
+              <li><button onClick={() => scrollToSection('categories-section')}>Explore Collections</button></li>
+              <li><button onClick={() => scrollToSection('top-sellers-section')}>The Hall of Fame</button></li>
               <li><button onClick={() => scrollToSection('shop-section')}>Shop All Stickers</button></li>
               <li><a href="#">Support & Returns</a></li>
               <li><a href="#">Order Tracking</a></li>
