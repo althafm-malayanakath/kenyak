@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCard from './components/ProductCard';
-import DualBentoShowcase from './components/DualBentoShowcase';
 import CartDrawer from './components/CartDrawer';
 import StickerPlayground from './components/StickerPlayground';
 import CheckoutModal from './components/CheckoutModal';
@@ -11,7 +10,7 @@ import AdminPortal from './components/AdminPortal';
 import { db, isFirebaseConfigured } from './firebase';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { PRODUCTS } from './data/products';
-import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronLeft, ChevronRight, Crown, Zap } from 'lucide-react';
+import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronRight, ChevronLeft, Crown, Zap } from 'lucide-react';
 
 export default function App() {
   // Cart state persisted in localStorage
@@ -212,35 +211,120 @@ export default function App() {
     scrollToSection('shop-section');
   };
 
-  // Category horizontal scroll controls & drag-to-scroll
+  // Category Orbs Scrollable & Auto-scroll logic
   const categoryScrollRef = useRef(null);
-  const isDraggingRef = useRef(false);
+  const isDownRef = useRef(false);
   const startXRef = useRef(0);
-  const scrollLeftRef = useRef(0);
+  const scrollLeftStartRef = useRef(0);
+  const isDraggingRef = useRef(false);
 
   const handleMouseDown = (e) => {
-    isDraggingRef.current = true;
-    startXRef.current = e.pageX - categoryScrollRef.current.offsetLeft;
-    scrollLeftRef.current = categoryScrollRef.current.scrollLeft;
+    const container = categoryScrollRef.current;
+    if (!container) return;
+    isDownRef.current = true;
+    isDraggingRef.current = false;
+    startXRef.current = e.pageX - container.offsetLeft;
+    scrollLeftStartRef.current = container.scrollLeft;
+    container.classList.add('is-dragging');
   };
 
   const handleMouseMove = (e) => {
-    if (!isDraggingRef.current) return;
+    if (!isDownRef.current) return;
+    const container = categoryScrollRef.current;
+    if (!container) return;
     e.preventDefault();
-    const x = e.pageX - categoryScrollRef.current.offsetLeft;
-    const walk = (x - startXRef.current) * 1.5;
-    categoryScrollRef.current.scrollLeft = scrollLeftRef.current - walk;
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startXRef.current) * 1.4;
+    if (Math.abs(walk) > 4) {
+      isDraggingRef.current = true;
+    }
+    container.scrollLeft = scrollLeftStartRef.current - walk;
   };
 
   const handleMouseUp = () => {
-    isDraggingRef.current = false;
+    isDownRef.current = false;
+    categoryScrollRef.current?.classList.remove('is-dragging');
+    setTimeout(() => {
+      isDraggingRef.current = false;
+    }, 60);
   };
 
-  const scrollCategories = (dir) => {
-    if (categoryScrollRef.current) {
-      categoryScrollRef.current.scrollBy({ left: dir * 280, behavior: 'smooth' });
-    }
+  const handleManualScroll = (direction) => {
+    const container = categoryScrollRef.current;
+    if (!container) return;
+    const scrollDelta = direction === 'left' ? -280 : 280;
+    container.scrollBy({ left: scrollDelta, behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    const container = categoryScrollRef.current;
+    if (!container) return;
+
+    let animId;
+    let isPaused = false;
+    let resumeTimer = null;
+
+    const pause = () => {
+      isPaused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+    };
+
+    const resumeWithDelay = (delay = 2500) => {
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        isPaused = false;
+      }, delay);
+    };
+
+    const onPointerEnter = () => pause();
+    const onPointerLeave = () => {
+      if (!isDownRef.current) resumeWithDelay(1500);
+    };
+    const onTouchStart = () => pause();
+    const onTouchEnd = () => resumeWithDelay(2500);
+    const onWheel = () => {
+      pause();
+      resumeWithDelay(2000);
+    };
+
+    container.addEventListener('mouseenter', onPointerEnter);
+    container.addEventListener('mouseleave', onPointerLeave);
+    container.addEventListener('touchstart', onTouchStart, { passive: true });
+    container.addEventListener('touchend', onTouchEnd, { passive: true });
+    container.addEventListener('wheel', onWheel, { passive: true });
+
+    let lastTime = performance.now();
+    const tick = (now) => {
+      const delta = now - lastTime;
+      lastTime = now;
+
+      if (!isPaused && !isDownRef.current && container) {
+        // Continuous gentle gliding (~30px / sec)
+        container.scrollLeft += delta * 0.03;
+
+        // Wrap around seamlessly (cards are duplicated 3x)
+        const oneThird = container.scrollWidth / 3;
+        if (container.scrollLeft >= oneThird * 2) {
+          container.scrollLeft -= oneThird;
+        } else if (container.scrollLeft <= 0) {
+          container.scrollLeft += oneThird;
+        }
+      }
+      animId = requestAnimationFrame(tick);
+    };
+
+    animId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      if (resumeTimer) clearTimeout(resumeTimer);
+      container.removeEventListener('mouseenter', onPointerEnter);
+      container.removeEventListener('mouseleave', onPointerLeave);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('wheel', onWheel);
+    };
+  }, []);
 
   // Cart operations
   const handleAddToCart = (product) => {
@@ -353,18 +437,38 @@ export default function App() {
         mysteryStickerPrice={siteSettings.mysteryStickerPrice}
       />
 
-      {/* 1. DUAL BENTO SHOWCASE: THE VAULT (HEAT VS HERITAGE) */}
-      <DualBentoShowcase
-        hotProducts={hotProducts}
-        topSellers={topSellers}
-        onAddToCart={handleAddToCart}
-        onExploreShop={(catId) => {
-          setSelectedCategory(catId);
-          scrollToSection('shop-section');
-        }}
-      />
+      {/* 1. HOT ITEMS / TRENDING DROPS */}
+      <section id="hot-items-section" className="hot-items-section" style={{ scrollMarginTop: '80px' }}>
+        <div className="container">
+          <div className="section-header-row">
+            <div className="section-title-wrapper">
+              <span className="section-badge-hot">
+                <Flame size={14} /> TRENDING RIGHT NOW
+              </span>
+              <h2>Hot Drops & Viral Picks</h2>
+              <p>High-voltage drops, viral holographic designs & fastest-selling vinyl stickers generating heat.</p>
+            </div>
+            <button 
+              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
+              className="section-view-all-btn section-view-all-btn-hot"
+            >
+              Browse All ({products.length}) <ArrowRight size={14} />
+            </button>
+          </div>
 
-      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS - SMOOTH SCROLLABLE) */}
+          <div className="products-grid hot-items-grid">
+            {hotProducts.map((product) => (
+              <ProductCard
+                key={`hot-${product.id}`}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS - AUTO SCROLLING) */}
       <section id="categories-section" className="categories-story-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
           <div className="section-header-row" style={{ marginBottom: '20px' }}>
@@ -375,77 +479,114 @@ export default function App() {
               <h2>Explore Collections</h2>
               <p>Tap a universe to explore handpicked decals engineered for your laptops, bottles & rigs.</p>
             </div>
-            
-            {/* Scroll Navigation Arrows */}
-            <div style={{ display: 'flex', gap: '8px', alignSelf: 'flex-end' }}>
-              <button 
-                className="story-nav-btn" 
-                onClick={() => scrollCategories(-1)} 
-                aria-label="Previous categories"
-                title="Scroll left"
-              >
-                <ChevronLeft size={18} />
-              </button>
-              <button 
-                className="story-nav-btn" 
-                onClick={() => scrollCategories(1)} 
-                aria-label="Next categories"
-                title="Scroll right"
-              >
-                <ChevronRight size={18} />
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* Freely Scrollable / Swipeable Story Orbs Track */}
-        <div className="story-orbs-wrapper">
-          <div 
-            className="story-orbs-scroll-container" 
+        {/* Interactive & Auto-Scrolling Category Orbs Scroller */}
+        <div className="story-orbs-scroll-wrapper">
+          {/* Desktop Navigation Arrows */}
+          <button
+            type="button"
+            className="story-orb-nav-btn prev"
+            onClick={() => handleManualScroll('left')}
+            aria-label="Scroll categories left"
+          >
+            <ChevronLeft size={20} />
+          </button>
+
+          <div
             ref={categoryScrollRef}
+            className="story-orbs-scroll-container"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
           >
-            {categoryCards.map((cat) => {
-              const count = cat.id === 'all' 
-                ? products.length 
-                : products.filter(p => p.category === cat.id).length;
-              const isActive = selectedCategory === cat.id;
+            <div className="story-orbs-track">
+              {[...categoryCards, ...categoryCards, ...categoryCards].map((cat, idx) => {
+                const count = cat.id === 'all' 
+                  ? products.length 
+                  : products.filter(p => p.category === cat.id).length;
+                const isActive = selectedCategory === cat.id;
 
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => handleCategoryCardClick(cat.id)}
-                  className={`story-orb-card ${isActive ? 'active' : ''}`}
-                  style={{ 
-                    '--orb-accent': cat.accentColor 
-                  }}
-                  title={`View ${cat.title} collection`}
-                >
-                  {/* Outer Refined Ring Bezel */}
-                  <div className="story-ring-outer">
-                    <div className="story-ring-border">
-                      <div className="story-orb-inner">
-                        <img 
-                          src={cat.previewImage} 
-                          alt={cat.title} 
-                          className="story-sticker-img" 
-                          loading="lazy"
-                        />
+                return (
+                  <button
+                    key={`${cat.id}-${idx}`}
+                    type="button"
+                    onClick={() => {
+                      if (isDraggingRef.current) return;
+                      handleCategoryCardClick(cat.id);
+                    }}
+                    className={`story-orb-card ${isActive ? 'active' : ''}`}
+                    style={{ 
+                      '--orb-accent': cat.accentColor 
+                    }}
+                    title={`View ${cat.title} collection`}
+                  >
+                    {/* Outer Refined Ring Bezel */}
+                    <div className="story-ring-outer">
+                      <div className="story-ring-border">
+                        <div className="story-orb-inner">
+                          <img 
+                            src={cat.previewImage} 
+                            alt={cat.title} 
+                            className="story-sticker-img" 
+                            loading="lazy"
+                            draggable={false}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Category Details Underneath */}
-                  <div className="story-orb-meta">
-                    <span className="story-orb-title">{cat.title}</span>
-                    <span className="story-orb-count-pill">{count} Decals</span>
-                  </div>
-                </button>
-              );
-            })}
+                    {/* Category Details Underneath */}
+                    <div className="story-orb-meta">
+                      <span className="story-orb-title">{cat.title}</span>
+                      <span className="story-orb-count-pill">{count} Decals</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="story-orb-nav-btn next"
+            onClick={() => handleManualScroll('right')}
+            aria-label="Scroll categories right"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </section>
+
+      {/* 3. BEST SELLERS / THE HALL OF FAME */}
+      <section id="top-sellers-section" className="bestsellers-section" style={{ scrollMarginTop: '80px' }}>
+        <div className="container">
+          <div className="section-header-row">
+            <div className="section-title-wrapper">
+              <span className="section-badge-gold">
+                <Crown size={14} /> ALL-TIME CHAMPIONS
+              </span>
+              <h2>The Hall of Fame</h2>
+              <p>Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.</p>
+            </div>
+            <button 
+              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
+              className="section-view-all-btn"
+            >
+              Browse All ({products.length}) <ArrowRight size={14} />
+            </button>
+          </div>
+
+          <div className="products-grid bestsellers-grid">
+            {topSellers.map((product) => (
+              <ProductCard
+                key={`bestseller-${product.id}`}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -564,9 +705,10 @@ export default function App() {
           <div className="footer-column">
             <h4 className="footer-col-title">Quick Navigation</h4>
             <ul className="footer-links-list">
-              <li><button onClick={() => scrollToSection('bento-showcase-section')}>Curated Showcase</button></li>
+              <li><button onClick={() => scrollToSection('hot-items-section')}>🔥 Hot Drops</button></li>
               <li><button onClick={() => scrollToSection('categories-section')}>Explore Collections</button></li>
-              <li><button onClick={() => scrollToSection('shop-section')}>Browse Catalog</button></li>
+              <li><button onClick={() => scrollToSection('top-sellers-section')}>The Hall of Fame</button></li>
+              <li><button onClick={() => scrollToSection('shop-section')}>Shop All Stickers</button></li>
               <li><a href="#">Support & Returns</a></li>
               <li><a href="#">Order Tracking</a></li>
             </ul>

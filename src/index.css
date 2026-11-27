@@ -803,24 +803,41 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   DUAL BENTO SHOWCASE: THE VAULT (HEATWAVE VS. HALL OF FAME)
+   TOP SELLERS & CATEGORY-WISE SHOWCASE SECTIONS
    ========================================================================== */
 
-.bento-showcase-section {
-  padding: 64px 0 52px 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 70%), var(--bg-dark);
+.bestsellers-section {
+  padding: 60px 0 40px 0;
+  background: var(--bg-dark);
   position: relative;
   border-bottom: 1px solid var(--border-color);
-  overflow: hidden;
 }
 
-.section-badge-bento {
+.hot-items-section {
+  padding: 60px 0 40px 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(249, 115, 22, 0.08) 0%, transparent 65%), var(--bg-dark);
+  position: relative;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-view-all-btn-hot {
+  color: #f97316 !important;
+  border-color: #f97316 !important;
+}
+
+.section-view-all-btn-hot:hover {
+  background: #f97316 !important;
+  color: #000 !important;
+  box-shadow: 0 0 16px rgba(249, 115, 22, 0.4) !important;
+}
+
+.section-badge-gold {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  color: #38bdf8;
+  background: rgba(250, 204, 21, 0.12);
+  border: 1px solid rgba(250, 204, 21, 0.45);
+  color: var(--neon-yellow);
   padding: 4px 12px;
   border-radius: 9999px;
   font-size: 0.72rem;
@@ -828,584 +845,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-/* 2-Column Responsive Bento Grid */
-.bento-grid-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-}
-
-@media (min-width: 992px) {
-  .bento-grid-container {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-}
-
-/* Base Bento Card */
-.bento-card {
-  position: relative;
-  border-radius: 24px;
-  padding: 30px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  overflow: hidden;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-@media (min-width: 768px) {
-  .bento-card {
-    padding: 34px 30px;
-  }
-}
-
-.bento-card:hover {
-  transform: translateY(-3px);
-}
-
-/* Heatwave Amber Card */
-.bento-card-heatwave {
-  background: linear-gradient(165deg, rgba(32, 17, 16, 0.8) 0%, rgba(13, 15, 22, 0.9) 100%);
-  border: 1px solid rgba(249, 115, 22, 0.28);
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(249, 115, 22, 0.35);
-}
-
-.bento-card-heatwave:hover {
-  border-color: rgba(249, 115, 22, 0.5);
-  box-shadow: 0 24px 50px -12px rgba(249, 115, 22, 0.2), inset 0 1px 2px rgba(249, 115, 22, 0.5);
-}
-
-/* Heritage Titanium Gold Card */
-.bento-card-heritage {
-  background: linear-gradient(165deg, rgba(30, 26, 16, 0.8) 0%, rgba(13, 15, 22, 0.9) 100%);
-  border: 1px solid rgba(250, 204, 21, 0.28);
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(250, 204, 21, 0.35);
-}
-
-.bento-card-heritage:hover {
-  border-color: rgba(250, 204, 21, 0.5);
-  box-shadow: 0 24px 50px -12px rgba(250, 204, 21, 0.2), inset 0 1px 2px rgba(250, 204, 21, 0.5);
-}
-
-/* Ambient Radial Auras */
-.bento-aura {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(60px);
-  opacity: 0.35;
-  transition: opacity 0.3s ease;
-}
-
-.bento-card:hover .bento-aura {
-  opacity: 0.55;
-}
-
-.bento-aura-fire {
-  background: radial-gradient(circle, #f97316 0%, #ef4444 60%, transparent 100%);
-}
-
-.bento-aura-gold {
-  background: radial-gradient(circle, #facc15 0%, #eab308 60%, transparent 100%);
-}
-
-/* Header & Badges inside Bento */
-.bento-card-header {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bento-live-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-family: var(--font-heading);
-  font-size: 0.7rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.bento-live-fire {
-  background: rgba(249, 115, 22, 0.15);
-  border: 1px solid rgba(249, 115, 22, 0.45);
-  color: #fb923c;
-}
-
-.bento-live-gold {
-  background: rgba(250, 204, 21, 0.14);
-  border: 1px solid rgba(250, 204, 21, 0.45);
-  color: var(--neon-yellow);
-}
-
-.live-pulse-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #f97316;
-  box-shadow: 0 0 8px #f97316;
-  animation: pulseDot 1.4s ease-in-out infinite;
-}
-
-@keyframes pulseDot {
-  0% { transform: scale(0.9); opacity: 0.6; }
-  50% { transform: scale(1.4); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.6; }
-}
-
-.bento-title {
-  font-family: var(--font-heading);
-  font-size: 1.65rem;
-  font-weight: 900;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: -0.01em;
-  margin: 0;
-}
-
-@media (min-width: 768px) {
-  .bento-title {
-    font-size: 1.85rem;
-  }
-}
-
-.bento-subtitle {
-  color: var(--text-secondary);
-  font-size: 0.88rem;
-  line-height: 1.4;
-  margin: 0;
-}
-
-/* Featured Hero Product Inside Bento */
-.bento-hero-product {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 18px;
-  padding: 18px;
-  transition: all 0.25s ease;
-}
-
-@media (min-width: 640px) {
-  .bento-hero-product {
-    flex-direction: row;
-    align-items: center;
-    gap: 22px;
-    padding: 22px;
-  }
-}
-
-.bento-hero-product:hover {
-  background: rgba(0, 0, 0, 0.55);
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.bento-hero-visual {
-  position: relative;
-  width: 100%;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
-  border-radius: 14px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-@media (min-width: 640px) {
-  .bento-hero-visual {
-    width: 140px;
-    height: 140px;
-  }
-}
-
-.bento-img-glow {
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  filter: blur(24px);
-  opacity: 0.45;
-  pointer-events: none;
-}
-
-.fire-glow {
-  background: #f97316;
-}
-
-.gold-glow {
-  background: #facc15;
-}
-
-.bento-hero-img {
-  position: relative;
-  z-index: 2;
-  max-width: 110px;
-  max-height: 110px;
-  object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.7));
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.bento-hero-product:hover .bento-hero-img {
-  transform: scale(1.08) rotate(2deg);
-}
-
-.bento-floating-tag {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 3;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 0.62rem;
-  font-family: var(--font-heading);
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.tag-fire {
-  background: #ef4444;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
-}
-
-.tag-gold {
-  background: #facc15;
-  color: #000;
-  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.5);
-}
-
-.bento-hero-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 14px;
-  flex: 1;
-}
-
-.bento-hero-category {
-  font-size: 0.65rem;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-}
-
-.bento-hero-name {
-  font-family: var(--font-heading);
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin: 2px 0 6px 0;
-  line-height: 1.3;
-}
-
-.bento-rating-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
-}
-
-.bento-stars {
-  display: flex;
-  gap: 2px;
-}
-
-.bento-review-count {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-.bento-price-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.bento-current-price {
-  font-family: var(--font-heading);
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: var(--text-primary);
-}
-
-.bento-old-price {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  text-decoration: line-through;
-}
-
-.bento-discount-badge {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #ef4444;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-size: 0.65rem;
-  font-family: var(--font-heading);
-  font-weight: 900;
-}
-
-.bento-verified-quote {
-  font-size: 0.72rem;
-  color: #a3e635;
-  font-style: italic;
-  font-weight: 600;
-}
-
-.bento-hero-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 12px 20px;
-  border-radius: 12px;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  border: none;
-  transition: all 0.25s ease;
-  width: 100%;
-}
-
-.btn-fire {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
-}
-
-.btn-fire:hover {
-  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
-  transform: translateY(-2px);
-}
-
-.btn-gold {
-  background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
-  color: #000;
-  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.4);
-}
-
-.btn-gold:hover {
-  background: linear-gradient(135deg, #fde047 0%, #facc15 100%);
-  box-shadow: 0 6px 20px rgba(250, 204, 21, 0.6);
-  transform: translateY(-2px);
-}
-
-.bento-hero-cta.added {
-  background: #10b981 !important;
-  color: #fff !important;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
-}
-
-/* Mini Runner-ups Grid inside Bento */
-.bento-mini-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  position: relative;
-  z-index: 2;
-}
-
-.bento-mini-label {
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.bento-mini-items-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bento-mini-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 8px 12px;
-  transition: all 0.2s ease;
-}
-
-.bento-mini-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
-  transform: translateX(3px);
-}
-
-.bento-mini-thumb-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-.bento-mini-thumb {
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-}
-
-.bento-mini-details {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-  min-width: 0;
-}
-
-.bento-mini-name {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.bento-mini-price-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.bento-mini-price {
-  font-family: var(--font-heading);
-  font-size: 0.88rem;
-  font-weight: 900;
-  color: var(--text-primary);
-}
-
-.bento-mini-tag {
-  font-size: 0.6rem;
-  font-weight: 800;
-  font-family: var(--font-heading);
-  color: #fb923c;
-  background: rgba(249, 115, 22, 0.12);
-  padding: 1px 6px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-.bento-mini-star-rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: #facc15;
-}
-
-.bento-mini-add-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-
-.bento-mini-add-btn:hover {
-  background: var(--neon-yellow);
-  color: #000;
-  border-color: var(--neon-yellow);
-  transform: scale(1.1);
-}
-
-.bento-mini-add-btn.added {
-  background: #10b981 !important;
-  color: #fff !important;
-  border-color: #10b981 !important;
-}
-
-/* Bento Footer Link */
-.bento-footer {
-  margin-top: auto;
-  padding-top: 10px;
-  position: relative;
-  z-index: 2;
-}
-
-.bento-footer-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: none;
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-}
-
-.link-fire {
-  color: #fb923c;
-}
-
-.link-fire:hover {
-  color: #ffedd5;
-  transform: translateX(4px);
-}
-
-.link-gold {
-  color: var(--neon-yellow);
-}
-
-.link-gold:hover {
-  color: #fef08a;
-  transform: translateX(4px);
 }
 
 .categories-showcase-section {
@@ -1514,7 +953,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
-   ROUNDED CATEGORY ORBS (REFINED & PROFESSIONAL HARDWARE FINISH)
+   ROUNDED CATEGORY ORBS (SCROLLABLE & AUTO-GLIDING HARDWARE FINISH)
    ========================================================================== */
 
 .categories-story-section {
@@ -1525,61 +964,113 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
-/* Smooth Scrollable Story Orbs Container */
-.story-orbs-wrapper {
+/* Scrollable Category Orbs Wrapper */
+.story-orbs-scroll-wrapper {
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 6px 0 16px 0;
 }
 
+/* Subtle edge gradients that blend with background */
+.story-orbs-scroll-wrapper::before,
+.story-orbs-scroll-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 36px;
+  z-index: 5;
+  pointer-events: none;
+}
+.story-orbs-scroll-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-dark), transparent);
+}
+.story-orbs-scroll-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-dark), transparent);
+}
+
+/* Scroll Container - Fully scrollable with touch momentum, drag, and trackpad */
 .story-orbs-scroll-container {
-  display: flex;
-  align-items: flex-start;
-  gap: 22px;
+  width: 100%;
   overflow-x: auto;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden;
+  padding: 14px 16px 20px 16px;
   scrollbar-width: none;
-  padding: 16px 20px 24px 20px;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
   cursor: grab;
   user-select: none;
-}
-
-.story-orbs-scroll-container:active {
-  cursor: grabbing;
+  scroll-behavior: auto;
 }
 
 .story-orbs-scroll-container::-webkit-scrollbar {
   display: none;
 }
 
-@media (min-width: 992px) {
-  .story-orbs-scroll-container {
-    justify-content: center;
-    gap: 32px;
-    padding: 16px 0 24px 0;
+.story-orbs-scroll-container.is-dragging {
+  cursor: grabbing;
+}
+
+.story-orbs-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+  width: max-content;
+  padding: 0 12px;
+}
+
+@media (max-width: 768px) {
+  .story-orbs-track {
+    gap: 16px;
+    padding: 0 4px;
   }
 }
 
-/* Nav assist buttons */
-.story-nav-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Navigation Arrow Buttons (Desktop) */
+.story-orb-nav-btn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 10;
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: var(--text-primary);
+  background: rgba(14, 18, 28, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
 }
 
-.story-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.35);
+.story-orb-nav-btn:hover {
+  background: #182030;
+  border-color: var(--neon-yellow);
   color: var(--neon-yellow);
-  transform: scale(1.06);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.4);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.story-orb-nav-btn.prev {
+  left: 8px;
+}
+
+.story-orb-nav-btn.next {
+  right: 8px;
+}
+
+@media (max-width: 768px) {
+  .story-orb-nav-btn {
+    display: none;
+  }
 }
 
 /* Individual Story Orb Card - Increased Size */
