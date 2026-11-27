@@ -964,46 +964,61 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
-/* Auto-Scrolling Story Orbs Marquee Wrapper */
-.story-orbs-marquee-wrapper {
+/* Smooth Scrollable Story Orbs Container */
+.story-orbs-wrapper {
   position: relative;
   width: 100%;
-  overflow: hidden;
-  padding: 16px 0 24px 0;
-  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
 }
 
-.story-orbs-marquee-track {
+.story-orbs-scroll-container {
   display: flex;
   align-items: flex-start;
-  gap: 28px;
-  width: max-content;
-  animation: storyOrbMarquee 32s linear infinite;
-  will-change: transform;
+  gap: 22px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 16px 20px 24px 20px;
+  cursor: grab;
+  user-select: none;
 }
 
-/* Pause smoothly when hovering or pressing so user can easily click */
-.story-orbs-marquee-wrapper:hover .story-orbs-marquee-track,
-.story-orbs-marquee-track:hover,
-.story-orbs-marquee-track:active {
-  animation-play-state: paused;
+.story-orbs-scroll-container:active {
+  cursor: grabbing;
 }
 
-@keyframes storyOrbMarquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(calc(-100% / 3));
+.story-orbs-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .story-orbs-scroll-container {
+    justify-content: center;
+    gap: 32px;
+    padding: 16px 0 24px 0;
   }
 }
 
-@media (max-width: 768px) {
-  .story-orbs-marquee-track {
-    gap: 18px;
-    animation-duration: 24s;
-  }
+/* Nav assist buttons */
+.story-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.story-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: var(--neon-yellow);
+  transform: scale(1.06);
 }
 
 /* Individual Story Orb Card - Increased Size */

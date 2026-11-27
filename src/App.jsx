@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCard from './components/ProductCard';
@@ -10,7 +10,7 @@ import AdminPortal from './components/AdminPortal';
 import { db, isFirebaseConfigured } from './firebase';
 import { collection, onSnapshot, doc } from 'firebase/firestore';
 import { PRODUCTS } from './data/products';
-import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronRight, Crown, Zap } from 'lucide-react';
+import { Mail, Instagram, Twitter, Phone, Flame, Sparkles, ArrowRight, ChevronLeft, ChevronRight, Crown, Zap } from 'lucide-react';
 
 export default function App() {
   // Cart state persisted in localStorage
@@ -211,6 +211,36 @@ export default function App() {
     scrollToSection('shop-section');
   };
 
+  // Category horizontal scroll controls & drag-to-scroll
+  const categoryScrollRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+
+  const handleMouseDown = (e) => {
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - categoryScrollRef.current.offsetLeft;
+    scrollLeftRef.current = categoryScrollRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - categoryScrollRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    categoryScrollRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+  };
+
+  const scrollCategories = (dir) => {
+    if (categoryScrollRef.current) {
+      categoryScrollRef.current.scrollBy({ left: dir * 280, behavior: 'smooth' });
+    }
+  };
+
   // Cart operations
   const handleAddToCart = (product) => {
     setCart((prevCart) => {
@@ -353,7 +383,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS - AUTO SCROLLING) */}
+      {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS - SMOOTH SCROLLABLE) */}
       <section id="categories-section" className="categories-story-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
           <div className="section-header-row" style={{ marginBottom: '20px' }}>
@@ -364,13 +394,40 @@ export default function App() {
               <h2>Explore Collections</h2>
               <p>Tap a universe to explore handpicked decals engineered for your laptops, bottles & rigs.</p>
             </div>
+            
+            {/* Scroll Navigation Arrows */}
+            <div style={{ display: 'flex', gap: '8px', alignSelf: 'flex-end' }}>
+              <button 
+                className="story-nav-btn" 
+                onClick={() => scrollCategories(-1)} 
+                aria-label="Previous categories"
+                title="Scroll left"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <button 
+                className="story-nav-btn" 
+                onClick={() => scrollCategories(1)} 
+                aria-label="Next categories"
+                title="Scroll right"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Story Ring Marquee Auto-Scroller with Edge Gradients */}
-        <div className="story-orbs-marquee-wrapper">
-          <div className="story-orbs-marquee-track">
-            {[...categoryCards, ...categoryCards, ...categoryCards].map((cat, idx) => {
+        {/* Freely Scrollable / Swipeable Story Orbs Track */}
+        <div className="story-orbs-wrapper">
+          <div 
+            className="story-orbs-scroll-container" 
+            ref={categoryScrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+          >
+            {categoryCards.map((cat) => {
               const count = cat.id === 'all' 
                 ? products.length 
                 : products.filter(p => p.category === cat.id).length;
@@ -378,7 +435,7 @@ export default function App() {
 
               return (
                 <button
-                  key={`${cat.id}-${idx}`}
+                  key={cat.id}
                   onClick={() => handleCategoryCardClick(cat.id)}
                   className={`story-orb-card ${isActive ? 'active' : ''}`}
                   style={{ 
