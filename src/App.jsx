@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProductCard from './components/ProductCard';
+import DualBentoShowcase from './components/DualBentoShowcase';
 import CartDrawer from './components/CartDrawer';
 import StickerPlayground from './components/StickerPlayground';
 import CheckoutModal from './components/CheckoutModal';
@@ -352,36 +353,16 @@ export default function App() {
         mysteryStickerPrice={siteSettings.mysteryStickerPrice}
       />
 
-      {/* 1. HOT ITEMS / TRENDING DROPS */}
-      <section id="hot-items-section" className="hot-items-section" style={{ scrollMarginTop: '80px' }}>
-        <div className="container">
-          <div className="section-header-row">
-            <div className="section-title-wrapper">
-              <span className="section-badge-hot">
-                <Flame size={14} /> TRENDING RIGHT NOW
-              </span>
-              <h2>Hot Drops & Viral Picks</h2>
-              <p>High-voltage drops, viral holographic designs & fastest-selling vinyl stickers generating heat.</p>
-            </div>
-            <button 
-              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
-              className="section-view-all-btn section-view-all-btn-hot"
-            >
-              Browse All ({products.length}) <ArrowRight size={14} />
-            </button>
-          </div>
-
-          <div className="products-grid hot-items-grid">
-            {hotProducts.map((product) => (
-              <ProductCard
-                key={`hot-${product.id}`}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 1. DUAL BENTO SHOWCASE: THE VAULT (HEAT VS HERITAGE) */}
+      <DualBentoShowcase
+        hotProducts={hotProducts}
+        topSellers={topSellers}
+        onAddToCart={handleAddToCart}
+        onExploreShop={(catId) => {
+          setSelectedCategory(catId);
+          scrollToSection('shop-section');
+        }}
+      />
 
       {/* 2. EXPLORE CATEGORIES (ROUNDED STORY RING ORBS - SMOOTH SCROLLABLE) */}
       <section id="categories-section" className="categories-story-section" style={{ scrollMarginTop: '80px' }}>
@@ -465,37 +446,6 @@ export default function App() {
                 </button>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. BEST SELLERS / THE HALL OF FAME */}
-      <section id="top-sellers-section" className="bestsellers-section" style={{ scrollMarginTop: '80px' }}>
-        <div className="container">
-          <div className="section-header-row">
-            <div className="section-title-wrapper">
-              <span className="section-badge-gold">
-                <Crown size={14} /> ALL-TIME CHAMPIONS
-              </span>
-              <h2>The Hall of Fame</h2>
-              <p>Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.</p>
-            </div>
-            <button 
-              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
-              className="section-view-all-btn"
-            >
-              Browse All ({products.length}) <ArrowRight size={14} />
-            </button>
-          </div>
-
-          <div className="products-grid bestsellers-grid">
-            {topSellers.map((product) => (
-              <ProductCard
-                key={`bestseller-${product.id}`}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
           </div>
         </div>
       </section>
@@ -614,10 +564,9 @@ export default function App() {
           <div className="footer-column">
             <h4 className="footer-col-title">Quick Navigation</h4>
             <ul className="footer-links-list">
-              <li><button onClick={() => scrollToSection('hot-items-section')}>🔥 Hot Drops</button></li>
+              <li><button onClick={() => scrollToSection('bento-showcase-section')}>Curated Showcase</button></li>
               <li><button onClick={() => scrollToSection('categories-section')}>Explore Collections</button></li>
-              <li><button onClick={() => scrollToSection('top-sellers-section')}>The Hall of Fame</button></li>
-              <li><button onClick={() => scrollToSection('shop-section')}>Shop All Stickers</button></li>
+              <li><button onClick={() => scrollToSection('shop-section')}>Browse Catalog</button></li>
               <li><a href="#">Support & Returns</a></li>
               <li><a href="#">Order Tracking</a></li>
             </ul>
