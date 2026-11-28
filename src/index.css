@@ -201,35 +201,42 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   user-select: none;
 }
 
 .kenyak-brand-logo {
-  height: 46px;
+  height: 56px;
   width: auto;
   max-width: none;
   object-fit: contain;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbar-logo:hover .kenyak-brand-logo {
-  transform: scale(1.08);
+  transform: scale(1.06);
+}
+
+@media (max-width: 768px) {
+  .kenyak-brand-logo {
+    height: 50px;
+  }
 }
 
 @media (max-width: 480px) {
   .kenyak-brand-logo {
-    height: 40px;
+    height: 48px;
   }
 }
 
 .logo-text {
-  font-size: 1.8rem;
+  font-size: 1.85rem;
   font-weight: 900;
   color: var(--text-primary);
   font-family: var(--font-heading);
   text-shadow: 0 0 10px rgba(251, 254, 33, 0.2);
+  letter-spacing: -0.01em;
 }
 
 .navbar-search-wrapper {
@@ -2664,13 +2671,23 @@ textarea.input-field {
 /* Responsive Layout Fixes & Viewport Overflow Prevention */
 @media (max-width: 480px) {
   .logo-text {
-    display: none !important;
+    display: inline-block !important;
+    font-size: 1.28rem !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
   }
   .mobile-search-bar {
-    width: 110px !important;
+    width: 96px !important;
+  }
+  .mobile-search-bar input {
+    font-size: 0.78rem !important;
+    padding: 6px 10px !important;
   }
   .navbar-container {
     gap: 8px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
   }
   .navbar-actions {
     gap: 8px !important;

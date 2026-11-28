@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Logo({ className = '', style = {}, height = '46px', width = 'auto' }) {
+export default function Logo({ className = '', style = {}, height, width }) {
   return (
     <img
       src="/logo.png"
@@ -10,9 +10,9 @@ export default function Logo({ className = '', style = {}, height = '46px', widt
         display: 'inline-block',
         verticalAlign: 'middle',
         objectFit: 'contain',
-        height: height || '46px',
-        width: width || 'auto',
-        filter: 'drop-shadow(0 0 1px rgba(255, 255, 255, 0.55)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.7))',
+        filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.6))',
+        ...(height ? { height } : {}),
+        ...(width ? { width } : {}),
         ...style
       }}
     />

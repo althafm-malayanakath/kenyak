@@ -705,8 +705,8 @@ export default function App() {
           
           {/* Logo & Description */}
           <div className="footer-column">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <Logo width="34px" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+              <Logo style={{ height: '48px' }} />
               <span className="footer-logo" style={{ marginBottom: 0 }}>
                 KENYAK<span>.</span>
               </span>
