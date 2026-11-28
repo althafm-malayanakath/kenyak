@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle, CreditCard, Truck, Receipt, RefreshCw } from 'lucide-react';
+import { db, isFirebaseConfigured } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 export default function CheckoutModal({ isOpen, onClose, cart, onClearCart }) {
   if (!isOpen) return null;
@@ -21,15 +23,56 @@ export default function CheckoutModal({ isOpen, onClose, cart, onClearCart }) {
     setStep(2);
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     setIsLoading(true);
-    // Mock network latency
+    const generatedId = `KN-${Math.floor(100000 + Math.random() * 900000)}`;
+    const shippingFee = subtotal >= 199 ? 0 : 49;
+    const finalTotal = subtotal + shippingFee;
+
+    const newOrder = {
+      id: generatedId,
+      createdAt: new Date().toISOString(),
+      shipping: { ...shipping },
+      paymentMethod,
+      items: cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image,
+        category: item.category || 'tech'
+      })),
+      subtotal,
+      shippingFee,
+      total: finalTotal,
+      status: 'Pending'
+    };
+
+    try {
+      // 1. Save to local storage
+      const existingOrders = JSON.parse(localStorage.getItem('kenyak_orders') || '[]');
+      localStorage.setItem('kenyak_orders', JSON.stringify([newOrder, ...existingOrders]));
+
+      // 2. Dispatch custom event for real-time admin sync
+      window.dispatchEvent(new CustomEvent('kenyak_order_placed', { detail: newOrder }));
+
+      // 3. Save to Firebase Firestore if online
+      if (isFirebaseConfigured && db) {
+        try {
+          await setDoc(doc(db, 'orders', generatedId), newOrder);
+        } catch (fbErr) {
+          console.warn("Could not save order to Firestore:", fbErr);
+        }
+      }
+    } catch (err) {
+      console.error("Order persistence error:", err);
+    }
+
     setTimeout(() => {
       setIsLoading(false);
-      const generatedId = `KN-${Math.floor(100000 + Math.random() * 900000)}`;
       setOrderId(generatedId);
       setStep(3);
-    }, 1500);
+    }, 1200);
   };
 
   const handleCloseSuccess = () => {

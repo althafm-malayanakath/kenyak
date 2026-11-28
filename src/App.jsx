@@ -58,7 +58,13 @@ export default function App() {
     contactAddress: "R.T. Road, Behind Rajshree Cinema, Dahisar East, Mumbai, MH - 400068.",
     freeShippingThreshold: 199,
     mysteryStickerPrice: 19,
-    mysteryDecalPrice: 25
+    mysteryDecalPrice: 25,
+    hotSectionTitle: "Hot Drops & Viral Picks",
+    hotSectionSubtitle: "High-voltage drops, viral holographic designs & fastest-selling vinyl stickers generating heat.",
+    bestsellerSectionTitle: "The Hall of Fame",
+    bestsellerSectionSubtitle: "Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.",
+    categoriesSectionTitle: "Explore Collections",
+    categoriesSectionSubtitle: "Tap a universe to explore handpicked decals engineered for your laptops, bottles & rigs."
   });
 
   // Dynamic Products List State
@@ -445,8 +451,8 @@ export default function App() {
               <span className="section-badge-hot">
                 <Flame size={14} /> TRENDING RIGHT NOW
               </span>
-              <h2>Hot Drops & Viral Picks</h2>
-              <p>High-voltage drops, viral holographic designs & fastest-selling vinyl stickers generating heat.</p>
+              <h2>{siteSettings.hotSectionTitle || 'Hot Drops & Viral Picks'}</h2>
+              <p>{siteSettings.hotSectionSubtitle || 'High-voltage drops, viral holographic designs & fastest-selling vinyl stickers generating heat.'}</p>
             </div>
             <button 
               onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
@@ -476,8 +482,8 @@ export default function App() {
               <span className="section-badge-purple">
                 <Sparkles size={14} /> CURATED DROPS
               </span>
-              <h2>Explore Collections</h2>
-              <p>Tap a universe to explore handpicked decals engineered for your laptops, bottles & rigs.</p>
+              <h2>{siteSettings.categoriesSectionTitle || 'Explore Collections'}</h2>
+              <p>{siteSettings.categoriesSectionSubtitle || 'Tap a universe to explore handpicked decals engineered for your laptops, bottles & rigs.'}</p>
             </div>
           </div>
         </div>
@@ -568,8 +574,8 @@ export default function App() {
               <span className="section-badge-gold">
                 <Crown size={14} /> ALL-TIME CHAMPIONS
               </span>
-              <h2>The Hall of Fame</h2>
-              <p>Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.</p>
+              <h2>{siteSettings.bestsellerSectionTitle || 'The Hall of Fame'}</h2>
+              <p>{siteSettings.bestsellerSectionSubtitle || 'Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.'}</p>
             </div>
             <button 
               onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
@@ -709,6 +715,7 @@ export default function App() {
               <li><button onClick={() => scrollToSection('categories-section')}>Explore Collections</button></li>
               <li><button onClick={() => scrollToSection('top-sellers-section')}>The Hall of Fame</button></li>
               <li><button onClick={() => scrollToSection('shop-section')}>Shop All Stickers</button></li>
+              <li><button onClick={() => setIsAdminOpen(true)} style={{ color: 'var(--neon-yellow)', fontWeight: 'bold' }}>🔐 Admin Portal</button></li>
               <li><a href="#">Support & Returns</a></li>
               <li><a href="#">Order Tracking</a></li>
             </ul>
