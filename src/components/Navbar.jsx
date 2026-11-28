@@ -8,7 +8,7 @@ export default function Navbar({ searchTerm, setSearchTerm, onCartClick, cartCou
       <div className="container navbar-container">
         {/* Brand Logo */}
         <div className="navbar-logo" onClick={onLogoClick}>
-          <Logo width="38px" style={{ marginRight: '6px' }} />
+          <Logo height="44px" style={{ marginRight: '6px' }} />
           <span className="logo-text">
             KENYAK<span style={{ color: 'var(--neon-yellow)' }}>.</span>
           </span>

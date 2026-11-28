@@ -201,9 +201,27 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
   user-select: none;
+}
+
+.kenyak-brand-logo {
+  height: 46px;
+  width: auto;
+  max-width: none;
+  object-fit: contain;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar-logo:hover .kenyak-brand-logo {
+  transform: scale(1.08);
+}
+
+@media (max-width: 480px) {
+  .kenyak-brand-logo {
+    height: 40px;
+  }
 }
 
 .logo-text {

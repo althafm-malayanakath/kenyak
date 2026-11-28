@@ -583,16 +583,6 @@ export default function App() {
                   <Crown size={14} /> OFFICIAL LEADERBOARD
                 </span>
                 <h2>{siteSettings.bestsellerSectionTitle || 'The Hall of Fame'}</h2>
-                <p>{siteSettings.bestsellerSectionSubtitle || 'Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.'}</p>
-                
-                {/* VIP Social Proof Stats Bar */}
-                <div className="vault-stats-bar">
-                  <span className="vault-stat-item">⭐ <strong>4.9 / 5.0</strong> Rating</span>
-                  <span className="vault-stat-divider">•</span>
-                  <span className="vault-stat-item">🔥 <strong>1,200+</strong> Happy Laptops</span>
-                  <span className="vault-stat-divider">•</span>
-                  <span className="vault-stat-item">🛡️ <strong>100%</strong> Weatherproof Vinyl</span>
-                </div>
               </div>
 
               <button 
