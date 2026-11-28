@@ -566,34 +566,57 @@ export default function App() {
         </div>
       </section>
 
-      {/* 3. BEST SELLERS / THE HALL OF FAME */}
+      {/* 3. BEST SELLERS / THE HALL OF FAME (VIP VAULT POD) */}
       <section id="top-sellers-section" className="bestsellers-section" style={{ scrollMarginTop: '80px' }}>
         <div className="container">
-          <div className="section-header-row">
-            <div className="section-title-wrapper">
-              <span className="section-badge-gold">
-                <Crown size={14} /> ALL-TIME CHAMPIONS
-              </span>
-              <h2>{siteSettings.bestsellerSectionTitle || 'The Hall of Fame'}</h2>
-              <p>{siteSettings.bestsellerSectionSubtitle || 'Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.'}</p>
+          
+          {/* Standalone VIP Vault Showcase Card */}
+          <div className="bestseller-vault-card">
+            
+            {/* Ambient Gold Radial Flare */}
+            <div className="vault-glow-accent"></div>
+
+            {/* Vault Card Header */}
+            <div className="vault-header">
+              <div className="vault-title-group">
+                <span className="section-badge-gold">
+                  <Crown size={14} /> OFFICIAL LEADERBOARD
+                </span>
+                <h2>{siteSettings.bestsellerSectionTitle || 'The Hall of Fame'}</h2>
+                <p>{siteSettings.bestsellerSectionSubtitle || 'Our top-rated, battle-tested waterproof vinyl stickers loved by 1,000+ creators.'}</p>
+                
+                {/* VIP Social Proof Stats Bar */}
+                <div className="vault-stats-bar">
+                  <span className="vault-stat-item">⭐ <strong>4.9 / 5.0</strong> Rating</span>
+                  <span className="vault-stat-divider">•</span>
+                  <span className="vault-stat-item">🔥 <strong>1,200+</strong> Happy Laptops</span>
+                  <span className="vault-stat-divider">•</span>
+                  <span className="vault-stat-item">🛡️ <strong>100%</strong> Weatherproof Vinyl</span>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
+                className="section-view-all-btn"
+              >
+                Browse All ({products.length}) <ArrowRight size={14} />
+              </button>
             </div>
-            <button 
-              onClick={() => { setSelectedCategory('all'); scrollToSection('shop-section'); }}
-              className="section-view-all-btn"
-            >
-              Browse All ({products.length}) <ArrowRight size={14} />
-            </button>
+
+            {/* Vault Products Grid with Rank Badges */}
+            <div className="products-grid vault-products-grid">
+              {topSellers.map((product, index) => (
+                <ProductCard
+                  key={`bestseller-${product.id}`}
+                  product={product}
+                  rank={index + 1}
+                  onAddToCart={handleAddToCart}
+                />
+              ))}
+            </div>
+
           </div>
 
-          <div className="products-grid bestsellers-grid">
-            {topSellers.map((product) => (
-              <ProductCard
-                key={`bestseller-${product.id}`}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
         </div>
       </section>
 

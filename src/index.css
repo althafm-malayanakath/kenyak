@@ -806,11 +806,156 @@ h1, h2, h3, h4, h5, h6 {
    TOP SELLERS & CATEGORY-WISE SHOWCASE SECTIONS
    ========================================================================== */
 
+/* ==========================================================================
+   HALL OF FAME VIP VAULT CARD
+   ========================================================================== */
+
 .bestsellers-section {
-  padding: 60px 0 40px 0;
+  padding: 50px 0;
   background: var(--bg-dark);
   position: relative;
   border-bottom: 1px solid var(--border-color);
+}
+
+.bestseller-vault-card {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 0%, rgba(250, 204, 21, 0.08) 0%, rgba(17, 22, 32, 0.96) 50%, #0b0e14 100%);
+  border: 1.5px solid rgba(250, 204, 21, 0.35);
+  border-radius: 24px;
+  padding: 38px 30px;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 35px rgba(250, 204, 21, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .bestseller-vault-card {
+    padding: 24px 14px;
+    border-radius: 18px;
+  }
+}
+
+.vault-glow-accent {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 65%;
+  height: 220px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(250, 204, 21, 0.22) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.vault-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 22px;
+}
+
+@media (min-width: 768px) {
+  .vault-header {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.vault-title-group h2 {
+  font-size: 2.2rem;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin: 8px 0 6px 0;
+}
+
+@media (min-width: 768px) {
+  .vault-title-group h2 {
+    font-size: 2.6rem;
+  }
+}
+
+.vault-title-group p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  max-width: 580px;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+
+.vault-stats-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.vault-stat-item strong {
+  color: #fff;
+}
+
+.vault-stat-divider {
+  color: var(--neon-yellow);
+}
+
+.vault-products-grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* Leaderboard Rank Medals on Product Cards */
+.card-rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 900 !important;
+  letter-spacing: 0.04em;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  font-size: 0.65rem !important;
+}
+
+.card-rank-badge.rank-1 {
+  background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%) !important;
+  color: #000 !important;
+  border: 1px solid #fef08a !important;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.5) !important;
+}
+
+.card-rank-badge.rank-2 {
+  background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%) !important;
+  color: #0f172a !important;
+  border: 1px solid #ffffff !important;
+}
+
+.card-rank-badge.rank-3 {
+  background: linear-gradient(135deg, #fdba74 0%, #fb923c 50%, #ea580c 100%) !important;
+  color: #000 !important;
+  border: 1px solid #fed7aa !important;
+}
+
+.card-rank-badge.rank-other {
+  background: #111620 !important;
+  color: var(--neon-yellow) !important;
+  border: 1px solid rgba(250, 204, 21, 0.4) !important;
 }
 
 .hot-items-section {
@@ -1514,26 +1659,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-add-btn {
-  background: var(--neon-yellow);
-  color: var(--bg-dark);
-  border: none;
-  width: 36px;
-  height: 36px;
+  background: #000000;
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .card-add-btn:hover {
-  background: white;
-  transform: scale(1.08);
+  background: #111827;
+  color: var(--neon-yellow);
+  border-color: var(--neon-yellow);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.4);
+  transform: scale(1.1);
 }
 
 .card-add-btn:active {
-  transform: scale(0.9);
+  transform: scale(0.92);
 }
 
 /* 5. Cart Drawer overlay */

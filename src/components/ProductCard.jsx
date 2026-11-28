@@ -1,7 +1,7 @@
 import React from 'react';
-import { Star, Plus } from 'lucide-react';
+import { Star, Plus, Crown } from 'lucide-react';
 
-export default function ProductCard({ product, onAddToCart, onPlaygroundAdd }) {
+export default function ProductCard({ product, onAddToCart, onPlaygroundAdd, rank }) {
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
@@ -37,9 +37,14 @@ export default function ProductCard({ product, onAddToCart, onPlaygroundAdd }) {
           className="card-image"
         />
 
-        {/* Badges */}
+        {/* Badges & Rank */}
         <div className="card-badges-container">
-          {product.badge && (
+          {rank && (
+            <span className={`badge card-rank-badge rank-${rank <= 3 ? rank : 'other'}`}>
+              <Crown size={11} /> #{rank} {rank === 1 ? 'BESTSELLER' : rank <= 3 ? 'TOP PICK' : 'HALL OF FAME'}
+            </span>
+          )}
+          {product.badge && !rank && (
             <span className={`badge badge-${product.badgeColor || 'yellow'}`}>
               {product.badge}
             </span>
